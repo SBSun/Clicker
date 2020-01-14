@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientAppID: ee7b7630-31bd-11ea-b4f5-0b96349ad930932
   signatureKey: ee7b7631-31bd-11ea-b4f5-0b96349ad930932
-  packageName: com.Company.ProductName
+  packageName: com.blackmango.clicker
   isDevelop: 1
   Version: 4.1.1

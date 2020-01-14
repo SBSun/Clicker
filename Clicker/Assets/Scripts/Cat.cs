@@ -97,7 +97,7 @@ public class Cat : MonoBehaviour, IPointerClickHandler
 
                 if (isAutoHarvest)
                 {
-                    GoodsController.instance.AddGold( makeGoldList );
+                    GoodsController.instance.AddGold( GoodsController.instance.goldList , makeGoldList );
                 }
                 else
                 {

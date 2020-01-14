@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3399472033
+    locked: 0
+  - name: Cat
+    uniqueID: 1885527843
+    locked: 0

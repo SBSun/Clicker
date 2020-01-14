@@ -23,6 +23,7 @@ public class CatSlot : MonoBehaviour
     public Text catConsumeGold_Text;
 
     public Cat cat;
+    public CatWork catWork;
 
     public void SlotOpen()
     {
@@ -30,5 +31,7 @@ public class CatSlot : MonoBehaviour
 
         slot_Image.sprite = openSlot_Sprite;
         slotInside_Image.sprite = openSlotInside_Sprite;
+
+        catWork.StartCatWork();
     }
 }

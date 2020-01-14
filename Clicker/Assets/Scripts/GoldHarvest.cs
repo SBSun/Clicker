@@ -14,7 +14,7 @@ public class GoldHarvest : MonoBehaviour, IPointerClickHandler
     {
         if (!isGoldHarvest)
         {
-            GoodsController.instance.AddGold( cat.makeGoldList );
+            GoodsController.instance.AddGold( GoodsController.instance.goldList ,cat.makeGoldList );
             isGoldHarvest = true;
         }
     }
