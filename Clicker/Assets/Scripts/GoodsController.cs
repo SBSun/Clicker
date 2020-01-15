@@ -40,7 +40,7 @@ public class GoodsController : MonoBehaviour
     }
 
     //리스트를 받아서 
-    public void AddGold( List<int> operandGoldList ,List<int> addGoldList )
+    public void AddGold( List<int> operandGoldList, List<int> addGoldList )
     {
         if (addGoldList.Count != 10)
             return;
@@ -99,6 +99,8 @@ public class GoodsController : MonoBehaviour
 
     public void SubGoldCheck( List<int> operandGoldList, List<int> subGoldCheckList )
     {
+        isBuyPossible = false;
+
         for (int i = operandGoldList.Count - 1; i >= 0; i--)
         {
             if (operandGoldList[i] == 0 && subGoldCheckList[i] == 0)
@@ -113,10 +115,12 @@ public class GoodsController : MonoBehaviour
                 isBuyPossible = true;
                 break;
             }
+            //해당 자리수가 같으면
             else if (operandGoldList[i] == subGoldCheckList[i])
             {
-                if(i == 0)
+                if (i == 0)
                 {
+                    //보유하고 있는 골드와 subGold 양이 같으면 
                     Debug.Log( "구입 가능" );
                     isBuyPossible = true;
                     break;
@@ -128,15 +132,17 @@ public class GoodsController : MonoBehaviour
                     {
                         Debug.Log( "구입 가능" );
                         isBuyPossible = true;
-                        break;
+                        return;
                     }
                     else if (operandGoldList[j] == subGoldCheckList[j])
                     {
                         //아직 다 구현 안함
+                        //끝이면 양이 같으므로 구입 가능
                         if (j == 0)
                         {
                             isBuyPossible = true;
                             Debug.Log( "구입 가능" );
+                            return;
                         }
 
                         continue;

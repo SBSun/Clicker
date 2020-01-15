@@ -10,7 +10,7 @@ public class CatWork : MonoBehaviour
 
     private void Start()
     {
-        if(catSlot.slotStatus == CatSlot.SlotStatus.Open)
+        if (catSlot.slotStatus == CatSlot.SlotStatus.Open)
         {
             StartCatWork();
         }
@@ -23,7 +23,7 @@ public class CatWork : MonoBehaviour
 
     public IEnumerator CatWorkCoroutine()
     {
-        while(true)
+        while (true)
         {
 
             yield return null;
