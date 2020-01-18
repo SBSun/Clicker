@@ -32,6 +32,9 @@ public class CatSlot : MonoBehaviour
         slot_Image.sprite = openSlot_Sprite;
         slotInside_Image.sprite = openSlotInside_Sprite;
 
+        catLevel_Text.enabled = true;
+        catConsumeGold_Text.enabled = true;
+
         catWork.StartCatWork();
     }
 }
