@@ -12,21 +12,32 @@ public class CatInventory : MonoBehaviour
 {
     //등급 별 슬롯들의 부모 객체
     public GameObject[] go_Contents;
-    //발견된 고양이들만 보여주는 함수를 실행할 때 발견 못한 슬롯들을 go_DisableSlots의 자식으로 옮겨 비활성화 시켜준다.
-    public GameObject[] go_DisableContents;
 
+    //각 등급 객체의 공간
     public RectTransform[] rt_Classes;
     private Rect[] rect_Classes = new Rect[4];
 
+    //스크롤 범위로 설정되는 공간
+    public RectTransform rt_ContentsGroup;
+    private Rect rect_ContentsGroup;
+
+    //각 등급의 슬롯들
     public ClassCatSlot[] classCatSlots = new ClassCatSlot[4];
 
     public Image[] divisionLine_Images;
+
+    //버튼
+    public Image showDiscovery_Image;
+    public Sprite showDiscoveryActivation_Sprite; //활성화
+    public Sprite showDiscoveryDisabled_Sprite; //비활성화
 
     //true면 발견한 고양이만 보여줌
     public bool isShowDiscovery = false;
 
     void Awake()
     {
+        rect_ContentsGroup = rt_ContentsGroup.rect;
+
         for (int i = 0; i < go_Contents.Length; i++)
         {
             CatSlot[] catSlots = go_Contents[i].GetComponentsInChildren<CatSlot>();
@@ -40,15 +51,9 @@ public class CatInventory : MonoBehaviour
             {
                 classCatSlots[i].catSlotList.Add( catSlots[j] );
             }
-        }
 
-        for (int i = 0; i < rt_Classes.Length; i++)
-        {
             rect_Classes[i] = rt_Classes[i].rect;
-        }
 
-        for (int i = 0; i < classCatSlots.Length; i++)
-        {
             CatSlotSort( classCatSlots[i].catSlotList );
         }
 
@@ -117,46 +122,96 @@ public class CatInventory : MonoBehaviour
         rt_Classes[3].anchoredPosition = new Vector2( 0, rt_Classes[2].anchoredPosition.y - rt_Classes[2].sizeDelta.y );
     }
 
+    public void ShowDiscoveryContentTransformSort(List<int> rockCatSlotCountList )
+    {
+        int share = 0;
+        int remainder = 0;
+
+        //발견한 고양이가 1마리 이상인 등급
+        List<int> showDiscoveryContentList = new List<int>();   
+
+        for (int i = 0; i < classCatSlots.Length; i++)
+        {
+            if (!rt_Classes[i].gameObject.activeSelf)
+                continue;
+
+            showDiscoveryContentList.Add( i );
+        }
+
+        for (int i = 0; i < showDiscoveryContentList.Count; i++)
+        {
+            share = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) / 3;
+            remainder = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) % 3;
+
+            //50은 위에 Star_Image와 DivisionLine_Image를 위한 여유 공간
+            if (remainder != 0)
+            {
+                rt_Classes[showDiscoveryContentList[i]].sizeDelta = new Vector2( rect_Classes[showDiscoveryContentList[i]].width, (share + 1) * 500 + 50 );
+            }             
+            else
+            {
+                rt_Classes[showDiscoveryContentList[i]].sizeDelta = new Vector2( rect_Classes[showDiscoveryContentList[i]].width, share * 500 + 50 );
+            }
+                
+
+            if (i == 0)
+                rt_Classes[showDiscoveryContentList[0]].anchoredPosition = new Vector2( 0, -200f );
+            else
+                rt_Classes[showDiscoveryContentList[i]].anchoredPosition = new Vector2( 0, rt_Classes[showDiscoveryContentList[i - 1]].anchoredPosition.y - rt_Classes[showDiscoveryContentList[i - 1]].sizeDelta.y );
+        }       
+
+        showDiscoveryContentList.Clear();
+    }
+
     //발견된 고양이들만 보여주는 함수
     public void OnClickShowDiscovery()
     {
         List<CatSlot> rockCatSlotList = new List<CatSlot>();
+        List<int> rockCatSlotCountList = new List<int>();
 
         isShowDiscovery = !isShowDiscovery;
 
         //발견된 고양이들만 보이게
         if(isShowDiscovery)
         {
+            showDiscovery_Image.sprite = showDiscoveryActivation_Sprite;
+
             for (int i = 0; i < classCatSlots.Length; i++)
             {
+                int rockCatSlotCount = 0;
+
                 for (int j = 0; j < classCatSlots[i].catSlotList.Count; j++)
-                {
+                {                  
                     //발견 못 한 고양이 슬롯을 rockCatSlotList에 추가
                     if (classCatSlots[i].catSlotList[j].slotStatus == CatSlot.SlotStatus.Rock)
                     {
                         rockCatSlotList.Add( classCatSlots[i].catSlotList[j] );
+                        rockCatSlotCount++;
                     }
                 }
+
+                //발견한 고양이가 1마리 이상일 경우에만 추가
+                if(rockCatSlotCount < classCatSlots[i].catSlotList.Count)
+                    rockCatSlotCountList.Add( rockCatSlotCount );
 
                 //해당 등급의 고양이를 한 마리라도 발견 못했으면
                 if (rockCatSlotList.Count != 0)
                 {
-                    // go_DisableContents의 자식으로 옮긴 뒤 비활성화 시켜준다.
                     for (int k = 0; k < rockCatSlotList.Count; k++)
                     {
+                        if (rockCatSlotList.Count == classCatSlots[i].catSlotList.Count)
+                        {
+                            rt_Classes[i].gameObject.SetActive( false );
+                            break;
+                        }
+
                         rockCatSlotList[k].gameObject.SetActive( false );
-                        rockCatSlotList[k].transform.SetParent( go_DisableContents[i].transform );
                     }
 
-                    //해당 등급의 고양이들이 1마리도 발견이 안되었다면 아예 rt_Classes를 비활성화 시켜준다.
-                    if (rockCatSlotList.Count == classCatSlots[i].catSlotList.Count)
-                    {
-                        rt_Classes[i].gameObject.SetActive( false );
-                    }
-
-                    //리스트 초기화
-                    rockCatSlotList.Clear();          
+                    //해당 등급의 고양이들이 1마리도 발견이 안되었다면 아예 rt_Classes를 비활성화 시켜준다.                
                 }
+
+                rockCatSlotList.Clear();
             }
 
             //별 5개 등급의 고양이를 한 마리도 발견 못했다면 제일 위에 있는 구분선 비활성화
@@ -171,11 +226,18 @@ public class CatInventory : MonoBehaviour
                     }
                 }
             }
+
+            ShowDiscoveryContentTransformSort( rockCatSlotCountList );
+
+            //리스트 초기화
+            rockCatSlotCountList.Clear();
         }
         //모든 고양이 슬롯 보이게
         else
         {
-            for (int i = 0; i < rt_Classes.Length; i++)
+            showDiscovery_Image.sprite = showDiscoveryDisabled_Sprite;
+
+            for (int i = 0; i < classCatSlots.Length; i++)
             {
                 //비활성화 되어있다면
                 if(!rt_Classes[i].gameObject.activeSelf)
@@ -184,17 +246,48 @@ public class CatInventory : MonoBehaviour
                 }
                 else
                 {
-                    CatSlot[] disableSlots;
-
-                    disableSlots = go_DisableContents[i].GetComponentsInChildren<CatSlot>();
-
-                    for (int j = 0; j < disableSlots.Length; j++)
+                    for (int j = 0; j < classCatSlots[i].catSlotList.Count; j++)
                     {
-                        disableSlots[i].transform.SetParent( go_Contents[i].transform );
-                        disableSlots[i].gameObject.SetActive( true );
+                        classCatSlots[i].catSlotList[j].gameObject.SetActive( true );
                     }
                 }
             }
-        }    
+
+            for (int i = 0; i < divisionLine_Images.Length; i++)
+            {
+                //비활성화 된 구분선이 있을 수 있으니 활성화
+                divisionLine_Images[i].enabled = true;
+            }
+
+            ContentTransformSort();
+        }
+
+        ScrollHeightChange();
+    }
+
+    //스크롤의 범위를 변경
+    public void ScrollHeightChange()
+    {
+        float height = 0;
+
+        if (!isShowDiscovery)
+        {
+            for (int i = 0; i < rt_Classes.Length; i++)
+            {
+                height += rt_Classes[i].sizeDelta.y;
+            }
+
+            rt_ContentsGroup.sizeDelta = new Vector2( rt_ContentsGroup.sizeDelta.x, height + 200);
+        }
+        else
+        {
+            for (int i = 0; i < rt_Classes.Length; i++)
+            {
+                if(rt_Classes[i].gameObject.activeSelf)
+                     height += rt_Classes[i].sizeDelta.y;
+            }
+
+            rt_ContentsGroup.sizeDelta = new Vector2( rt_ContentsGroup.sizeDelta.x, height + 200);
+        }
     }
 }
