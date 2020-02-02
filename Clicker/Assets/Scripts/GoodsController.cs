@@ -10,8 +10,7 @@ public class GoodsController : MonoBehaviour
     public string[] unit = new string[] { "", "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
     public List<int> goldList;
-
-    public bool isBuyPossible = false;
+    public int carat; //보석
 
     private static GoodsController m_instance;
 
@@ -65,9 +64,7 @@ public class GoodsController : MonoBehaviour
 
     public void SubGold( List<int> operandGoldList, List<int> subGoldList )
     {
-        SubGoldCheck( operandGoldList, subGoldList );
-
-        if (!isBuyPossible)
+        if(!SubGoldCheck( operandGoldList, subGoldList ))
             return;
 
         for (int i = operandGoldList.Count - 1; i >= 0; i--)
@@ -97,9 +94,9 @@ public class GoodsController : MonoBehaviour
         }
     }
 
-    public void SubGoldCheck( List<int> operandGoldList, List<int> subGoldCheckList )
+    public bool SubGoldCheck( List<int> operandGoldList, List<int> subGoldCheckList )
     {
-        isBuyPossible = false;
+        bool isBuyPossible = false;
 
         for (int i = operandGoldList.Count - 1; i >= 0; i--)
         {
@@ -132,7 +129,7 @@ public class GoodsController : MonoBehaviour
                     {
                         Debug.Log( "구입 가능" );
                         isBuyPossible = true;
-                        return;
+                        break;
                     }
                     else if (operandGoldList[j] == subGoldCheckList[j])
                     {
@@ -142,12 +139,14 @@ public class GoodsController : MonoBehaviour
                         {
                             isBuyPossible = true;
                             Debug.Log( "구입 가능" );
-                            return;
+                            break;
                         }
 
                         continue;
                     }
                 }
+
+                break;
             }
             else if (subGoldCheckList[i] > goldList[i])
             {
@@ -155,5 +154,7 @@ public class GoodsController : MonoBehaviour
                 isBuyPossible = false;
             }
         }
+
+        return isBuyPossible;
     }
 }

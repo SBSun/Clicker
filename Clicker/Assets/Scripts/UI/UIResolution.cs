@@ -15,13 +15,5 @@ public class UIResolution : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
 
         rectTransform.sizeDelta = new Vector2( canvas.rect.width, canvas.rect.height );
-
-        Debug.Log( canvas.rect.width + ", " + canvas.rect.height );
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

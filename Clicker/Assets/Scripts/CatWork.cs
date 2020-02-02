@@ -8,14 +8,6 @@ public class CatWork : MonoBehaviour
 
     public Coroutine coroutine;
 
-    private void Start()
-    {
-        if (catSlot.slotStatus == CatSlot.SlotStatus.Open)
-        {
-            StartCatWork();
-        }
-    }
-
     public void StartCatWork()
     {
         coroutine = StartCoroutine( CatWorkCoroutine() );
@@ -38,16 +30,17 @@ public class CatWork : MonoBehaviour
 
             GoodsController.instance.AddGold( catSlot.cat.currentKeepGoldList, catSlot.cat.makeGoldList );
 
-            GoodsController.instance.SubGoldCheck( catSlot.cat.maxKeepGoldList, catSlot.cat.currentKeepGoldList );
-
             //현재 가지고 있는 골드가 최대 보유할 수 있는 골드보다 많으면
-            if(!GoodsController.instance.isBuyPossible)
+            if(!GoodsController.instance.SubGoldCheck( catSlot.cat.maxKeepGoldList, catSlot.cat.currentKeepGoldList ))
             {
                 //현재 골드를 최대 보유 가능 골드로 초기화
                 for (int i = 0; i < catSlot.cat.maxKeepGoldList.Count; i++)
                 {
                     catSlot.cat.currentKeepGoldList[i] = catSlot.cat.maxKeepGoldList[i];
                 }
+     
+                //코루틴 종료
+                yield break;
             }
 
             yield return null;

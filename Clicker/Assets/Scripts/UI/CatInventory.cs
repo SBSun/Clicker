@@ -18,6 +18,7 @@ public class CatInventory : MonoBehaviour
     private Rect[] rect_Classes = new Rect[4];
 
     //스크롤 범위로 설정되는 공간
+    public GameObject go_ContentsGroup;
     public RectTransform rt_ContentsGroup;
     private Rect rect_ContentsGroup;
 
@@ -31,11 +32,23 @@ public class CatInventory : MonoBehaviour
     public Sprite showDiscoveryActivation_Sprite; //활성화
     public Sprite showDiscoveryDisabled_Sprite; //비활성화
 
+    //고양이 슬롯을 눌렀을 때 나오는 고양이 정보 UI 구성 Text
+    [Header( "Slot 터치 시 나오는 고양이 정보 UI" )]
+    public GameObject go_CatInformationUI;
+    public Text catName_Text;           //고양이 이름
+    public Text catJob_Text;            //고양이 직업
+    public Text catIntroduction_Text;   //고양이 소개
+    public Text catLevel_Text;          //고양이 레벨
+    public Text catMakeGold_Text;       //고양이 초당 급여 골드
+    public Text catConsumeGold_Text;    //고양이 초당 소비 골드
+    public Text catMaxKeepGold_Text;    //고양이 최대소지 가능 골드
+
     //true면 발견한 고양이만 보여줌
     public bool isShowDiscovery = false;
 
     void Awake()
     {
+
         rect_ContentsGroup = rt_ContentsGroup.rect;
 
         for (int i = 0; i < go_Contents.Length; i++)
@@ -59,6 +72,8 @@ public class CatInventory : MonoBehaviour
 
         ContentTransformSort();
     }
+
+    
 
     //슬롯 정렬
     public void CatSlotSort(List<CatSlot> catSlotList)

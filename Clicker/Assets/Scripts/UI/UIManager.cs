@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     public CatInformation catInformation;
 
     public CatLevelUpButton catLevelButton;
+    public CatInventory catInventory;
 
     public void UpdateGoldText(List<int> newGoldList, Text newShowText)
     {

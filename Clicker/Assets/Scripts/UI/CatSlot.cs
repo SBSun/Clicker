@@ -37,4 +37,13 @@ public class CatSlot : MonoBehaviour
 
         catWork.StartCatWork();
     }
+
+    public void OnClickCatSlot( Cat cat )
+    {
+        UIManager.instance.catInventory.go_CatInformationUI.SetActive( true );
+        UIManager.instance.catInventory.catName_Text.text = "이름 : " + cat.catName;
+        UIManager.instance.catInventory.catJob_Text.text = "직업 : " + cat.catJob;
+        UIManager.instance.catInventory.catIntroduction_Text.text = "소개 : " + cat.catIntroduction;
+        UIManager.instance.catInventory.catLevel_Text.text = "LV : " + cat.catLevel;
+    }
 }

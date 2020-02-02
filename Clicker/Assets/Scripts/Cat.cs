@@ -13,7 +13,6 @@ public class Cat : MonoBehaviour, IPointerClickHandler
         Four,
         Five
     }
-
     public CatClass catClass;
 
     public enum CatStatus
@@ -21,7 +20,6 @@ public class Cat : MonoBehaviour, IPointerClickHandler
         Work,
         Consume
     }
-
     public CatStatus catStatus;
 
     public GoldHarvest goldHarvest;
@@ -34,6 +32,7 @@ public class Cat : MonoBehaviour, IPointerClickHandler
     //자동으로
     public bool isAutoHarvest = false;
 
+    #region GoldList 변수
     //얼마를 버는지
     public List<int> makeGoldList;
     //초당 소비하는 골드
@@ -44,18 +43,20 @@ public class Cat : MonoBehaviour, IPointerClickHandler
     public List<int> maxKeepGoldList;
     //현재 가지고 있는 골드 양
     public List<int> currentKeepGoldList;
+    #endregion
 
+    #region 고양이의 정보 변수
     //고양이 이미지
     public Sprite catSprite;
     //고양이의 이름
     public string catName;
+    //고양이 직업
+    public string catJob;
+    //고양이 소개
+    public string catIntroduction;
     //고양이의 레벨
     public int catLevel;
-
-    void Start()
-    {
-        StartCoroutine( WorkConsumeCoroutine() );
-    }
+    #endregion
 
     //고양이가 레벨업 했을 때 변경되어야 할 것들
     public void CatLevelUp()

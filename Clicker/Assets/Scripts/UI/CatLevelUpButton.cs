@@ -14,9 +14,7 @@ public class CatLevelUpButton : MonoBehaviour
     {
         catLevelUp_Button = GetComponent<Button>();
 
-        GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList ,cat.levelUpNeedGoldList );
-
-        if (GoodsController.instance.isBuyPossible)
+        if (GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList, cat.levelUpNeedGoldList ))
         {
             catLevelUp_Button.interactable = true;
         }
@@ -28,9 +26,7 @@ public class CatLevelUpButton : MonoBehaviour
 
     private void Update()
     {
-        GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList, cat.levelUpNeedGoldList );
-
-        if (GoodsController.instance.isBuyPossible)
+        if (GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList, cat.levelUpNeedGoldList ))
         {
             catLevelUp_Button.interactable = true;
         }
