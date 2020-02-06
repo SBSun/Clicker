@@ -75,7 +75,6 @@ public class CoroutineManager : MonoBehaviour
         StartCoroutine( RunUpdateMicroCoroutine() );
         StartCoroutine( RunFixedUpdateMicroCoroutine() );
         StartCoroutine( RunEndOfFrameMicroCoroutine() );
-        StartUpdateCoroutine( SomeCoroutine() );
     }
 
     IEnumerator RunUpdateMicroCoroutine()
@@ -105,24 +104,5 @@ public class CoroutineManager : MonoBehaviour
             yield return eof;
             endOfFrameMicroCoroutine.Run();
         }
-    }
-
-    IEnumerator SomeCoroutine()
-    {
-        Debug.Log( "하이루1" );
-
-        yield return new WaitForSeconds( 10f );
-
-        Debug.Log( "하이루2" );
-
-        yield return new WaitForSeconds( 10f );
-
-        Debug.Log( "하이루3" );
-
-        yield return new WaitForSeconds( 10f );
-
-        Debug.Log( "하이루4" );
-
-        yield return null;
     }
 }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using BackEnd;
+using LitJson;
 
 public class BackEndCustom : MonoBehaviour
 {
-
     public InputField id_InputField;
     public InputField pw_InputField;
+
+    public GameObject go_LoginUI;
    
     public void OnClickSignUp()
     {
@@ -17,6 +19,8 @@ public class BackEndCustom : MonoBehaviour
         if(BRO.IsSuccess())
         {
             Debug.Log( "회원가입 완료" );
+
+            BackEndManager.instance.backEndDataSave.InsertGachaSystemData();
         }
         else
         {
@@ -42,6 +46,8 @@ public class BackEndCustom : MonoBehaviour
         if (BRO.IsSuccess())
         {
             Debug.Log( "로그인 완료" );
+            BackEndManager.instance.backEndDataSave.GetGachaSystemData();
+            go_LoginUI.SetActive( false );
         }
         else
         {
@@ -62,5 +68,5 @@ public class BackEndCustom : MonoBehaviour
                     break;
             }
         }
-    }
+    } 
 }

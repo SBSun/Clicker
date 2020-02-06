@@ -4,9 +4,31 @@ using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using BackEnd;
+using LitJson;
 
 public class BackEndManager : MonoBehaviour
 {
+    private static BackEndManager m_instance;
+
+    public static BackEndManager instance
+    {
+        get
+        {
+            if (m_instance != null)
+                return m_instance;
+
+            m_instance = FindObjectOfType<BackEndManager>();
+
+            if (m_instance == null)
+                m_instance = new GameObject( name: "BackEndManager" ).AddComponent<BackEndManager>();
+
+            return m_instance;
+        }
+    }
+
+    public BackEndDataSave backEndDataSave;
+    public BackEndCustom backEndCustom;
+
     private void Start()
     {
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
@@ -90,3 +112,4 @@ public class BackEndManager : MonoBehaviour
         }
     }
 }
+

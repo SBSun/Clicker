@@ -34,28 +34,31 @@ public class MainUI : MonoBehaviour
         {
             case (int)CurrentViewUI.Recruitment:
                 go_CurrentViewUI = go_RecruitmentUI;
+                currentViewUI = CurrentViewUI.Recruitment;
                 break;
 
             case (int)CurrentViewUI.CatInventory:
                 go_CurrentViewUI = go_CatInventoryUI;
+                currentViewUI = CurrentViewUI.CatInventory;
                 break;
 
             case (int)CurrentViewUI.Main:
+                currentViewUI = CurrentViewUI.Main;
                 break;
 
             case (int)CurrentViewUI.Dispose:
                 go_CurrentViewUI = go_DisposeUI;
+                currentViewUI = CurrentViewUI.Dispose;
                 break;
 
             case (int)CurrentViewUI.Ranking:
                 go_CurrentViewUI = go_RankingUI;
+                currentViewUI = CurrentViewUI.Ranking;
                 break;
 
             case (int)CurrentViewUI.Shop:
                 go_CurrentViewUI = go_ShopUI;
-                break;
-
-            case (int)CurrentViewUI.PopUp:
+                currentViewUI = CurrentViewUI.Shop;
                 break;
         }
 
@@ -65,5 +68,16 @@ public class MainUI : MonoBehaviour
             go_BeforeViewUI.SetActive( false );
 
         go_BeforeViewUI = go_CurrentViewUI;
+    }
+
+    void Update()
+    {
+        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.Android)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+
+            }
+        }
     }
 }

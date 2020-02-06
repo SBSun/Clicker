@@ -48,7 +48,6 @@ public class CatInventory : MonoBehaviour
 
     void Awake()
     {
-
         rect_ContentsGroup = rt_ContentsGroup.rect;
 
         for (int i = 0; i < go_Contents.Length; i++)
@@ -71,6 +70,8 @@ public class CatInventory : MonoBehaviour
         }
 
         ContentTransformSort();
+
+        Debug.Log(go_ContentsGroup.transform.position + ", " + classCatSlots[2].catSlotList[4].transform.position );
     }
 
     
