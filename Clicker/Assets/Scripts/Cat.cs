@@ -8,10 +8,10 @@ public class Cat : MonoBehaviour, IPointerClickHandler
 {
     public enum CatClass
     {
-        Two,
-        Three,
+        Five,
         Four,
-        Five
+        Three,
+        Two       
     }
     public CatClass catClass;
 

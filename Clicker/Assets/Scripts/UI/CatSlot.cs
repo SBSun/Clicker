@@ -35,15 +35,18 @@ public class CatSlot : MonoBehaviour
         catLevel_Text.enabled = true;
         catConsumeGold_Text.enabled = true;
 
-        catWork.StartCatWork();
+        //catWork.StartCatWork();
     }
 
     public void OnClickCatSlot( Cat cat )
     {
-        UIManager.instance.catInventory.go_CatInformationUI.SetActive( true );
-        UIManager.instance.catInventory.catName_Text.text = "이름 : " + cat.catName;
-        UIManager.instance.catInventory.catJob_Text.text = "직업 : " + cat.catJob;
-        UIManager.instance.catInventory.catIntroduction_Text.text = "소개 : " + cat.catIntroduction;
-        UIManager.instance.catInventory.catLevel_Text.text = "LV : " + cat.catLevel;
+        if(slotStatus == SlotStatus.Open)
+        {
+            UIManager.instance.PopUpActivation( UIManager.instance.catInventory.go_CatInformationUI );
+            UIManager.instance.catInventory.catName_Text.text = "이름 : " + cat.catName;
+            UIManager.instance.catInventory.catJob_Text.text = "직업 : " + cat.catJob;
+            UIManager.instance.catInventory.catIntroduction_Text.text = "소개 : " + cat.catIntroduction;
+            UIManager.instance.catInventory.catLevel_Text.text = "LV : " + cat.catLevel;
+        }
     }
 }

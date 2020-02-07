@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//등급 별 슬롯들
 public class ClassCatSlot
 {
     public List<CatSlot> catSlotList;
@@ -73,8 +74,6 @@ public class CatInventory : MonoBehaviour
 
         Debug.Log(go_ContentsGroup.transform.position + ", " + classCatSlots[2].catSlotList[4].transform.position );
     }
-
-    
 
     //슬롯 정렬
     public void CatSlotSort(List<CatSlot> catSlotList)
