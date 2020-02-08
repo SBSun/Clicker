@@ -42,6 +42,8 @@ public class CatSlot : MonoBehaviour
     {
         if(slotStatus == SlotStatus.Open)
         {
+            UIManager.instance.catInventory.beforeScrollPosY = UIManager.instance.catInventory.rt_Scroll.anchoredPosition.y;
+            UIManager.instance.catInventory.CatInformationPopUp( this );
             UIManager.instance.PopUpActivation( UIManager.instance.catInventory.go_CatInformationUI );
             UIManager.instance.catInventory.catName_Text.text = "이름 : " + cat.catName;
             UIManager.instance.catInventory.catJob_Text.text = "직업 : " + cat.catJob;

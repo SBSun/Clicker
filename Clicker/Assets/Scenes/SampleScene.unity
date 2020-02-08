@@ -8678,7 +8678,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 4500}
+  m_SizeDelta: {x: 1080, y: 4400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1542957664
 GameObject:
@@ -10158,8 +10158,10 @@ MonoBehaviour:
   - {fileID: 482823010}
   - {fileID: 1866093766}
   - {fileID: 1883064507}
-  go_ContentsGroup: {fileID: 1541599050}
-  rt_ContentsGroup: {fileID: 1541599051}
+  go_Scroll: {fileID: 1541599050}
+  rt_Scroll: {fileID: 1541599051}
+  beforeScrollPosY: 0
+  beforeScrollHeight: 0
   divisionLine_Images:
   - {fileID: 1352396226}
   - {fileID: 1635801748}
@@ -11273,8 +11275,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 50}
+  m_SizeDelta: {x: 0, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1957984397
 MonoBehaviour:

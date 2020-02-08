@@ -19,9 +19,13 @@ public class CatInventory : MonoBehaviour
     private Rect[] rect_Classes = new Rect[4];
 
     //스크롤 범위로 설정되는 공간
-    public GameObject go_ContentsGroup;
-    public RectTransform rt_ContentsGroup;
-    private Rect rect_ContentsGroup;
+    public GameObject go_Scroll;
+    public RectTransform rt_Scroll;
+    private Rect rect_Scroll;
+    [HideInInspector]
+    public float beforeScrollPosY;   //고양이 슬롯을 누를 때의 스크롤 Y좌표
+    [HideInInspector]
+    public float beforeScrollHeight; //고양이 슬롯을 누를 때의 스크롤 Height
 
     //각 등급의 슬롯들
     public ClassCatSlot[] classCatSlots = new ClassCatSlot[4];
@@ -49,7 +53,7 @@ public class CatInventory : MonoBehaviour
 
     void Awake()
     {
-        rect_ContentsGroup = rt_ContentsGroup.rect;
+        rect_Scroll = rt_Scroll.rect;
 
         for (int i = 0; i < go_Contents.Length; i++)
         {
@@ -71,8 +75,6 @@ public class CatInventory : MonoBehaviour
         }
 
         ContentTransformSort();
-
-        Debug.Log(go_ContentsGroup.transform.position + ", " + classCatSlots[2].catSlotList[4].transform.position );
     }
 
     //슬롯 정렬
@@ -277,6 +279,11 @@ public class CatInventory : MonoBehaviour
             ContentTransformSort();
         }
 
+        for (int i = 0; i < classCatSlots.Length; i++)
+        {
+            CatSlotSort( classCatSlots[i].catSlotList );
+        }
+
         ScrollHeightChange();
     }
 
@@ -292,7 +299,7 @@ public class CatInventory : MonoBehaviour
                 height += rt_Classes[i].sizeDelta.y;
             }
 
-            rt_ContentsGroup.sizeDelta = new Vector2( rt_ContentsGroup.sizeDelta.x, height + 200);
+            rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, height + 200);
         }
         else
         {
@@ -302,7 +309,66 @@ public class CatInventory : MonoBehaviour
                      height += rt_Classes[i].sizeDelta.y;
             }
 
-            rt_ContentsGroup.sizeDelta = new Vector2( rt_ContentsGroup.sizeDelta.x, height + 200);
+            if(height + 200 >= 1920)
+                rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, height + 200);
+            else
+                rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, 1920 );
         }
+
+        beforeScrollHeight = rt_Scroll.sizeDelta.y;
+        Debug.Log( "beforeScrollHeight" + beforeScrollHeight );
+    }
+
+    public void CatInformationPopUp(CatSlot _catSlot)
+    { 
+        //선택한 슬롯이 상단에 보이게 되는 Y좌표
+        float yPos = 0f;
+
+        for (int i = 0; i < (int)_catSlot.cat.catClass; i++)
+        {
+            if (!rt_Classes[i].gameObject.activeSelf)
+            {
+                continue;
+            }
+
+            if (i < (int)_catSlot.cat.catClass)
+            {
+                yPos += rt_Classes[i].sizeDelta.y;
+            }
+        }
+
+        int share = 0;
+        int remainder = 0;
+
+        share = (_catSlot.transform.GetSiblingIndex() + 1) / 3;
+        remainder = (_catSlot.transform.GetSiblingIndex() + 1) % 3;
+
+        if(share > 0)
+        {
+            //나머지가 있으면
+            if (remainder != 0)
+            {
+                yPos += share * 465;
+            }
+            //나머지가 없으면
+            else
+            {
+                yPos += (share - 1) * 465;
+            }
+        }
+        
+        //yPos가 스크롤 범위를 초과하면
+        if(yPos > rt_Scroll.sizeDelta.y - 1920)
+        {
+            float addHeight = yPos - (rt_Scroll.sizeDelta.y - 1920);
+
+            beforeScrollHeight = rt_Scroll.sizeDelta.y;
+            Debug.Log( "beforeScrollHeight" + beforeScrollHeight );
+
+            rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, rt_Scroll.sizeDelta.y + addHeight );       
+        }
+        
+        Debug.Log( _catSlot.transform.GetSiblingIndex() + 1);
+        rt_Scroll.anchoredPosition = new Vector2( 0, yPos );
     }
 }

@@ -188,6 +188,13 @@ public class UIManager : MonoBehaviour
     //팝업 비활성화
     public void PopUpDeactivate()
     {
+        if (beforeViewUI == ViewUI.CatInventory)
+        {
+            catInventory.rt_Scroll.sizeDelta = new Vector2( catInventory.rt_Scroll.sizeDelta.x, catInventory.beforeScrollHeight );
+            catInventory.rt_Scroll.anchoredPosition = new Vector2( 0, catInventory.beforeScrollPosY );
+        }
+
+
         //현재 보고 있는 UI를 팝업 전에 보고 있던 UI를 저장한 beforeViewUI로 설정
         currentViewUI = beforeViewUI;
 

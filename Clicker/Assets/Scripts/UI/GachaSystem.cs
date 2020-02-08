@@ -61,7 +61,7 @@ public class GachaSystem : MonoBehaviour
             bTierDenominator -= 8;
         }
 
-        CatSlotFind( RandomSelectCat( 2 ) );
+        CatSlotFind( RandomSelectCat( 3 ) );
     }
 
     //S티어 뽑기
@@ -89,7 +89,7 @@ public class GachaSystem : MonoBehaviour
         sTierCount = 0;
         sTierDenominator = 86;
 
-        CatSlotFind( RandomSelectCat( 0 ) );
+        CatSlotFind( RandomSelectCat( 1 ) );
     }
 
     //S티어 뽑기 실패
@@ -101,7 +101,7 @@ public class GachaSystem : MonoBehaviour
             sTierDenominator -= 8;
         }
 
-        CatSlotFind( RandomSelectCat( 1 ) );
+        CatSlotFind( RandomSelectCat( 2 ) );
     }
 
     //인수로 들어온 클래스 등급의 고양이를 랜덤 뽑기
