@@ -23,17 +23,14 @@ public class BackEndDataSave : MonoBehaviour
                 {
                     JsonData rowsData = data["rows"][0];
 
-                    if (rowsData.Keys.Contains( "bTierDenominator" ))
+                    if (rowsData.Keys.Contains( "normalBTierCount" ))
                     {
                         Debug.Log( "데이터 가져오기 성공" );
                         
-                        gachaSystem.bTierDenominator = int.Parse(rowsData["bTierDenominator"][0].ToString());
-                        gachaSystem.bTierNumerator = int.Parse(rowsData["bTierNumerator"][0].ToString());
-                        gachaSystem.sTierDenominator = int.Parse(rowsData["sTierDenominator"][0].ToString());
-                        gachaSystem.sTierNumerator = int.Parse( rowsData["sTierNumerator"][0].ToString() );
-
-                        gachaSystem.bTierCount = int.Parse( rowsData["bTierCount"][0].ToString() );
-                        gachaSystem.sTierCount = int.Parse( rowsData["sTierCount"][0].ToString() );
+                        gachaSystem.normalBTierCount = int.Parse( rowsData["normalBTierCount"][0].ToString() );
+                        gachaSystem.normalSTierCount = int.Parse( rowsData["normalSTierCount"][0].ToString() );
+                        gachaSystem.highBTierCount = int.Parse( rowsData["highBTierCount"][0].ToString() );
+                        gachaSystem.highSTierCount = int.Parse( rowsData["highSTierCount"][0].ToString() );
                     }
                     else
                     {
@@ -69,13 +66,10 @@ public class BackEndDataSave : MonoBehaviour
     {
         Param param = new Param();
 
-        param.Add( "bTierDenominator", gachaSystem.bTierDenominator );
-        param.Add( "bTierNumerator", gachaSystem.bTierNumerator );
-        param.Add( "sTierDenominator", gachaSystem.sTierDenominator );
-        param.Add( "sTierNumerator", gachaSystem.sTierNumerator );
-
-        param.Add( "bTierCount", gachaSystem.bTierCount );
-        param.Add( "sTierCount", gachaSystem.sTierCount );
+        param.Add( "normalBTierCount", gachaSystem.normalBTierCount );
+        param.Add( "normalSTierCount", gachaSystem.normalSTierCount );
+        param.Add( "highBTierCount", gachaSystem.highBTierCount );
+        param.Add( "highSTierCount", gachaSystem.highSTierCount );
 
         BackendReturnObject BRO = Backend.GameInfo.Insert( "GachaSystem", param );
 
@@ -107,13 +101,10 @@ public class BackEndDataSave : MonoBehaviour
     {
         Param param = new Param();
         
-        param.Add( "bTierDenominator", gachaSystem.bTierDenominator );
-        param.Add( "bTierNumerator", gachaSystem.bTierNumerator );
-        param.Add( "sTierDenominator", gachaSystem.sTierDenominator );
-        param.Add( "sTierNumerator", gachaSystem.sTierNumerator );
-
-        param.Add( "bTierCount", gachaSystem.bTierCount );
-        param.Add( "sTierCount", gachaSystem.sTierCount );
+        param.Add( "normalBTierCount", gachaSystem.normalBTierCount );
+        param.Add( "normalSTierCount", gachaSystem.normalSTierCount );
+        param.Add( "highBTierCount", gachaSystem.highBTierCount );
+        param.Add( "highSTierCount", gachaSystem.highSTierCount );
 
         BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "GachaSystem" );
 

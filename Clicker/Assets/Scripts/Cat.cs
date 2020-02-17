@@ -30,7 +30,7 @@ public class Cat : MonoBehaviour, IPointerClickHandler
     public float consumeCycleTime;
 
     //자동으로
-    public bool isAutoHarvest = false;
+    public bool isAutoConsume = false;
 
     #region GoldList 변수
     //얼마를 버는지
@@ -64,7 +64,7 @@ public class Cat : MonoBehaviour, IPointerClickHandler
         catLevel++;
 
         if (catLevel == 3)
-            isAutoHarvest = true;
+            isAutoConsume = true;
     }
 
     public IEnumerator WorkConsumeCoroutine()
@@ -96,7 +96,7 @@ public class Cat : MonoBehaviour, IPointerClickHandler
                     yield return null;
                 }
 
-                if (isAutoHarvest)
+                if (isAutoConsume)
                 {
                     GoodsController.instance.AddGold( GoodsController.instance.goldList , makeGoldList );
                 }

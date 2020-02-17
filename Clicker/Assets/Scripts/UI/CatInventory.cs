@@ -13,6 +13,8 @@ public class CatInventory : MonoBehaviour
 {
     //등급 별 슬롯들의 부모 객체
     public GameObject[] go_Contents;
+    //등급 별 GridLayoutGroup
+    public GridLayoutGroup[] gridLayout_Contents;
 
     //각 등급 객체의 공간
     public RectTransform[] rt_Classes;
@@ -22,17 +24,18 @@ public class CatInventory : MonoBehaviour
     public GameObject go_Scroll;
     public RectTransform rt_Scroll;
     private Rect rect_Scroll;
-    [HideInInspector]
     public float beforeScrollPosY;   //고양이 슬롯을 누를 때의 스크롤 Y좌표
-    [HideInInspector]
     public float beforeScrollHeight; //고양이 슬롯을 누를 때의 스크롤 Height
 
     //각 등급의 슬롯들
     public ClassCatSlot[] classCatSlots = new ClassCatSlot[4];
 
-    public Image[] divisionLine_Images;
+    public RectTransform[] rt_divisionLineImages;
+    public RectTransform[] rt_StartImages;
 
     //버튼
+    [Header("발견한 고양이만 보여주는 버튼")]
+    public RectTransform rt_ShowDiscoveryButton;
     public Image showDiscovery_Image;
     public Sprite showDiscoveryActivation_Sprite; //활성화
     public Sprite showDiscoveryDisabled_Sprite; //비활성화
@@ -40,6 +43,7 @@ public class CatInventory : MonoBehaviour
     //고양이 슬롯을 눌렀을 때 나오는 고양이 정보 UI 구성 Text
     [Header( "Slot 터치 시 나오는 고양이 정보 UI" )]
     public GameObject go_CatInformationUI;
+    public RectTransform rt_CatInformationImage;
     public Text catName_Text;           //고양이 이름
     public Text catJob_Text;            //고양이 직업
     public Text catIntroduction_Text;   //고양이 소개
@@ -76,6 +80,15 @@ public class CatInventory : MonoBehaviour
 
         ContentTransformSort();
     }
+
+    /*void Start()
+    {
+        //가로 비율이 기준 비율보다 클 경우
+        if(UIManager.instance.scale > 1)
+        {
+            SetScrollContent();
+        }
+    }*/
 
     //슬롯 정렬
     public void CatSlotSort(List<CatSlot> catSlotList)
@@ -238,7 +251,7 @@ public class CatInventory : MonoBehaviour
                 {
                     if(rt_Classes[i].gameObject.activeSelf)
                     {
-                        divisionLine_Images[i - 1].enabled = false;
+                        rt_divisionLineImages[i - 1].gameObject.SetActive(false);
                         break;
                     }
                 }
@@ -270,10 +283,10 @@ public class CatInventory : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < divisionLine_Images.Length; i++)
+            for (int i = 0; i < rt_divisionLineImages.Length; i++)
             {
                 //비활성화 된 구분선이 있을 수 있으니 활성화
-                divisionLine_Images[i].enabled = true;
+                rt_divisionLineImages[i].gameObject.SetActive( true );
             }
 
             ContentTransformSort();
@@ -309,10 +322,10 @@ public class CatInventory : MonoBehaviour
                      height += rt_Classes[i].sizeDelta.y;
             }
 
-            if(height + 200 >= 1920)
+            if(height + 200 >= Screen.height)
                 rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, height + 200);
             else
-                rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, 1920 );
+                rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, Screen.height );
         }
 
         beforeScrollHeight = rt_Scroll.sizeDelta.y;
@@ -358,17 +371,40 @@ public class CatInventory : MonoBehaviour
         }
         
         //yPos가 스크롤 범위를 초과하면
-        if(yPos > rt_Scroll.sizeDelta.y - 1920)
+        if(yPos > rt_Scroll.sizeDelta.y - Screen.height)
         {
-            float addHeight = yPos - (rt_Scroll.sizeDelta.y - 1920);
+            float addHeight = yPos - (rt_Scroll.sizeDelta.y - Screen.height);
 
             beforeScrollHeight = rt_Scroll.sizeDelta.y;
             Debug.Log( "beforeScrollHeight" + beforeScrollHeight );
 
             rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, rt_Scroll.sizeDelta.y + addHeight );       
         }
-        
-        Debug.Log( _catSlot.transform.GetSiblingIndex() + 1);
+
+        Debug.Log( yPos);
         rt_Scroll.anchoredPosition = new Vector2( 0, yPos );
+    }
+
+    //게임이 시작할 때 인벤토리에서 변경되어야 할 UI의 위치나 사이즈
+    public void SetScrollContent()
+    {
+        //화면 크기에 따라 GridLayoutGroup의 Spacing, Padding 조절
+        //현재 화면의 width - 왼쪽 공백 - 오른쪽 공백 - CellSize * (Constraint - 1)
+        float space = (UIManager.instance.widthMaxUI - gridLayout_Contents[0].cellSize.x * gridLayout_Contents[0].constraintCount) / 4;
+
+        for (int i = 0; i < rt_Classes.Length; i++)
+        {
+            rt_Classes[i].sizeDelta = new Vector2( UIManager.instance.widthMaxUI, rt_Classes[i].sizeDelta.y );
+            gridLayout_Contents[i].spacing = new Vector2( space, gridLayout_Contents[i].spacing.y );
+            gridLayout_Contents[i].padding.left = Mathf.RoundToInt(space);
+            gridLayout_Contents[i].padding.right = Mathf.RoundToInt( space );
+
+            //별 이미지의 위치도 변경
+            rt_StartImages[i].anchoredPosition = new Vector2( gridLayout_Contents[i].padding.left, rt_StartImages[i].anchoredPosition.y );
+        }
+
+        rt_Scroll.sizeDelta = new Vector2( UIManager.instance.widthMaxUI, rt_Scroll.sizeDelta.y );
+
+        rt_ShowDiscoveryButton.anchoredPosition = new Vector2( -gridLayout_Contents[0].padding.right, rt_ShowDiscoveryButton.anchoredPosition.y );
     }
 }

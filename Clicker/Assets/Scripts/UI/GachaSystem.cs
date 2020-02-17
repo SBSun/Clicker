@@ -18,90 +18,140 @@ public class GachaSystem : MonoBehaviour
     public int sTierNumerator;
 
     //각 티어에서 몇번 실패하였는지
-    public int bTierCount;
-    public int sTierCount;
+    public int normalBTierCount;
+    public int normalSTierCount;
+    public int highBTierCount;
+    public int highSTierCount;
 
     //최대 10번까지 누적
     public int bTierCountMax;
     public int sTierCountMax;
 
-    //B티어 뽑기
-    public void BTierGacha()
-    {
-        int randomNum = Mathf.RoundToInt( (bTierDenominator + bTierNumerator) * Random.Range( 0.0f, 1.0f ) );
 
-        if (randomNum > bTierDenominator - bTierNumerator)
+    //일반 뽑기 2 ~ 4성, 인수로 1 또는 10번 뽑기
+    public void NormalGacha(int gachaCount)
+    {
+        for (int i = 0; i < gachaCount; i++)
         {
-            BTierSuccess();
-            Debug.Log( "BTier 뽑기 성공" );
-            STierGacha();
+            NormalBTierGacha();
+        }   
+    }
+
+    //고급 뽑기 3 ~ 5성
+    public void HighGacha(int gachaCount)
+    {
+        for (int i = 0; i < gachaCount; i++)
+        {
+            HighBTierGacha();
+        }
+    }
+
+    //성공하면 NormalSTierGacha 실패하면 2성
+    public void NormalBTierGacha()
+    {
+        int randomNum = 0;
+
+        //일반 뽑기면 normalBTierCount로 분모 계산
+        randomNum = Mathf.RoundToInt((bTierDenominator - 8 * normalBTierCount + bTierNumerator) * Random.Range( 0.0f, 1.0f ) );
+
+        if (randomNum > bTierDenominator - 8 * normalBTierCount - bTierNumerator)
+        {
+            normalBTierCount = 0;
+            Debug.Log( "NormalBTier 뽑기 성공" );
+            NormalSTierGacha();
         }
         else
         {
-            BTierFailure();
-            Debug.Log( "BTier 뽑기 실패" );
+            if (normalBTierCount < bTierCountMax)
+            {
+                normalBTierCount++;
+            }
+
+            CatSlotFind( RandomSelectCat( 3 ) );
+            Debug.Log( "NormalBTier 뽑기 실패" );
+
+            BackEndManager.instance.backEndDataSave.UpdateGachaSystemData();
+        }
+    }
+
+    //3 ~ 4성 뽑기
+    public void NormalSTierGacha( )
+    {
+        int randomNum = Mathf.RoundToInt( (sTierDenominator - 8 * normalSTierCount + sTierNumerator) * Random.Range( 0.0f, 1.0f ) );
+
+        if (randomNum > sTierDenominator - 8 * normalSTierCount - sTierNumerator)
+        {
+            normalSTierCount = 0;
+
+            CatSlotFind( RandomSelectCat(1) );
+            Debug.Log( "NormalSTier 뽑기 성공" );
+        }
+        else
+        {
+            if (normalSTierCount < sTierCountMax)
+            {
+                normalSTierCount++;
+            }
+
+            CatSlotFind( RandomSelectCat(2) );
+            Debug.Log( "NormalSTier 뽑기 실패" );
         }
 
         BackEndManager.instance.backEndDataSave.UpdateGachaSystemData();
     }
 
-    //B티어 뽑기 성공
-    public void BTierSuccess()
+    //성공하면 HighSTierGacha 실패하면 3성
+    public void HighBTierGacha()
     {
-        bTierCount = 0;
-        bTierDenominator = 112;
-    }
+        int randomNum = 0;
 
-    //B티어 뽑기 실패
-    public void BTierFailure()
-    {
-        if (bTierCount < bTierCountMax)
+        //일반 뽑기면 normalBTierCount로 분모 계산
+        randomNum = Mathf.RoundToInt( (bTierDenominator - 8 * highBTierCount + bTierNumerator) * Random.Range( 0.0f, 1.0f ) );
+
+        if (randomNum > bTierDenominator - 8 * highBTierCount - bTierNumerator)
         {
-            bTierCount++;
-            bTierDenominator -= 8;
-        }
-
-        CatSlotFind( RandomSelectCat( 3 ) );
-    }
-
-    //S티어 뽑기
-    public void STierGacha()
-    {
-        int randomNum = Mathf.RoundToInt( (sTierDenominator + sTierNumerator) * Random.Range( 0.0f, 1.0f ) );
-
-        if (randomNum > sTierDenominator - sTierNumerator)
-        {
-            STierSuccess();
-            Debug.Log( "STier 뽑기 성공" );
+            highBTierCount = 0;
+            Debug.Log( "HighBTier 뽑기 성공" );
+            HighSTierGacha();
         }
         else
         {
-            STierFailure();
-            Debug.Log( "STier 뽑기 실패" );
+            if (highBTierCount < bTierCountMax)
+            {
+                highBTierCount++;
+            }
+
+            CatSlotFind( RandomSelectCat( 2 ) );
+            Debug.Log( "HighBTier 뽑기 실패" );
+
+            BackEndManager.instance.backEndDataSave.UpdateGachaSystemData();
+        }
+    }
+
+    //4 ~ 5성 뽑기
+    public void HighSTierGacha()
+    {
+        int randomNum = Mathf.RoundToInt( (sTierDenominator - 8 * highSTierCount + sTierNumerator) * Random.Range( 0.0f, 1.0f ) );
+
+        if (randomNum > sTierDenominator - 8 * highSTierCount - sTierNumerator)
+        {
+            highSTierCount = 0;
+
+            CatSlotFind( RandomSelectCat( 0 ) );
+            Debug.Log( "HighSTier 뽑기 성공" );
+        }
+        else
+        {
+            if (highSTierCount < sTierCountMax)
+            {
+                highSTierCount++;
+            }
+
+            CatSlotFind( RandomSelectCat( 1 ) );
+            Debug.Log( "HighSTier 뽑기 실패" );
         }
 
         BackEndManager.instance.backEndDataSave.UpdateGachaSystemData();
-    }
-
-    //S티어 뽑기 성공
-    public void STierSuccess()
-    {
-        sTierCount = 0;
-        sTierDenominator = 86;
-
-        CatSlotFind( RandomSelectCat( 1 ) );
-    }
-
-    //S티어 뽑기 실패
-    public void STierFailure()
-    {
-        if (sTierCount < sTierCountMax)
-        {
-            sTierCount++;
-            sTierDenominator -= 8;
-        }
-
-        CatSlotFind( RandomSelectCat( 2 ) );
     }
 
     //인수로 들어온 클래스 등급의 고양이를 랜덤 뽑기

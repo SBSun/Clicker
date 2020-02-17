@@ -56,7 +56,47 @@ public class UIManager : MonoBehaviour
     public GameObject go_DisposeUI;
     public GameObject go_RankingUI;
     public GameObject go_ShopUI;
+    [HideInInspector]
     public GameObject go_PopUpUI;
+
+    public CanvasScaler canvasScaler;
+    public float scale;         // > 1 가로 비율이 커짐, 0 기준 비율, < 1 세로 비율이 커짐
+    public float widthRatio;    // 화면 가로 비율
+    public float heightRatio;   // 화면 세로 비율
+    public float gcd = 0;       // 가로 세로의 최대 공약수
+    public float widthMaxUI;
+    public float heightMaxUI;
+    public float multiple;
+
+    void Awake()
+    {
+        scale = ((float)Screen.width / Screen.height) / ((float)9 / 16);
+
+        if (scale != 0)
+        {
+            int width = Screen.width;
+            int height = Screen.height;
+
+            gcd = GetGCD( width, height );
+
+            widthRatio = width / gcd;
+            heightRatio = height / gcd;
+
+            if (scale > 1)
+            {
+                //최대 width = 기준 height / height 비율 * width 비율
+                widthMaxUI = canvasScaler.referenceResolution.y / heightRatio * widthRatio;
+                multiple = widthMaxUI / canvasScaler.referenceResolution.x;
+            }
+            else if(scale < 1)
+            {
+                //최대 height = 기준 width / width 비율 * height 비율
+                heightMaxUI = canvasScaler.referenceResolution.x / widthRatio * heightRatio;
+            }        
+
+            Debug.Log( "화면 비율 - " + widthRatio + " : " + heightRatio );
+        }  
+    }
 
     void Update()
     {
@@ -199,5 +239,30 @@ public class UIManager : MonoBehaviour
         currentViewUI = beforeViewUI;
 
         go_PopUpUI.SetActive( false ); //비활성화
+    }
+
+    public float GetGCD(float _width, float _height)
+    {
+        float max, min, temp = 0f;
+
+        if(_width > _height)
+        {
+            max = _width;
+            min = _height;
+        }
+        else
+        {
+            max = _height;
+            min = _width;
+        }
+
+        while(max % min != 0)
+        {
+            temp = max % min;
+            max = min;
+            min = temp;
+        }
+
+        return min;
     }
 }
