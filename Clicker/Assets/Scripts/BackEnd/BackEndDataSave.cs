@@ -7,7 +7,69 @@ using LitJson;
 public class BackEndDataSave : MonoBehaviour
 {
     public GachaSystem gachaSystem;
+    public FurnitureDisposeUI furnitureDisposeUI;
 
+    #region 에러코드 출력
+    public void GetDataError( string statusCode )
+    {
+        switch (statusCode)
+        {
+            case "400":
+                Debug.Log( "private table 아닌 tableName을 입력하였습니다." );
+                break;
+
+            case "412":
+                Debug.Log( "비활성화 된 tableName입니다." );
+                break;
+        }
+    }
+
+    public void InsertDataError( string statusCode )
+    {
+        switch (statusCode)
+        {
+            case "404":
+                Debug.Log( "존재하지 않는 tableName입니다." );
+                break;
+
+            case "412":
+                Debug.Log( "비활성화 된 tableName입니다." );
+                break;
+
+            case "413":
+                Debug.Log( "하나의 row( column들의 집합 )이 400KB를 넘었습니다." );
+                break;
+        }
+    }
+
+    public void UpdateDataError( string statusCode )
+    {
+        switch (statusCode)
+        {
+            case "403":
+                Debug.Log( "퍼블릭테이블의 타인정보를 수정하고자 했습니다." );
+                break;
+
+            case "404":
+                Debug.Log( "존재하지 않는 tableName입니다." );
+                break;
+
+            case "405":
+                Debug.Log( "param에 partition, gamer_id, inDate, updatedAt 네가지 필드가 있습니다." );
+                break;
+
+            case "412":
+                Debug.Log( "비활성화 된 tableName입니다." );
+                break;
+
+            case "413":
+                Debug.Log( "하나의 row( column들의 집합 )이 400KB를 넘었습니다." );
+                break;
+        }
+    }
+    #endregion
+
+    #region 뽑기시스템 데이터 저장, 삽입, 수정
     //뽑기 시스템 데이터 가져오기
     public void GetGachaSystemData()
     {
@@ -16,7 +78,7 @@ public class BackEndDataSave : MonoBehaviour
         if (BRO.IsSuccess())
         {
             JsonData data = BRO.GetReturnValuetoJSON();
-
+            Debug.Log( data.ToJson() );
             if (data != null)
             {
                 if (data.Keys.Contains( "rows" ))
@@ -25,8 +87,8 @@ public class BackEndDataSave : MonoBehaviour
 
                     if (rowsData.Keys.Contains( "normalBTierCount" ))
                     {
-                        Debug.Log( "데이터 가져오기 성공" );
-                        
+                        Debug.Log( "GachaSystem 데이터 가져오기 성공" );
+
                         gachaSystem.normalBTierCount = int.Parse( rowsData["normalBTierCount"][0].ToString() );
                         gachaSystem.normalSTierCount = int.Parse( rowsData["normalSTierCount"][0].ToString() );
                         gachaSystem.highBTierCount = int.Parse( rowsData["highBTierCount"][0].ToString() );
@@ -34,30 +96,14 @@ public class BackEndDataSave : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log( "데이터 가져오기 실패" );
+                        Debug.Log( "GachaSystem 데이터 가져오기 실패" );
                     }
                 }
-                else
-                {
-                    Debug.Log( "저장된 데이터가 없습니다." );
-                    InsertGachaSystemData();
-                }
             }
-            else
-                Debug.Log( "잉" );
         }
         else
         {
-            switch(BRO.GetStatusCode())
-            {
-                case "400":
-                    Debug.Log( "private table 아닌 tableName을 입력하였습니다." );
-                    break;
-
-                case "412":
-                    Debug.Log( "비활성화 된 tableName입니다." );
-                    break;
-            }
+            GetDataError( BRO.GetStatusCode() );
         }
     }
 
@@ -73,26 +119,13 @@ public class BackEndDataSave : MonoBehaviour
 
         BackendReturnObject BRO = Backend.GameInfo.Insert( "GachaSystem", param );
 
-        if(BRO.IsSuccess())
+        if (BRO.IsSuccess())
         {
-            Debug.Log( "Data Insert 성공" );
+            Debug.Log( "GachaSystem Data Insert 성공" );
         }
         else
         {
-            switch(BRO.GetStatusCode())
-            {
-                case "404":
-                    Debug.Log( "존재하지 않는 tableName입니다." );
-                    break;
-
-                case "412":
-                    Debug.Log( "비활성화 된 tableName입니다." );
-                    break;
-
-                case "413":
-                    Debug.Log( "하나의 row( column들의 집합 )이 400KB를 넘었습니다." );
-                    break;
-            }
+            InsertDataError( BRO.GetStatusCode() );
         }
     }
 
@@ -100,7 +133,7 @@ public class BackEndDataSave : MonoBehaviour
     public void UpdateGachaSystemData()
     {
         Param param = new Param();
-        
+
         param.Add( "normalBTierCount", gachaSystem.normalBTierCount );
         param.Add( "normalSTierCount", gachaSystem.normalSTierCount );
         param.Add( "highBTierCount", gachaSystem.highBTierCount );
@@ -108,44 +141,23 @@ public class BackEndDataSave : MonoBehaviour
 
         BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "GachaSystem" );
 
-        if(BRO.IsSuccess())
+        if (BRO.IsSuccess())
         {
             JsonData data = BRO.GetReturnValuetoJSON();
 
-            if(data != null)
+            if (data != null)
             {
                 string inDate = data["rows"][0]["inDate"]["S"].ToString();
 
                 BackendReturnObject BRO_Update = Backend.GameInfo.Update( "GachaSystem", inDate, param );
 
-                if(BRO_Update.IsSuccess())
+                if (BRO_Update.IsSuccess())
                 {
-                    Debug.Log( "데이터 수정 완료" );
+                    Debug.Log( "GachaSystem 데이터 수정 완료" );
                 }
                 else
                 {
-                    switch(BRO_Update.GetStatusCode())
-                    {
-                        case "403":
-                            Debug.Log( "퍼블릭테이블의 타인정보를 수정하고자 했습니다." );
-                            break;
-
-                        case "404":
-                            Debug.Log( "존재하지 않는 tableName입니다." );
-                            break;
-
-                        case "405":
-                            Debug.Log( "param에 partition, gamer_id, inDate, updatedAt 네가지 필드가 있습니다." );
-                            break;
-
-                        case "412":
-                            Debug.Log( "비활성화 된 tableName입니다." );
-                            break;
-
-                        case "413":
-                            Debug.Log( "하나의 row( column들의 집합 )이 400KB를 넘었습니다." );
-                            break;
-                    }
+                    UpdateDataError( BRO_Update.GetStatusCode() );
                 }
             }
         }
@@ -162,6 +174,137 @@ public class BackEndDataSave : MonoBehaviour
                     break;
             }
         }
-
     }
+    #endregion
+
+    #region 가구 아이템 데이터 저장, 삽입, 수정
+
+    public void GetFurnitureItemData()
+    {
+        BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FurnitureItem" );
+
+        if (BRO.IsSuccess())
+        {
+            JsonData data = BRO.GetReturnValuetoJSON();
+            Debug.Log( data.ToJson() );
+            if (data != null)
+            {
+                if (data.Keys.Contains( "rows" ))
+                {
+                    JsonData rowsData = data["rows"][0];
+
+                    if (rowsData.Keys.Contains( "furnitureItem" ))
+                    {
+                        Debug.Log( "FurnitureItem 데이터 가져오기 성공" );
+
+                        JsonData itemData = rowsData["furnitureItem"][0];
+
+                        for (int i = 0; i < itemData.Count; i++)
+                        {
+                            furnitureDisposeUI.myFurnitureItemDataList.Add( new FurnitureItemData( itemData[i][0][1][0].ToString(), int.Parse( itemData[i][0][2][0].ToString() ), int.Parse( itemData[i][0][0][0].ToString() )));
+                        }
+
+                        furnitureDisposeUI.myFurnitureItemDataList.Sort( delegate ( FurnitureItemData itemData1, FurnitureItemData itemData2 )
+                         {
+                             if (itemData1.furnitureType < itemData2.furnitureType)
+                                 return -1;
+                             else if (itemData1.furnitureType > itemData2.furnitureType)
+                                 return 1;
+
+                             return 0;
+                         } );
+                    }
+                    else
+                    {
+                        Debug.Log( "FurnitureItem 데이터 가져오기 실패" );
+                    }
+                }
+                else
+                {
+                    Debug.Log( "저장된 FurnitureItem 데이터가 없습니다." );
+                    InsertFurnitureItemData();
+                }
+            }
+        }
+        else
+        {
+            GetDataError( BRO.GetStatusCode() );
+        }
+    }
+
+    //처음 가구 아이템을 구매했을 때 실행
+    public void InsertFurnitureItemData()
+    {
+        Param param = new Param();
+
+        Dictionary<string, FurnitureItemData> furnitureItemInsertDic = new Dictionary<string, FurnitureItemData>()
+        {
+            {furnitureDisposeUI.myFurnitureItemDataList[0].itemName, furnitureDisposeUI.myFurnitureItemDataList[0] }
+        };
+
+        param.Add( "furnitureItem", furnitureItemInsertDic );
+
+        BackendReturnObject BRO = Backend.GameInfo.Insert( "FurnitureItem", param );
+
+        if (BRO.IsSuccess())
+        {
+            Debug.Log( "FurnitureItem Data Insert 성공" );
+        }
+        else
+        {
+            InsertDataError( BRO.GetStatusCode() );
+        }
+    }
+
+    //가구 아이템을 구매할 때 마다 실행
+    public void UpdateFurnitureItemData()
+    {
+        Param param = new Param();
+
+        Dictionary<string, FurnitureItemData> furnitureItemUpdateDic = new Dictionary<string, FurnitureItemData>();
+
+        for (int i = 0; i < furnitureDisposeUI.myFurnitureItemDataList.Count; i++)
+        {
+            furnitureItemUpdateDic.Add( furnitureDisposeUI.myFurnitureItemDataList[i].itemName, furnitureDisposeUI.myFurnitureItemDataList[i] );
+        }
+
+        param.Add( "furnitureItem", furnitureItemUpdateDic);
+
+        BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FurnitureItem" );
+
+        if (BRO.IsSuccess())
+        {
+            JsonData data = BRO.GetReturnValuetoJSON();
+
+            if (data != null)
+            {
+                string inDate = data["rows"][0]["inDate"]["S"].ToString();
+
+                BackendReturnObject BRO_Update = Backend.GameInfo.Update( "FurnitureItem", inDate, param );
+
+                if (BRO_Update.IsSuccess())
+                {
+                    Debug.Log( "FurnitureItem 데이터 수정 완료" );
+                }
+                else
+                {
+                    UpdateDataError( BRO_Update.GetStatusCode() );
+                }
+            }
+        }
+        else
+        {
+            switch (BRO.GetStatusCode())
+            {
+                case "400":
+                    Debug.Log( "private table 아닌 tableName을 입력하였습니다." );
+                    break;
+
+                case "412":
+                    Debug.Log( "비활성화 된 tableName입니다." );
+                    break;
+            }
+        }
+    }
+    #endregion
 }

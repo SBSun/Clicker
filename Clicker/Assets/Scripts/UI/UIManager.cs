@@ -58,6 +58,7 @@ public class UIManager : MonoBehaviour
     public GameObject go_ShopUI;
     [HideInInspector]
     public GameObject go_PopUpUI;
+    public GameObject go_BottomUI;
 
     public CanvasScaler canvasScaler;
     public float scale;         // > 1 가로 비율이 커짐, 0 기준 비율, < 1 세로 비율이 커짐
@@ -123,6 +124,7 @@ public class UIManager : MonoBehaviour
                     case ViewUI.Dispose:
                         go_DisposeUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
+                        go_BottomUI.SetActive( true );
                         break;
 
                     case ViewUI.Ranking:
@@ -188,6 +190,7 @@ public class UIManager : MonoBehaviour
             case (int)ViewUI.Dispose:
                 go_CurrentViewUI = go_DisposeUI;
                 currentViewUI = ViewUI.Dispose;
+                go_BottomUI.SetActive( false );
                 break;
 
             case (int)ViewUI.Ranking:

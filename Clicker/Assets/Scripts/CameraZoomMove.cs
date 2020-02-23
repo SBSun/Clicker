@@ -45,9 +45,6 @@ public class CameraZoomMove : MonoBehaviour
             {
                 Camera.main.orthographicSize = Mathf.Clamp( Camera.main.orthographicSize, zoomMin, zoomMax );
 
-                height = Camera.main.orthographicSize; //카메라의 세로 절반 길이
-                width = height * Screen.width / Screen.height; //카메라의 가로 절반 길이
-
                 float mX = size.x * 0.5f - width;
                 float clampX = Mathf.Clamp( transform.position.x, -mX + center.x, mX + center.x );
 
@@ -61,9 +58,12 @@ public class CameraZoomMove : MonoBehaviour
         {
             if(Input.touchCount == 2)
             {
-                if(Input.GetTouch(0).phase == TouchPhase.Moved && Input.GetTouch(1).phase == TouchPhase.Moved)
+                if(UIManager.instance.currentViewUI == UIManager.ViewUI.Main)
                 {
+                    if (Input.GetTouch( 0 ).phase == TouchPhase.Moved && Input.GetTouch( 1 ).phase == TouchPhase.Moved)
+                    {
 
+                    }
                 }
             }
         }

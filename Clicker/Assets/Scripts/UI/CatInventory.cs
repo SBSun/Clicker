@@ -81,14 +81,15 @@ public class CatInventory : MonoBehaviour
         ContentTransformSort();
     }
 
-    /*void Start()
+    
+    void Start()
     {
         //가로 비율이 기준 비율보다 클 경우
         if(UIManager.instance.scale > 1)
         {
             SetScrollContent();
         }
-    }*/
+    }
 
     //슬롯 정렬
     public void CatSlotSort(List<CatSlot> catSlotList)
@@ -405,6 +406,7 @@ public class CatInventory : MonoBehaviour
 
         rt_Scroll.sizeDelta = new Vector2( UIManager.instance.widthMaxUI, rt_Scroll.sizeDelta.y );
 
+        //버튼 위치 변경
         rt_ShowDiscoveryButton.anchoredPosition = new Vector2( -gridLayout_Contents[0].padding.right, rt_ShowDiscoveryButton.anchoredPosition.y );
     }
 }
