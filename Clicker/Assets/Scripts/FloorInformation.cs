@@ -13,11 +13,9 @@ public class FloorInformation : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick( PointerEventData eventData )
     {
-        if(catConsume != null)
+        if(catConsume != null && !Camera.main.GetComponent<CameraZoomMove>().isZooming)
         {
-            Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax();
-            Camera.main.transform.position = new Vector3( 0, transform.position.y, -10 );
-            UIManager.instance.simpleCatInformationUI.SetInformation( catConsume );
+            Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax(transform);           
         }
     }
 }

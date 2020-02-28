@@ -8,6 +8,8 @@ public class CameraZoomMove : MonoBehaviour
     public float zoomMax = 0f;
     public float zoomMin = 0f;
 
+    public bool isZooming = false; //확대 중인지 아닌지, 코루틴에 사용
+
     public Vector2 center; //중심점
     public Vector2 size; //크기
 
@@ -16,8 +18,7 @@ public class CameraZoomMove : MonoBehaviour
 
     Camera mainCamera;
 
-    //가구 배치버튼을 누르면 상하로만 이동이 가능하게
-    public bool isFurnitureDispose = false;
+    public Coroutine cameraZoomCoroutine;
 
     void Awake()
     {
@@ -116,10 +117,36 @@ public class CameraZoomMove : MonoBehaviour
     }
 
     //가구 배치 상태일 때 실행
-    public void SetCameraZoomMax()
+    public void SetCameraZoomMax(Transform floorPos)
     {
-        isFurnitureDispose = true;
-        mainCamera.orthographicSize = zoomMax;
+        cameraZoomCoroutine = StartCoroutine( CameraSmoothZoom( floorPos ) );
+    }
+
+    public IEnumerator CameraSmoothZoom( Transform floorPos )
+    {
+        isZooming = true;
+
+        float time = 0f;
+
+        Vector3 cameraPos = transform.position;
+        float orthographicSize = mainCamera.orthographicSize;
+
+        while (time < 0.3f)
+        {
+            time += Time.deltaTime;
+            
+            transform.position = Vector3.Lerp( cameraPos, floorPos.position, time / 0.3f );
+            transform.position = new Vector3( transform.position.x, transform.position.y, -10 );
+            mainCamera.orthographicSize = Mathf.Lerp( orthographicSize, zoomMax, time / 0.3f );
+            Debug.Log( time + ", " + mainCamera.orthographicSize );
+
+
+            yield return null;
+        }
+
+        UIManager.instance.simpleCatInformationUI.SetInformation( floorPos.GetComponent<FloorInformation>().catConsume  );
+
+        isZooming = false;
     }
 
     private void OnDrawGizmos()

@@ -192,7 +192,7 @@ public class UIManager : MonoBehaviour
                 go_CurrentViewUI = furnitureDisposeUI.go_FurnitureDisposeUI;
                 currentViewUI = ViewUI.FurnitureDispose;
                 furnitureDisposeUI.SetFurnitureDisposeUI();
-                Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax();
+                //Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax();
                 break;
 
             case (int)ViewUI.Ranking:
@@ -238,7 +238,6 @@ public class UIManager : MonoBehaviour
             catInventory.rt_Scroll.sizeDelta = new Vector2( catInventory.rt_Scroll.sizeDelta.x, catInventory.beforeScrollHeight );
             catInventory.rt_Scroll.anchoredPosition = new Vector2( 0, catInventory.beforeScrollPosY );
         }
-
 
         //현재 보고 있는 UI를 팝업 전에 보고 있던 UI를 저장한 beforeViewUI로 설정
         currentViewUI = beforeViewUI;
