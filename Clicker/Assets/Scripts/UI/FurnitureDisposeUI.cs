@@ -23,6 +23,7 @@ public class FurnitureDisposeUI : MonoBehaviour
     public Sprite[] activationButtons_Sprite;
     public Sprite[] deactivationButtons_Sprite;
 
+    public GameObject go_FurnitureDisposeUI;
     public GameObject go_Content;
     public GameObject go_FurnitureSlotStorage;
 
@@ -80,6 +81,33 @@ public class FurnitureDisposeUI : MonoBehaviour
     void Start()
     {
         StoragePullFurnitureSlot();
+    }
+
+    //가구 배치 버튼을 누르면 처리되어야 하는 것들
+    public void SetFurnitureDisposeUI()
+    {
+        go_FurnitureDisposeUI.SetActive( true );
+
+        //가구 배치 버튼을 누르면 기본으로 첫 번째 타입의 가구를 보여주게 설정
+        OnClickSelectType( 0 );
+        
+        //BottomUI를 비활성화
+        UIManager.instance.go_BottomUI.SetActive( false );
+        
+        UIManager.instance.topUI.rt_RankingButton.gameObject.SetActive( false );
+        UIManager.instance.topUI.rt_AchievementButton.gameObject.SetActive( false );
+        UIManager.instance.topUI.rt_SettingButton.gameObject.SetActive( false );
+        UIManager.instance.topUI.rt_QuestButton.gameObject.SetActive( false );
+
+        UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( true );
+    }
+
+    public void ResetFurnitureDisposeUI()
+    {
+        go_FurnitureDisposeUI.SetActive( false );
+        //BottomUI를 활성화
+        UIManager.instance.go_BottomUI.SetActive( true );
+        UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( false );
     }
 
     //어떤 종류의 가구를 보여줄지

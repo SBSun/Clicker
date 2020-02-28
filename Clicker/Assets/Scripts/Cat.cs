@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-
-public class Cat : MonoBehaviour, IPointerClickHandler
+public class Cat : MonoBehaviour
 {
     public enum CatClass
     {
@@ -47,23 +45,23 @@ public class Cat : MonoBehaviour, IPointerClickHandler
 
     #region 고양이의 정보 변수
     //고양이 이미지
-    public Sprite catSprite;
+    public Sprite sprite;
     //고양이의 이름
-    public string catName;
+    public string name;
     //고양이 직업
-    public string catJob;
+    public string job;
     //고양이 소개
-    public string catIntroduction;
+    public string introduction;
     //고양이의 레벨
-    public int catLevel;
+    public int level;
     #endregion
 
     //고양이가 레벨업 했을 때 변경되어야 할 것들
     public void CatLevelUp()
     {
-        catLevel++;
+        level++;
 
-        if (catLevel == 3)
+        if (level == 3)
             isAutoConsume = true;
     }
 
@@ -119,14 +117,6 @@ public class Cat : MonoBehaviour, IPointerClickHandler
             
 
             yield return null;
-        }
-    }
-
-    public void OnPointerClick( PointerEventData eventData )
-    {
-        if(catStatus == CatStatus.Consume)
-        {
-            UIManager.instance.catInformation.SetCatInformation( this );
         }
     }
 }

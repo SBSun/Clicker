@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5414d5712d35ea43adbdd145976e174, type: 3}
   m_Name: Item5
   m_EditorClassIdentifier: 
-  furnitureType: 1
+  furnitureType: 0
   itemName: Item5
   itemSprite: {fileID: 21300000, guid: 25af6b488c7cf36438ed1d500b674729, type: 3}
   itemImageSize: {x: 153, y: 194}

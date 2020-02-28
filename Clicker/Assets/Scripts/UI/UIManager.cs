@@ -27,9 +27,6 @@ public class UIManager : MonoBehaviour
 
     string[] units = new string[] { "", "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
-    public CatInformation catInformation;
-
-    public CatLevelUpButton catLevelButton;
     public CatInventory catInventory;
 
     public enum ViewUI
@@ -37,7 +34,7 @@ public class UIManager : MonoBehaviour
         Recruitment, //고양이 모집
         CatInventory,
         Main, //메인 화면
-        Dispose, //가구 배치
+        FurnitureDispose, //가구 배치
         Ranking,
         Shop,
         PopUp
@@ -53,13 +50,18 @@ public class UIManager : MonoBehaviour
 
     public GameObject go_RecruitmentUI;
     public GameObject go_CatInventoryUI;
-    public GameObject go_DisposeUI;
     public GameObject go_RankingUI;
     public GameObject go_ShopUI;
     [HideInInspector]
     public GameObject go_PopUpUI;
     public GameObject go_BottomUI;
 
+    [Header("UI 스크립트")]
+    public TopUI topUI;
+    public FurnitureDisposeUI furnitureDisposeUI;
+    public SimpleCatInformationUI simpleCatInformationUI;
+
+    [Header("해상도 비율 구하기")]
     public CanvasScaler canvasScaler;
     public float scale;         // > 1 가로 비율이 커짐, 0 기준 비율, < 1 세로 비율이 커짐
     public float widthRatio;    // 화면 가로 비율
@@ -121,10 +123,9 @@ public class UIManager : MonoBehaviour
                         //게임 종료
                         break;
 
-                    case ViewUI.Dispose:
-                        go_DisposeUI.SetActive( false );
-                        currentViewUI = ViewUI.Main;
-                        go_BottomUI.SetActive( true );
+                    case ViewUI.FurnitureDispose:
+                        furnitureDisposeUI.ResetFurnitureDisposeUI();
+                        currentViewUI = ViewUI.Main;                   
                         break;
 
                     case ViewUI.Ranking:
@@ -187,10 +188,11 @@ public class UIManager : MonoBehaviour
                 currentViewUI = ViewUI.Main;
                 break;
 
-            case (int)ViewUI.Dispose:
-                go_CurrentViewUI = go_DisposeUI;
-                currentViewUI = ViewUI.Dispose;
-                go_BottomUI.SetActive( false );
+            case (int)ViewUI.FurnitureDispose:
+                go_CurrentViewUI = furnitureDisposeUI.go_FurnitureDisposeUI;
+                currentViewUI = ViewUI.FurnitureDispose;
+                furnitureDisposeUI.SetFurnitureDisposeUI();
+                Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax();
                 break;
 
             case (int)ViewUI.Ranking:
@@ -267,5 +269,20 @@ public class UIManager : MonoBehaviour
         }
 
         return min;
+    }
+
+    //기준 가로 비율보다 크면 UI의 사이즈와 포지션을 조정
+    //0 - 사이즈, 포지션 변경, 1 - 사이즈 변경, 2 - 포지션 변경
+    public void SetUIRT(RectTransform rt_UI, int setType = 0)
+    {
+        if(setType == 0)
+        {
+            rt_UI.sizeDelta = rt_UI.sizeDelta * multiple;
+            rt_UI.anchoredPosition = rt_UI.anchoredPosition * multiple;
+        }
+        else if(setType == 1)
+            rt_UI.sizeDelta = rt_UI.sizeDelta * multiple;
+        else if(setType == 2)
+            rt_UI.anchoredPosition = rt_UI.anchoredPosition * multiple;
     }
 }

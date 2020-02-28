@@ -44,13 +44,14 @@ public class CatInventory : MonoBehaviour
     [Header( "Slot 터치 시 나오는 고양이 정보 UI" )]
     public GameObject go_CatInformationUI;
     public RectTransform rt_CatInformationImage;
-    public Text catName_Text;           //고양이 이름
-    public Text catJob_Text;            //고양이 직업
-    public Text catIntroduction_Text;   //고양이 소개
-    public Text catLevel_Text;          //고양이 레벨
-    public Text catMakeGold_Text;       //고양이 초당 급여 골드
-    public Text catConsumeGold_Text;    //고양이 초당 소비 골드
-    public Text catMaxKeepGold_Text;    //고양이 최대소지 가능 골드
+    public RectTransform rt_ArrowImage;
+    public Text name_Text;           //고양이 이름
+    public Text job_Text;            //고양이 직업
+    public Text introduction_Text;   //고양이 소개
+    public Text level_Text;          //고양이 레벨
+    public Text makeGold_Text;       //고양이 초당 급여 골드
+    public Text consumeGold_Text;    //고양이 초당 소비 골드
+    public Text maxKeepGold_Text;    //고양이 최대소지 가능 골드
 
     //true면 발견한 고양이만 보여줌
     public bool isShowDiscovery = false;
@@ -85,9 +86,10 @@ public class CatInventory : MonoBehaviour
     void Start()
     {
         //가로 비율이 기준 비율보다 클 경우
-        if(UIManager.instance.scale > 1)
+        if (UIManager.instance.scale > 1)
         {
             SetScrollContent();
+
         }
     }
 
@@ -108,15 +110,15 @@ public class CatInventory : MonoBehaviour
         //catName 기준으로 오름차순 정렬
         openCatSlotList.Sort( delegate ( CatSlot catSlot1, CatSlot catSlot2 )
          {
-             return catSlot1.cat.catName.CompareTo( catSlot2.cat.catName );
+             return catSlot1.cat.name.CompareTo( catSlot2.cat.name );
          } );
 
         //catLevel 기준으로 내림차순 정렬
         openCatSlotList.Sort( delegate ( CatSlot catSlot1, CatSlot catSlot2 )
         {
-            if (catSlot1.cat.catLevel > catSlot2.cat.catLevel)
+            if (catSlot1.cat.level > catSlot2.cat.level)
                 return -1;
-            else if (catSlot1.cat.catLevel < catSlot2.cat.catLevel)
+            else if (catSlot1.cat.level < catSlot2.cat.level)
                 return 1;
 
             return 0;

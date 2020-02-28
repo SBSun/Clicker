@@ -21,7 +21,6 @@ public class BackEndCustom : MonoBehaviour
             Debug.Log( "회원가입 완료" );
 
             BackEndManager.instance.backEndDataSave.InsertGachaSystemData();
-            BackEndManager.instance.backEndDataSave.InsertFurnitureItemData();
         }
         else
         {
@@ -48,7 +47,6 @@ public class BackEndCustom : MonoBehaviour
         {
             Debug.Log( "로그인 완료" );
             BackEndManager.instance.backEndDataSave.GetGachaSystemData();
-            BackEndManager.instance.backEndDataSave.GetFurnitureItemData();
             go_LoginUI.SetActive( false );
         }
         else

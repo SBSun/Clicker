@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 3399472033
     locked: 0
-  - name: Cat
+  - name: Furniture
     uniqueID: 1885527843
+    locked: 0
+  - name: Cat
+    uniqueID: 298568147
     locked: 0

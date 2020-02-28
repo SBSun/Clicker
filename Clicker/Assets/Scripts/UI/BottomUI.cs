@@ -15,10 +15,7 @@ public class BottomUI : MonoBehaviour
 
             for (int i = 0; i < rt_BottomBtns.Length; i++)
             {
-                rt_BottomBtns[i].sizeDelta = rt_BottomBtns[i].sizeDelta * UIManager.instance.multiple;
-
-                if (i != 0)
-                    rt_BottomBtns[i].anchoredPosition = new Vector2( rt_BottomBtns[i - 1].anchoredPosition.x + rt_BottomBtns[i - 1].sizeDelta.x, rt_BottomBtns[i].anchoredPosition.y );
+                UIManager.instance.SetUIRT( rt_BottomBtns[i] );
             }
         }      
     }

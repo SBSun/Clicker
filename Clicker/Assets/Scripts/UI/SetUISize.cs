@@ -7,8 +7,10 @@ public class SetUISize : MonoBehaviour
 {
     private RectTransform rt_BackgroundUI;
 
-    public bool isSetWidth = false;
-    public bool isSetHeight = false;
+    [Header("가로가 가득 차게")]
+    public bool isSetFullWidth = false;
+    [Header("세로가 가득 차게")]
+    public bool isSetFullHeight = false;
 
     void Start()
     {
@@ -16,14 +18,15 @@ public class SetUISize : MonoBehaviour
 
         if(UIManager.instance.scale != 0)
         {
-            if (UIManager.instance.scale < 1 && isSetHeight)
+            if (UIManager.instance.scale < 1 && isSetFullHeight)
             {
                 rt_BackgroundUI.sizeDelta = new Vector2( rt_BackgroundUI.sizeDelta.x, UIManager.instance.heightMaxUI );
             }
-            else if (UIManager.instance.scale > 1 && isSetWidth)
+            else if (UIManager.instance.scale > 1 && isSetFullWidth)
             {
                 rt_BackgroundUI.sizeDelta = new Vector2( UIManager.instance.widthMaxUI , rt_BackgroundUI.sizeDelta.y );
-            }
+            } 
         }
     }
 }
+ 

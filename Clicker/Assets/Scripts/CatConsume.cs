@@ -8,10 +8,11 @@ public class CatConsume : MonoBehaviour
 
     public Coroutine coroutine;
 
-    public void StartCatConsume()
+    
+    void Awake()
     {
-        coroutine = StartCoroutine( CatConsumeCoroutine() );
-    }
+        //coroutine = StartCoroutine( CatConsumeCoroutine() );
+    } 
 
     public IEnumerator CatConsumeCoroutine()
     {

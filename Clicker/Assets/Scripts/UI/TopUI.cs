@@ -15,6 +15,7 @@ public class TopUI : MonoBehaviour
     public RectTransform rt_AchievementButton;
     public RectTransform rt_SettingButton;
     public RectTransform rt_QuestButton;
+    public RectTransform rt_SaveButton;
 
     void Start()
     {
@@ -37,6 +38,7 @@ public class TopUI : MonoBehaviour
         rt_AchievementButton.sizeDelta = rt_AchievementButton.sizeDelta * UIManager.instance.multiple;
         rt_SettingButton.sizeDelta = rt_SettingButton.sizeDelta * UIManager.instance.multiple;
         rt_QuestButton.sizeDelta = rt_QuestButton.sizeDelta * UIManager.instance.multiple;
+        rt_SaveButton.sizeDelta = rt_SaveButton.sizeDelta * UIManager.instance.multiple;
     }
 
     public void SetPosition()
@@ -49,6 +51,7 @@ public class TopUI : MonoBehaviour
         rt_RankingButton.anchoredPosition = rt_RankingButton.anchoredPosition * UIManager.instance.multiple;
         rt_AchievementButton.anchoredPosition = rt_AchievementButton.anchoredPosition * UIManager.instance.multiple;
         rt_SettingButton.anchoredPosition = rt_SettingButton.anchoredPosition * UIManager.instance.multiple;
-        rt_QuestButton.anchoredPosition = rt_QuestButton.anchoredPosition * UIManager.instance.multiple;     
+        rt_QuestButton.anchoredPosition = rt_QuestButton.anchoredPosition * UIManager.instance.multiple;
+        rt_SaveButton.anchoredPosition = rt_SaveButton.anchoredPosition * UIManager.instance.multiple;
     }
 }

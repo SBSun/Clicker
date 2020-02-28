@@ -13,15 +13,24 @@ public class CameraZoomMove : MonoBehaviour
 
     float width;
     float height;
-    // Start is called before the first frame update
+
+    Camera mainCamera;
+
+    //가구 배치버튼을 누르면 상하로만 이동이 가능하게
+    public bool isFurnitureDispose = false;
+
+    void Awake()
+    {
+        mainCamera = GetComponent<Camera>();
+    }
+
     void Start()
     {
-        height = Camera.main.orthographicSize; //카메라의 세로 절반 길이
+        height = mainCamera.orthographicSize; //카메라의 세로 절반 길이
         width = height * Screen.width / Screen.height; //카메라의 가로 절반 길이
         size = new Vector2( width * 2, height * 2 );
     }
 
-    // Update is called once per frame
     void Update()
     {
         Zoom();
@@ -34,16 +43,16 @@ public class CameraZoomMove : MonoBehaviour
         {
             if (Input.GetAxis( "Mouse ScrollWheel" ) > 0)
             {
-                Camera.main.orthographicSize -= zoomSpeed * Time.deltaTime;
+                mainCamera.orthographicSize -= zoomSpeed * Time.deltaTime;
             }
             else if (Input.GetAxis( "Mouse ScrollWheel" ) < 0)
             {
-                Camera.main.orthographicSize += zoomSpeed * Time.deltaTime;
+                mainCamera.orthographicSize += zoomSpeed * Time.deltaTime;
             }
 
             if (Input.GetAxis( "Mouse ScrollWheel" ) != 0)
             {
-                Camera.main.orthographicSize = Mathf.Clamp( Camera.main.orthographicSize, zoomMin, zoomMax );
+                mainCamera.orthographicSize = Mathf.Clamp( Camera.main.orthographicSize, zoomMax, zoomMin );
 
                 float mX = size.x * 0.5f - width;
                 float clampX = Mathf.Clamp( transform.position.x, -mX + center.x, mX + center.x );
@@ -62,7 +71,16 @@ public class CameraZoomMove : MonoBehaviour
                 {
                     if (Input.GetTouch( 0 ).phase == TouchPhase.Moved && Input.GetTouch( 1 ).phase == TouchPhase.Moved)
                     {
+                        Touch touchZero = Input.GetTouch( 0 );
+                        Touch touchOne = Input.GetTouch( 1 );
 
+                        Vector2 touchZeroPastPos = touchZero.position - touchZero.deltaPosition;
+                        Vector2 touchOnePastPos = touchOne.position - touchOne.deltaPosition;
+
+                        float pastTouchMag = (touchZeroPastPos - touchOnePastPos).magnitude;
+                        float touchMag = (touchZero.position - touchOne.position).magnitude;
+
+                        float magnitudeDiff = pastTouchMag - touchMag;
                     }
                 }
             }
@@ -95,6 +113,13 @@ public class CameraZoomMove : MonoBehaviour
         {
 
         }
+    }
+
+    //가구 배치 상태일 때 실행
+    public void SetCameraZoomMax()
+    {
+        isFurnitureDispose = true;
+        mainCamera.orthographicSize = zoomMax;
     }
 
     private void OnDrawGizmos()

@@ -160,7 +160,7 @@ public class GachaSystem : MonoBehaviour
         //해당 등급의 고양이 종류 
         int randNum = Random.Range( 0, UIManager.instance.catInventory.classCatSlots[catClass].catSlotList.Count);
 
-        Debug.Log( UIManager.instance.catInventory.classCatSlots[catClass].catSlotList[randNum].cat.catName );
+        Debug.Log( UIManager.instance.catInventory.classCatSlots[catClass].catSlotList[randNum].cat.name );
         return UIManager.instance.catInventory.classCatSlots[catClass].catSlotList[randNum].cat;
     }
 
@@ -172,7 +172,7 @@ public class GachaSystem : MonoBehaviour
         //인수로 받은 고양이의 등급 슬롯들에서 찾는다.
         for (int i = 0; i < catSlotList.Count; i++)
         {
-            if(cat.catName == catSlotList[i].cat.catName)
+            if(cat.name == catSlotList[i].cat.name)
             {
                 if(catSlotList[i].slotStatus == CatSlot.SlotStatus.Rock)
                 {
