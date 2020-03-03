@@ -79,7 +79,7 @@ public class CatInventory : MonoBehaviour
             CatSlotSort( classCatSlots[i].catSlotList );
         }
 
-        ContentTransformSort();
+        ContentSort();
     }
 
     
@@ -89,7 +89,6 @@ public class CatInventory : MonoBehaviour
         if (UIManager.instance.scale > 1)
         {
             SetScrollContent();
-
         }
     }
 
@@ -131,7 +130,8 @@ public class CatInventory : MonoBehaviour
         }
     }
 
-    public void ContentTransformSort()
+    //등급별 포지션 정렬
+    public void ContentSort()
     {
         int share = 0;
         int remainder = 0;
@@ -155,7 +155,8 @@ public class CatInventory : MonoBehaviour
         rt_Classes[3].anchoredPosition = new Vector2( 0, rt_Classes[2].anchoredPosition.y - rt_Classes[2].sizeDelta.y );
     }
 
-    public void ShowDiscoveryContentTransformSort(List<int> rockCatSlotCountList )
+    //발견한 등급들을 정렬
+    public void ShowDiscoveryContentSort(List<int> rockCatSlotCountList )
     {
         int share = 0;
         int remainder = 0;
@@ -173,8 +174,8 @@ public class CatInventory : MonoBehaviour
 
         for (int i = 0; i < showDiscoveryContentList.Count; i++)
         {
-            share = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) / 3;
-            remainder = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) % 3;
+            share = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) / 3;     //몫
+            remainder = (classCatSlots[i].catSlotList.Count - rockCatSlotCountList[i]) % 3; //나머지
 
             //50은 위에 Star_Image와 DivisionLine_Image를 위한 여유 공간
             if (remainder != 0)
@@ -207,6 +208,7 @@ public class CatInventory : MonoBehaviour
         //발견된 고양이들만 보이게
         if(isShowDiscovery)
         {
+            //버튼 이미지 변경
             showDiscovery_Image.sprite = showDiscoveryActivation_Sprite;
 
             for (int i = 0; i < classCatSlots.Length; i++)
@@ -260,7 +262,7 @@ public class CatInventory : MonoBehaviour
                 }
             }
 
-            ShowDiscoveryContentTransformSort( rockCatSlotCountList );
+            ShowDiscoveryContentSort( rockCatSlotCountList );
 
             //리스트 초기화
             rockCatSlotCountList.Clear();
@@ -292,7 +294,7 @@ public class CatInventory : MonoBehaviour
                 rt_divisionLineImages[i].gameObject.SetActive( true );
             }
 
-            ContentTransformSort();
+            ContentSort();
         }
 
         for (int i = 0; i < classCatSlots.Length; i++)
@@ -340,6 +342,7 @@ public class CatInventory : MonoBehaviour
         //선택한 슬롯이 상단에 보이게 되는 Y좌표
         float yPos = 0f;
 
+        //고양이의 등급 만큼 반복해서 더한다.
         for (int i = 0; i < (int)_catSlot.cat.catClass; i++)
         {
             if (!rt_Classes[i].gameObject.activeSelf)
@@ -359,24 +362,36 @@ public class CatInventory : MonoBehaviour
         share = (_catSlot.transform.GetSiblingIndex() + 1) / 3;
         remainder = (_catSlot.transform.GetSiblingIndex() + 1) % 3;
 
-        if(share > 0)
+        //화살표 이미지 x좌표 계산
+        float arrowImagePosX = 0f;
+
+        //나머지가 있으면
+        if (remainder != 0)
         {
-            //나머지가 있으면
-            if (remainder != 0)
-            {
-                yPos += share * 465;
-            }
-            //나머지가 없으면
-            else
-            {
-                yPos += (share - 1) * 465;
-            }
+            yPos += share * 465;
+
+            arrowImagePosX = (gridLayout_Contents[0].cellSize.x * (remainder - 1) + gridLayout_Contents[0].cellSize.x / 2) + gridLayout_Contents[0].padding.left + (gridLayout_Contents[0].spacing.x * (remainder - 1))
+            - rt_ArrowImage.sizeDelta.x / 2 - 2f;
         }
-        
-        //yPos가 스크롤 범위를 초과하면
-        if(yPos > rt_Scroll.sizeDelta.y - Screen.height)
+        //나머지가 없으면
+        else
         {
-            float addHeight = yPos - (rt_Scroll.sizeDelta.y - Screen.height);
+            if(share != 0)
+                yPos += (share - 1) * 465;
+
+            arrowImagePosX = (gridLayout_Contents[0].cellSize.x * 2 + gridLayout_Contents[0].cellSize.x / 2) + gridLayout_Contents[0].padding.left + (gridLayout_Contents[0].spacing.x * 2)
+            - rt_ArrowImage.sizeDelta.x / 2 - 2f;
+        }
+
+        //화살표 이미지 위치 조정
+        rt_ArrowImage.anchoredPosition = new Vector2( arrowImagePosX, rt_ArrowImage.anchoredPosition.y );
+
+        yPos = yPos + 220f;
+
+        //yPos가 스크롤 범위를 초과하면
+        if (yPos > rt_Scroll.sizeDelta.y - UIManager.instance.canvasScaler.referenceResolution.y)
+        {
+            float addHeight = yPos - (rt_Scroll.sizeDelta.y - UIManager.instance.canvasScaler.referenceResolution.y);
 
             beforeScrollHeight = rt_Scroll.sizeDelta.y;
             Debug.Log( "beforeScrollHeight" + beforeScrollHeight );
@@ -384,8 +399,7 @@ public class CatInventory : MonoBehaviour
             rt_Scroll.sizeDelta = new Vector2( rt_Scroll.sizeDelta.x, rt_Scroll.sizeDelta.y + addHeight );       
         }
 
-        Debug.Log( yPos);
-        rt_Scroll.anchoredPosition = new Vector2( 0, yPos );
+        rt_Scroll.anchoredPosition = new Vector2( 0, yPos);
     }
 
     //게임이 시작할 때 인벤토리에서 변경되어야 할 UI의 위치나 사이즈
@@ -411,4 +425,21 @@ public class CatInventory : MonoBehaviour
         //버튼 위치 변경
         rt_ShowDiscoveryButton.anchoredPosition = new Vector2( -gridLayout_Contents[0].padding.right, rt_ShowDiscoveryButton.anchoredPosition.y );
     }
+
+    //인벤토리 버튼을 눌렀을 때 초기화 해야 하는 것들
+    public void SetCatInventory()
+    {
+        //스크롤을 원위치로
+        rt_Scroll.anchoredPosition = Vector2.zero;
+        
+        //발견한 고양이만 보이게 설정되어 있다면 모든 고양이가 보이게
+        if(isShowDiscovery)
+        {
+            OnClickShowDiscovery();
+          
+            //버튼 Sprte를 비활성화 Sprite로 변경
+            showDiscovery_Image.sprite = showDiscoveryDisabled_Sprite;
+        }
+    }
 }
+

@@ -8,7 +8,6 @@ public class CatConsume : MonoBehaviour
 
     public Coroutine coroutine;
 
-    
     void Awake()
     {
         //coroutine = StartCoroutine( CatConsumeCoroutine() );

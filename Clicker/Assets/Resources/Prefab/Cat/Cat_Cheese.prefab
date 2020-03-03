@@ -207,3 +207,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   catSlot: {fileID: 0}
+  informationPos: {fileID: 0}

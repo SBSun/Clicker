@@ -29,6 +29,7 @@ public class BackEndManager : MonoBehaviour
     public BackEndDataSave backEndDataSave;
     public BackEndCustom backEndCustom;
 
+    /*
     private void Start()
     {
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration
@@ -67,6 +68,7 @@ public class BackEndManager : MonoBehaviour
         }
     }
 
+    
     private string GetToken()
     {
         if(PlayGamesPlatform.Instance.localUser.authenticated)
@@ -84,6 +86,7 @@ public class BackEndManager : MonoBehaviour
         }
     }
 
+        
     public void BackEndServerLogIn()
     {
         //구글 로그인이 성공했다면 뒤끝 서버에 가입 요청
@@ -111,5 +114,6 @@ public class BackEndManager : MonoBehaviour
             }
         }
     }
+    */
 }
 

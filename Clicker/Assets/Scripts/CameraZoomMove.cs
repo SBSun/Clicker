@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraZoomMove : MonoBehaviour
 {
+    public float moveSpeed = 0f;
+
     public float zoomSpeed = 0f;
     public float zoomMax = 0f;
     public float zoomMin = 0f;
@@ -40,35 +42,11 @@ public class CameraZoomMove : MonoBehaviour
 
     public void Zoom()
     {
-        if(Application.platform == RuntimePlatform.WindowsPlayer)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            if (Input.GetAxis( "Mouse ScrollWheel" ) > 0)
+            if (Input.touchCount == 2)
             {
-                mainCamera.orthographicSize -= zoomSpeed * Time.deltaTime;
-            }
-            else if (Input.GetAxis( "Mouse ScrollWheel" ) < 0)
-            {
-                mainCamera.orthographicSize += zoomSpeed * Time.deltaTime;
-            }
-
-            if (Input.GetAxis( "Mouse ScrollWheel" ) != 0)
-            {
-                mainCamera.orthographicSize = Mathf.Clamp( Camera.main.orthographicSize, zoomMax, zoomMin );
-
-                float mX = size.x * 0.5f - width;
-                float clampX = Mathf.Clamp( transform.position.x, -mX + center.x, mX + center.x );
-
-                float mY = size.y * 0.5f - height;
-                float clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
-
-                transform.position = new Vector3( clampX, clampY, -10 );
-            }
-        }
-        else if(Application.platform == RuntimePlatform.Android)
-        {
-            if(Input.touchCount == 2)
-            {
-                if(UIManager.instance.currentViewUI == UIManager.ViewUI.Main)
+                if (UIManager.instance.currentViewUI == UIManager.ViewUI.Main)
                 {
                     if (Input.GetTouch( 0 ).phase == TouchPhase.Moved && Input.GetTouch( 1 ).phase == TouchPhase.Moved)
                     {
@@ -86,34 +64,53 @@ public class CameraZoomMove : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void Move()
-    {
-        if(Application.platform == RuntimePlatform.WindowsPlayer)
+        else
         {
-            if (Input.GetMouseButton( 0 ))
+            if (Input.GetAxis( "Mouse ScrollWheel" ) > 0)
             {
-                Debug.Log( "마우스 누르고있음" );
+                mainCamera.orthographicSize -= zoomSpeed * Time.deltaTime;              
+            }
+            else if (Input.GetAxis( "Mouse ScrollWheel" ) < 0)
+            {
+                mainCamera.orthographicSize += zoomSpeed * Time.deltaTime;
+            }
 
-                float posX = Input.GetAxis( "Mouse X" );
-                float posY = Input.GetAxis( "Mouse Y" );
+            if (Input.GetAxis( "Mouse ScrollWheel" ) != 0)
+            {
+                mainCamera.orthographicSize = Mathf.Clamp( mainCamera.orthographicSize, zoomMax, zoomMin );
 
-                transform.position += new Vector3( posX, posY );
-
-                float mX = size.x * 0.5f - width;
-                float clampX = Mathf.Clamp( transform.position.x, -mX + center.x, mX + center.x );
+                height = mainCamera.orthographicSize;
+                width = height * Screen.width / Screen.height;
 
                 float mY = size.y * 0.5f - height;
                 float clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
 
-                transform.position = new Vector3( clampX, clampY, -10 );
+                transform.position = new Vector3( 0, clampY, -10 );
             }
         }
-        else if (Application.platform == RuntimePlatform.Android)
+        
+    }
+
+    public void Move()
+    {
+        if (Application.platform == RuntimePlatform.Android)
         {
 
         }
+        else
+        {
+            if (Input.GetMouseButton( 0 ))
+            {
+                float posY = Input.GetAxis( "Mouse Y" );
+
+                transform.position += new Vector3( 0, posY ) * moveSpeed;
+
+                float mY = size.y * 0.5f - height;
+                float clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
+
+                transform.position = new Vector3( 0, clampY, -10 );
+            }
+        }  
     }
 
     //가구 배치 상태일 때 실행
@@ -144,7 +141,7 @@ public class CameraZoomMove : MonoBehaviour
             yield return null;
         }
 
-        UIManager.instance.simpleCatInformationUI.SetInformation( floorPos.GetComponent<FloorInformation>().catConsume  );
+        //UIManager.instance.simpleCatInformationUI.SetInformation( floorPos.GetComponent<FloorInformation>().catConsume  );
 
         isZooming = false;
     }

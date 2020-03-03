@@ -180,6 +180,7 @@ public class UIManager : MonoBehaviour
                 break;
 
             case (int)ViewUI.CatInventory:
+                catInventory.SetCatInventory();
                 go_CurrentViewUI = go_CatInventoryUI;
                 currentViewUI = ViewUI.CatInventory;
                 break;
