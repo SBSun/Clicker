@@ -40,13 +40,16 @@ public class CatSlot : MonoBehaviour
 
     public void OnClickCatSlot( Cat cat )
     {
-        UIManager.instance.catInventory.beforeScrollPosY = UIManager.instance.catInventory.rt_Scroll.anchoredPosition.y;
-        UIManager.instance.catInventory.CatInformationPopUp( this );
-        UIManager.instance.PopUpActivation( UIManager.instance.catInventory.go_CatInformationUI );
-        UIManager.instance.catInventory.name_Text.text = "이름 : " + cat.name;
-        UIManager.instance.catInventory.job_Text.text = "직업 : " + cat.job;
-        UIManager.instance.catInventory.introduction_Text.text = "소개 : " + cat.introduction;
-        UIManager.instance.catInventory.level_Text.text = "LV : " + cat.level;
+        if(slotStatus == SlotStatus.Open)
+        {
+            UIManager.instance.catInventoryUI.beforeScrollPosY = UIManager.instance.catInventoryUI.rt_Scroll.anchoredPosition.y;
+            UIManager.instance.catInventoryUI.CatInformationPopUp( this );
+            UIManager.instance.PopUpActivation( UIManager.instance.catInventoryUI.go_CatInformationUI );
+            UIManager.instance.catInventoryUI.name_Text.text = "이름 : " + cat.name;
+            UIManager.instance.catInventoryUI.job_Text.text = "직업 : " + cat.job;
+            UIManager.instance.catInventoryUI.introduction_Text.text = "소개 : " + cat.introduction;
+            UIManager.instance.catInventoryUI.level_Text.text = "LV : " + cat.level;
+        }
     }
 }    
 

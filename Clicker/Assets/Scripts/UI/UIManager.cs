@@ -27,8 +27,6 @@ public class UIManager : MonoBehaviour
 
     string[] units = new string[] { "", "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
-    public CatInventory catInventory;
-
     public enum ViewUI
     {
         Recruitment, //고양이 모집
@@ -48,8 +46,6 @@ public class UIManager : MonoBehaviour
     private GameObject go_BeforeViewUI;
     private GameObject go_CurrentViewUI;
 
-    public GameObject go_RecruitmentUI;
-    public GameObject go_CatInventoryUI;
     public GameObject go_RankingUI;
     public GameObject go_ShopUI;
     [HideInInspector]
@@ -58,8 +54,11 @@ public class UIManager : MonoBehaviour
 
     [Header("UI 스크립트")]
     public TopUI topUI;
-    public FurnitureDisposeUI furnitureDisposeUI;
     public SimpleCatInformationUI simpleCatInformationUI;
+    public RecruitmentUI recruitmentUI;
+    public CatInventoryUI catInventoryUI;
+    public FurnitureDisposeUI furnitureDisposeUI;
+    public ShopUI shopUI;
 
     [Header("해상도 비율 구하기")]
     public CanvasScaler canvasScaler;
@@ -95,6 +94,7 @@ public class UIManager : MonoBehaviour
             {
                 //최대 height = 기준 width / width 비율 * height 비율
                 heightMaxUI = canvasScaler.referenceResolution.x / widthRatio * heightRatio;
+                multiple = heightMaxUI / canvasScaler.referenceResolution.y;
             }        
 
             Debug.Log( "화면 비율 - " + widthRatio + " : " + heightRatio );
@@ -110,12 +110,12 @@ public class UIManager : MonoBehaviour
                 switch (currentViewUI)
                 {
                     case ViewUI.Recruitment:
-                        go_RecruitmentUI.SetActive( false );
+                        recruitmentUI.go_RecruitmentUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
                         break;
 
                     case ViewUI.CatInventory:
-                        go_CatInventoryUI.SetActive( false );
+                        catInventoryUI.go_CatInformationUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
                         break;
 
@@ -175,13 +175,14 @@ public class UIManager : MonoBehaviour
         switch (nextViewUINum)
         {
             case (int)ViewUI.Recruitment:
-                go_CurrentViewUI = go_RecruitmentUI;
+                go_CurrentViewUI = recruitmentUI.go_RecruitmentUI;
+                recruitmentUI.SetRecruitmentUI();
                 currentViewUI = ViewUI.Recruitment;
                 break;
 
             case (int)ViewUI.CatInventory:
-                catInventory.SetCatInventory();
-                go_CurrentViewUI = go_CatInventoryUI;
+                go_CurrentViewUI = catInventoryUI.go_CatInformationUI;
+                catInventoryUI.SetCatInventoryUI();
                 currentViewUI = ViewUI.CatInventory;
                 break;
 
@@ -202,7 +203,8 @@ public class UIManager : MonoBehaviour
                 break;
 
             case (int)ViewUI.Shop:
-                go_CurrentViewUI = go_ShopUI;
+                go_CurrentViewUI = shopUI.go_ShopUI;
+                shopUI.SetShopUI();
                 currentViewUI = ViewUI.Shop;
                 break;
         }
@@ -236,8 +238,8 @@ public class UIManager : MonoBehaviour
     {
         if (beforeViewUI == ViewUI.CatInventory)
         {
-            catInventory.rt_Scroll.sizeDelta = new Vector2( catInventory.rt_Scroll.sizeDelta.x, catInventory.beforeScrollHeight );
-            catInventory.rt_Scroll.anchoredPosition = new Vector2( 0, catInventory.beforeScrollPosY );
+            catInventoryUI.rt_Scroll.sizeDelta = new Vector2( catInventoryUI.rt_Scroll.sizeDelta.x, catInventoryUI.beforeScrollHeight );
+            catInventoryUI.rt_Scroll.anchoredPosition = new Vector2( 0, catInventoryUI.beforeScrollPosY );
         }
 
         //현재 보고 있는 UI를 팝업 전에 보고 있던 UI를 저장한 beforeViewUI로 설정

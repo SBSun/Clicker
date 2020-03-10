@@ -9,8 +9,9 @@ public class ClassCatSlot
     public List<CatSlot> catSlotList;
 }
 
-public class CatInventory : MonoBehaviour
+public class CatInventoryUI : MonoBehaviour
 {
+    [Header( "등급별 컴포넌트" )]
     //등급 별 슬롯들의 부모 객체
     public GameObject[] go_Contents;
     //등급 별 GridLayoutGroup
@@ -20,6 +21,11 @@ public class CatInventory : MonoBehaviour
     public RectTransform[] rt_Classes;
     private Rect[] rect_Classes = new Rect[4];
 
+    //각 등급의 슬롯들
+    public ClassCatSlot[] classCatSlots = new ClassCatSlot[4];
+
+    [Space( 3 )]
+    [Header("Scoll관련 변수")]
     //스크롤 범위로 설정되는 공간
     public GameObject go_Scroll;
     public RectTransform rt_Scroll;
@@ -27,19 +33,19 @@ public class CatInventory : MonoBehaviour
     public float beforeScrollPosY;   //고양이 슬롯을 누를 때의 스크롤 Y좌표
     public float beforeScrollHeight; //고양이 슬롯을 누를 때의 스크롤 Height
 
-    //각 등급의 슬롯들
-    public ClassCatSlot[] classCatSlots = new ClassCatSlot[4];
-
+    [Space( 3 )]
+    [Header("등급별 별, 구분선 이미지")]
     public RectTransform[] rt_divisionLineImages;
     public RectTransform[] rt_StartImages;
 
-    //버튼
+    [Space( 3 )]
     [Header("발견한 고양이만 보여주는 버튼")]
     public RectTransform rt_ShowDiscoveryButton;
     public Image showDiscovery_Image;
     public Sprite showDiscoveryActivation_Sprite; //활성화
     public Sprite showDiscoveryDisabled_Sprite; //비활성화
 
+    [Space(3)]
     //고양이 슬롯을 눌렀을 때 나오는 고양이 정보 UI 구성 Text
     [Header( "Slot 터치 시 나오는 고양이 정보 UI" )]
     public GameObject go_CatInformationUI;
@@ -427,7 +433,7 @@ public class CatInventory : MonoBehaviour
     }
 
     //인벤토리 버튼을 눌렀을 때 초기화 해야 하는 것들
-    public void SetCatInventory()
+    public void SetCatInventoryUI()
     {
         //스크롤을 원위치로
         rt_Scroll.anchoredPosition = Vector2.zero;

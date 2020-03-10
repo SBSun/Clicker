@@ -158,16 +158,16 @@ public class GachaSystem : MonoBehaviour
     public Cat RandomSelectCat(int catClass)
     {
         //해당 등급의 고양이 종류 
-        int randNum = Random.Range( 0, UIManager.instance.catInventory.classCatSlots[catClass].catSlotList.Count);
+        int randNum = Random.Range( 0, UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList.Count);
 
-        Debug.Log( UIManager.instance.catInventory.classCatSlots[catClass].catSlotList[randNum].cat.name );
-        return UIManager.instance.catInventory.classCatSlots[catClass].catSlotList[randNum].cat;
+        Debug.Log( UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList[randNum].cat.name );
+        return UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList[randNum].cat;
     }
 
     //뽑은 고양이의 정보를 가지고 있는 고양이 슬롯 찾기
     public void CatSlotFind(Cat cat)
     {
-        List<CatSlot> catSlotList = UIManager.instance.catInventory.classCatSlots[(int)cat.catClass].catSlotList.ToList();
+        List<CatSlot> catSlotList = UIManager.instance.catInventoryUI.classCatSlots[(int)cat.catClass].catSlotList.ToList();
 
         //인수로 받은 고양이의 등급 슬롯들에서 찾는다.
         for (int i = 0; i < catSlotList.Count; i++)
