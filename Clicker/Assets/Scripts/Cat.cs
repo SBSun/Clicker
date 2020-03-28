@@ -65,7 +65,7 @@ public class Cat : MonoBehaviour
             isAutoConsume = true;
     }
 
-    public IEnumerator WorkConsumeCoroutine()
+    /*public IEnumerator WorkConsumeCoroutine()
     {
         float time = 0f;
 
@@ -118,5 +118,5 @@ public class Cat : MonoBehaviour
 
             yield return null;
         }
-    }
+    }*/
 }

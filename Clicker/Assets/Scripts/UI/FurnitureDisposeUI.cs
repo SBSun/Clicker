@@ -90,9 +90,9 @@ public class FurnitureDisposeUI : MonoBehaviour
 
         //가구 배치 버튼을 누르면 기본으로 첫 번째 타입의 가구를 보여주게 설정
         OnClickSelectType( 0 );
-        
+
         //BottomUI를 비활성화
-        UIManager.instance.go_BottomUI.SetActive( false );
+        UIManager.instance.bottomUI.BottomUIDeactivate();
         
         UIManager.instance.topUI.rt_RankingButton.gameObject.SetActive( false );
         UIManager.instance.topUI.rt_AchievementButton.gameObject.SetActive( false );
@@ -106,7 +106,7 @@ public class FurnitureDisposeUI : MonoBehaviour
     {
         go_FurnitureDisposeUI.SetActive( false );
         //BottomUI를 활성화
-        UIManager.instance.go_BottomUI.SetActive( true );
+        UIManager.instance.bottomUI.BottomUIActivation();
         UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( false );
     }
 

@@ -23,8 +23,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public Text gold_Text;
-
     string[] units = new string[] { "", "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
     public enum ViewUI
@@ -46,19 +44,18 @@ public class UIManager : MonoBehaviour
     private GameObject go_BeforeViewUI;
     private GameObject go_CurrentViewUI;
 
-    public GameObject go_RankingUI;
-    public GameObject go_ShopUI;
     [HideInInspector]
     public GameObject go_PopUpUI;
-    public GameObject go_BottomUI;
 
     [Header("UI 스크립트")]
     public TopUI topUI;
+    public BottomUI bottomUI;
     public SimpleCatInformationUI simpleCatInformationUI;
     public RecruitmentUI recruitmentUI;
     public CatInventoryUI catInventoryUI;
     public FurnitureDisposeUI furnitureDisposeUI;
     public ShopUI shopUI;
+    public PopUpUI popUpUI;
 
     [Header("해상도 비율 구하기")]
     public CanvasScaler canvasScaler;
@@ -129,12 +126,12 @@ public class UIManager : MonoBehaviour
                         break;
 
                     case ViewUI.Ranking:
-                        go_RankingUI.SetActive( false );
+                        //go_RankingUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
                         break;
 
                     case ViewUI.Shop:
-                        go_ShopUI.SetActive( false );
+                        shopUI.go_ShopUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
                         break;
 
@@ -159,11 +156,17 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                if (newGoldList[i - 1] == 0)
-                    str = string.Format( "{0}{1}", newGoldList[i], units[i] );
-                else
-                    str = string.Format( "{0}.{1}{2}", newGoldList[i], newGoldList[i - 1], units[i] );
-                newShowText.text = str;
+                if(newGoldList[i] != 0)
+                {
+                    if (newGoldList[i - 1] == 0)
+                        str = string.Format( "{0}{1}", newGoldList[i], units[i] );
+                    else
+                        str = string.Format( "{0}.{1}{2}", newGoldList[i], newGoldList[i - 1], units[i] );
+
+                    newShowText.text = str;
+
+                    break;
+                }
             }
         }
     }
@@ -198,7 +201,7 @@ public class UIManager : MonoBehaviour
                 break;
 
             case (int)ViewUI.Ranking:
-                go_CurrentViewUI = go_RankingUI;
+                //go_CurrentViewUI = go_RankingUI;
                 currentViewUI = ViewUI.Ranking;
                 break;
 

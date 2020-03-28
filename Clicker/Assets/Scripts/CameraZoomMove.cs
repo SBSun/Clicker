@@ -18,7 +18,7 @@ public class CameraZoomMove : MonoBehaviour
     float width;
     float height;
 
-    Camera mainCamera;
+    public Camera mainCamera;
 
     public Coroutine cameraZoomCoroutine;
 

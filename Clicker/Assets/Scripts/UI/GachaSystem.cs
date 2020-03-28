@@ -7,11 +7,6 @@ using System.Linq;
 
 public class GachaSystem : MonoBehaviour
 {
-    public List<Cat> fiveCatList = new List<Cat>();
-    public List<Cat> fourCatList = new List<Cat>();
-    public List<Cat> threeCatList = new List<Cat>();
-    public List<Cat> twoCatList = new List<Cat>();
-
     public int bTierDenominator; //분모
     public int bTierNumerator;   //분자
     public int sTierDenominator;
@@ -27,14 +22,58 @@ public class GachaSystem : MonoBehaviour
     public int bTierCountMax;
     public int sTierCountMax;
 
+    public List<int> costGoldList = new List<int>();
 
     //일반 뽑기 2 ~ 4성, 인수로 1 또는 10번 뽑기
     public void NormalGacha(int gachaCount)
     {
+        if(gachaCount == 1)
+        {
+            if(!GoodsController.instance.SubGoldCheck(GoodsController.instance.goldList, costGoldList))
+            {
+                UIManager.instance.PopUpActivation( UIManager.instance.popUpUI.go_PopUp );
+                UIManager.instance.popUpUI.GoldLackPopUp();
+                return;
+            }
+
+            GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
+        }
+        else
+        {
+            List<int> currentGoldList = GoodsController.instance.goldList.ToList();
+
+            for (int i = 0; i < gachaCount; i++)
+            {
+                if(!GoodsController.instance.SubGoldCheck(currentGoldList, costGoldList))
+                {
+                    UIManager.instance.PopUpActivation( UIManager.instance.popUpUI.go_PopUp );
+                    UIManager.instance.popUpUI.GoldLackPopUp();
+                    return;
+                }
+
+                GoodsController.instance.SubGold( currentGoldList, costGoldList );
+            }
+
+            for (int i = 0; i < gachaCount; i++)
+            {
+                GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
+                Debug.Log( GoodsController.instance.goldList[3] + ", " + GoodsController.instance.goldList[2] + ", "  + GoodsController.instance.goldList[1] + ", " 
+                    + GoodsController.instance.goldList[0] + ", " );
+            }
+        }
+
+        UIManager.instance.UpdateGoldText( GoodsController.instance.goldList, UIManager.instance.topUI.gold_Text );
+
+        UIManager.instance.topUI.TopUIDeactivate();
+        UIManager.instance.bottomUI.BottomUIDeactivate();
+
+        UIManager.instance.recruitmentUI.StartAnimation();
+
         for (int i = 0; i < gachaCount; i++)
         {
             NormalBTierGacha();
-        }   
+        }
+
     }
 
     //고급 뽑기 3 ~ 5성

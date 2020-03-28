@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class FloorInformation : MonoBehaviour, IPointerClickHandler
 {
+    public GameObject go_BlankCat;
     //층에 배치되어 있는 고양이
     public CatConsume catConsume;
 
@@ -15,9 +16,9 @@ public class FloorInformation : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick( PointerEventData eventData )
     {
-        if(catConsume != null && !Camera.main.GetComponent<CameraZoomMove>().isZooming)
+        if(!Camera.main.GetComponent<CameraZoomMove>().isZooming)
         {
-            UIManager.instance.simpleCatInformationUI.SetInformation( this );        
+            UIManager.instance.simpleCatInformationUI.SetInformation( this );     
         }
     }
 }

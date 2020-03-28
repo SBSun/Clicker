@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BottomUI : MonoBehaviour
 {
+    public GameObject go_BottomUI;
     public RectTransform[] rt_BottomBtns;
 
     void Start()
@@ -18,5 +19,15 @@ public class BottomUI : MonoBehaviour
                 UIManager.instance.SetUIRT( rt_BottomBtns[i] );
             }
         }      
+    }
+
+    public void BottomUIActivation()
+    {
+        go_BottomUI.SetActive( true );
+    }
+
+    public void BottomUIDeactivate()
+    {
+        go_BottomUI.SetActive( false );
     }
 }

@@ -9,7 +9,7 @@ public class GoodsController : MonoBehaviour
 
     public string[] unit = new string[] { "", "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 
-    public List<int> goldList;
+    public List<int> goldList = new List<int>();
     public int carat; //보석
 
     private static GoodsController m_instance;
@@ -32,10 +32,7 @@ public class GoodsController : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            goldList.Add( 0 );
-        }
+        UIManager.instance.UpdateGoldText( goldList, UIManager.instance.topUI.gold_Text );
     }
 
     //리스트를 받아서 
@@ -60,6 +57,8 @@ public class GoodsController : MonoBehaviour
                 operandGoldList[i] += addGoldList[i];
             }
         }
+
+        UIManager.instance.UpdateGoldText( operandGoldList, UIManager.instance.topUI.gold_Text );
     }
 
     public void SubGold( List<int> operandGoldList, List<int> subGoldList )
@@ -69,29 +68,59 @@ public class GoodsController : MonoBehaviour
 
         for (int i = operandGoldList.Count - 1; i >= 0; i--)
         {
+            //골드가 존재하지 않는 원소라면 다시 반복
             if (operandGoldList[i] == 0)
                 continue;
 
+            //제일 높은 단위부터 제일 낮은 단위까지 계산
             for (int j = i; j >= 0; j--)
             {
+                //보유하고 있는 골드의 j번째 단위에서 빼려고 하는 골드의 j번째 단위가 양수라면 뺀다.
                 if (operandGoldList[j] - subGoldList[j] >= 0)
                 {
                     operandGoldList[j] -= subGoldList[j];
                 }
+                //음수이면 j + 1 번째 단위에서 1을 뺀다.
                 else
                 {
                     int remainder = 1000 - ((operandGoldList[j] - subGoldList[j]) * -1);
 
-                    if ((j + 1) <= operandGoldList.Count - 1 && operandGoldList[j + 1] > 0)
+                    if ((j + 1) <= operandGoldList.Count - 1)
                     {
-                        operandGoldList[j + 1]--;
+                        if (operandGoldList[j + 1] > 0)
+                        {
+                            operandGoldList[j + 1]--;
+
+                            operandGoldList[j] = remainder;
+                        }
+                        else
+                        {
+                            for (int k = j + 2; k < i + 1; i++)
+                            {
+                                if(operandGoldList[k] > 0)
+                                {
+                                    operandGoldList[k]--;
+
+                                    for (int n = k-1; n > j; n--)
+                                    {
+                                        operandGoldList[n] = 999;
+                                    }
+
+                                    operandGoldList[j] = remainder;
+
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    operandGoldList[j] = remainder;
+                    
                 }
             }
             break;
         }
+
+        UIManager.instance.UpdateGoldText( operandGoldList, UIManager.instance.topUI.gold_Text );
     }
 
     public bool SubGoldCheck( List<int> operandGoldList, List<int> subGoldCheckList )
@@ -152,6 +181,7 @@ public class GoodsController : MonoBehaviour
             {
                 Debug.Log( "골드 부족" );
                 isBuyPossible = false;
+                break;
             }
         }
 

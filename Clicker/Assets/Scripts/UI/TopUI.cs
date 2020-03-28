@@ -17,41 +17,34 @@ public class TopUI : MonoBehaviour
     public RectTransform rt_QuestButton;
     public RectTransform rt_SaveButton;
 
+    public Text gold_Text;
+    public Text dia_Text;
+
     void Start()
     {
         if (UIManager.instance.scale > 1)
         {
-            SetSize();
-            SetPosition();
+            UIManager.instance.SetUIRT( rt_TopImage, 0 );
+            UIManager.instance.SetUIRT( rt_DiaBlankImage, 0 );
+            UIManager.instance.SetUIRT( rt_DiaImage, 0 );
+            UIManager.instance.SetUIRT( rt_GoldBlankImage, 0 );
+            UIManager.instance.SetUIRT( rt_GoldImage, 0 );
+            UIManager.instance.SetUIRT( rt_SlideImage, 0 );
+            UIManager.instance.SetUIRT( rt_RankingButton, 0 );
+            UIManager.instance.SetUIRT( rt_AchievementButton, 0 );
+            UIManager.instance.SetUIRT( rt_SettingButton, 0 );
+            UIManager.instance.SetUIRT( rt_QuestButton, 0 );
+            UIManager.instance.SetUIRT( rt_SaveButton, 0 );
         }
     }
 
-    public void SetSize()
+    public void TopUIActivation()
     {
-        rt_TopImage.sizeDelta = rt_TopImage.sizeDelta * UIManager.instance.multiple;
-        rt_DiaBlankImage.sizeDelta = rt_DiaBlankImage.sizeDelta * UIManager.instance.multiple;
-        rt_DiaImage.sizeDelta = rt_DiaImage.sizeDelta * UIManager.instance.multiple;
-        rt_GoldBlankImage.sizeDelta = rt_GoldBlankImage.sizeDelta * UIManager.instance.multiple;
-        rt_GoldImage.sizeDelta = rt_GoldImage.sizeDelta * UIManager.instance.multiple;
-        rt_SlideImage.sizeDelta = rt_SlideImage.sizeDelta * UIManager.instance.multiple;
-        rt_RankingButton.sizeDelta = rt_RankingButton.sizeDelta * UIManager.instance.multiple;
-        rt_AchievementButton.sizeDelta = rt_AchievementButton.sizeDelta * UIManager.instance.multiple;
-        rt_SettingButton.sizeDelta = rt_SettingButton.sizeDelta * UIManager.instance.multiple;
-        rt_QuestButton.sizeDelta = rt_QuestButton.sizeDelta * UIManager.instance.multiple;
-        rt_SaveButton.sizeDelta = rt_SaveButton.sizeDelta * UIManager.instance.multiple;
+        rt_TopImage.gameObject.SetActive( true );
     }
 
-    public void SetPosition()
+    public void TopUIDeactivate()
     {
-        rt_SlideImage.anchoredPosition = rt_SlideImage.anchoredPosition * UIManager.instance.multiple;
-        rt_DiaBlankImage.anchoredPosition = rt_DiaBlankImage.anchoredPosition * UIManager.instance.multiple;
-        rt_DiaImage.anchoredPosition = rt_DiaImage.anchoredPosition * UIManager.instance.multiple;
-        rt_GoldBlankImage.anchoredPosition = rt_GoldBlankImage.anchoredPosition * UIManager.instance.multiple;
-        rt_GoldImage.anchoredPosition = rt_GoldImage.anchoredPosition * UIManager.instance.multiple;
-        rt_RankingButton.anchoredPosition = rt_RankingButton.anchoredPosition * UIManager.instance.multiple;
-        rt_AchievementButton.anchoredPosition = rt_AchievementButton.anchoredPosition * UIManager.instance.multiple;
-        rt_SettingButton.anchoredPosition = rt_SettingButton.anchoredPosition * UIManager.instance.multiple;
-        rt_QuestButton.anchoredPosition = rt_QuestButton.anchoredPosition * UIManager.instance.multiple;
-        rt_SaveButton.anchoredPosition = rt_SaveButton.anchoredPosition * UIManager.instance.multiple;
+        rt_TopImage.gameObject.SetActive( false );
     }
 }
