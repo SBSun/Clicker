@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CameraZoomMove : MonoBehaviour
 {
@@ -21,13 +22,20 @@ public class CameraZoomMove : MonoBehaviour
     float mY = 0f;
     float clampY = 0f;
 
+    [HideInInspector]
     public Camera mainCamera;
+    //Graphic Raycaster를 사용하기 위해
+    public Canvas canvas;
+    private GraphicRaycaster graphicRay;
+    private PointerEventData ped;
 
     public Coroutine cameraZoomCoroutine;
 
     void Awake()
     {
         mainCamera = GetComponent<Camera>();
+        graphicRay = canvas.GetComponent<GraphicRaycaster>();
+        ped = new PointerEventData( null );
     }
 
     void Start()
@@ -41,27 +49,14 @@ public class CameraZoomMove : MonoBehaviour
     {
         if(Input.GetMouseButton(0) || Input.touchCount > 0)
         {
-            Debug.Log("Ray 쏘는 중");
+            ped.position = Input.mousePosition;
+            List<RaycastResult> resultList = new List<RaycastResult>();
+            graphicRay.Raycast( ped, resultList );
 
-            Vector2 rayPos = Camera.main.ScreenToWorldPoint( Input.mousePosition );
-
-            RaycastHit2D hitInfo = Physics2D.Raycast( rayPos, Vector2.zero, 0f );
-
-            if (hitInfo)
+            if(resultList.Count > 0)
             {
-                if (hitInfo.transform.tag != "EventObject")
-                {
-                    Debug.Log( "UI 터치 중" );
-                    return;
-                }
-                else
-                {
-                    if(EventSystem.current.IsPointerOverGameObject(-1))
-                    {
-                        Debug.Log( "UI 터치 중" );
-                        return;
-                    }
-                }
+                Debug.Log( "UI 터치 중" );
+                return;
             }
         }       
 

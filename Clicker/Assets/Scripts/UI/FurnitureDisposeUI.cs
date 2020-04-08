@@ -55,6 +55,9 @@ public class FurnitureDisposeUI : MonoBehaviour
     //선택된 가구 슬롯
     [HideInInspector]
     public FurnitureSlot selectFurnitureSlot;
+    //구매하려는 가구 슬롯
+    [HideInInspector]
+    public FurnitureSlot buyFurnitureSlot;
 
     private float activationButtonYHeight = 100;
     private float deactivationButtonYHeight = 70;
@@ -200,5 +203,46 @@ public class FurnitureDisposeUI : MonoBehaviour
         {
             furnitureSlotList[i].transform.SetParent( go_FurnitureSlotStorage.transform );
         }
+    }
+
+    //가구 구매 팝업
+    public void FurnitureBuyPopUp( FurnitureSlot _buyFurnitureSlot )
+    {
+        buyFurnitureSlot = _buyFurnitureSlot;
+
+        //구매 가능하면
+        if (GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList, buyFurnitureSlot.furnitureItemData.furnitureItem.itemPriceGoldList ))
+        {
+            UIManager.instance.PopUpActivation( go_FurnitureBuyPopUp );
+
+            furniturePrice_Text.text = UIManager.instance.GoldChangeString( buyFurnitureSlot.furnitureItemData.furnitureItem.itemPriceGoldList ) + "가 소모 됩니다.";
+            furniturePrice_Text.rectTransform.sizeDelta = new Vector2( furniturePrice_Text.preferredWidth, furniturePrice_Text.preferredHeight );
+
+            gold_Image.rectTransform.anchoredPosition = new Vector2( -furniturePrice_Text.rectTransform.sizeDelta.x / 2 - 20f, gold_Image.rectTransform.anchoredPosition.y );
+        }
+        //구매 불가능
+        else
+        {
+            UIManager.instance.popUpUI.GoldLackPopUp();
+        }
+    }
+
+    //누르면 buyFurnitureSlot의 가구를 구매함
+    public void OnClickFurnitureBuy()
+    {
+        //가구 가격만큼 골드를 뺌
+        GoodsController.instance.SubGold( GoodsController.instance.goldList, buyFurnitureSlot.furnitureItemData.furnitureItem.itemPriceGoldList );
+
+        buyFurnitureSlot.FurnitureBuyUpdate();
+
+        //팝업 비활성화
+        UIManager.instance.PopUpDeactivate();
+    }
+
+    //가구 구매 취소
+    public void OnClickFurnitureBuyCancel()
+    {
+        //팝업 비활성화
+        UIManager.instance.PopUpDeactivate();
     }
 }

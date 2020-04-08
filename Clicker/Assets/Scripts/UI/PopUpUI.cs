@@ -21,6 +21,6 @@ public class PopUpUI : MonoBehaviour
 
     public void OnClickOffButton()
     {
-        go_PopUp.SetActive( false );
+        UIManager.instance.PopUpDeactivate();
     }
 }

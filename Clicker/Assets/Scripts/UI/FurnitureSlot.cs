@@ -9,6 +9,7 @@ public class FurnitureSlot : MonoBehaviour
     public Image furniture_Image;
     public Image gold_Image;
 
+    //소유량 - 배치된 가구 수 / 소유량
     public Text haveNumber_Text;        //아이템을 몇 개 가지고 있는지
     public Text furniturePrice_Text;    //가구 아이템 가격
 
@@ -44,16 +45,13 @@ public class FurnitureSlot : MonoBehaviour
     //Sprite, 텍스트 등 해당 아이템에 맞게 변경
     public void SetFurnitureSlot()
     {
-        if (furnitureItemData.currentHaveNumber == 0)
-            haveNumber_Text.text = "미보유";
-        else
-            haveNumber_Text.text = furnitureItemData.currentHaveNumber + " / " + furnitureItemData.currentHaveNumber;
-
         SetFurnitureImageSize();
 
         SetPriceText();
+        SetHaveNumberText();
     }
 
+    //가구 이미지 사이즈를 조정한다.
     public void SetFurnitureImageSize()
     {
         if(furnitureItemData.furnitureItem.itemImageSize.x > UIManager.instance.furnitureDisposeUI.maxSlotImageSize.x ||
@@ -96,31 +94,41 @@ public class FurnitureSlot : MonoBehaviour
         }
     }
 
-    //아이템 가격 텍스트 설정
+    //아이템 가격 텍스트 값, 위치 설정
     public void SetPriceText()
     {
+        //가구 가격 표시
         furniturePrice_Text.text = UIManager.instance.GoldChangeString( furnitureItemData.furnitureItem.itemPriceGoldList );
+        //텍스트 길이에 따라 골드 이미지 위치 설정
         furniturePrice_Text.rectTransform.sizeDelta = new Vector2( furniturePrice_Text.preferredWidth, furniturePrice_Text.preferredHeight );
         gold_Image.rectTransform.anchoredPosition = new Vector2( -furniturePrice_Text.rectTransform.sizeDelta.x / 2 - 10f,
             -2.7f );
     }
 
-    //가구 구매 팝업
-    public void FurnitureBuyPopUp()
+    //아이템 소유량과 배치 되고 남은 수
+    public void SetHaveNumberText()
     {
-        //구매 가능하면
-        if(GoodsController.instance.SubGoldCheck(GoodsController.instance.goldList, furnitureItemData.furnitureItem.itemPriceGoldList))
-        {
-            UIManager.instance.PopUpActivation( UIManager.instance.furnitureDisposeUI.go_FurnitureBuyPopUp );
-
-            UIManager.instance.furnitureDisposeUI.furniturePrice_Text.text = UIManager.instance.GoldChangeString( furnitureItemData.furnitureItem.itemPriceGoldList ) + "가 소모 됩니다.";
-            UIManager.instance.furnitureDisposeUI.furniturePrice_Text.rectTransform.sizeDelta = new Vector2( UIManager.instance.furnitureDisposeUI.furniturePrice_Text.preferredWidth, UIManager.instance.furnitureDisposeUI.furniturePrice_Text.preferredHeight );
-
-            UIManager.instance.furnitureDisposeUI.gold_Image.rectTransform.anchoredPosition = new Vector2( -UIManager.instance.furnitureDisposeUI.furniturePrice_Text.rectTransform.sizeDelta.x / 2 - 20f , UIManager.instance.furnitureDisposeUI.gold_Image.rectTransform.anchoredPosition.y);
-        }
+        if (furnitureItemData.currentHaveNumber == 0)
+            haveNumber_Text.text = "미보유";
         else
+            haveNumber_Text.text = furnitureItemData.currentHaveNumber - furnitureItemData.currentDisposeNumber + " / " + furnitureItemData.currentHaveNumber;
+    }
+
+    //가구를 구매했을 때 실행
+    public void FurnitureBuyUpdate()
+    {
+        //가구 소유 개수가 최대 소유 개수보다 적으면 추가
+        if(furnitureItemData.currentHaveNumber < furnitureItemData.furnitureItem.maxHaveNumber)
         {
-            UIManager.instance.popUpUI.GoldLackPopUp();
+            furnitureItemData.currentHaveNumber++;
+            SetHaveNumberText();
         }
+    }
+
+    //가구 구매 버튼을 눌렀을 때 실행
+    public void OnClickFurnitureBuy()
+    {
+        //가구 구매 팝업 활성화, 인수값으로 자기 자신을 넘겨준다.
+        UIManager.instance.furnitureDisposeUI.FurnitureBuyPopUp( this );
     }
 }
