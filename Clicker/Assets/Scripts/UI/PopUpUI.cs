@@ -13,12 +13,10 @@ public class PopUpUI : MonoBehaviour
 
     public Text explain_Text;
 
-    [TextArea]
-    public string goldLackSentence;
-
     public void GoldLackPopUp()
     {
-        explain_Text.text = goldLackSentence;
+        explain_Text.text = "골드가 부족합니다.";
+        UIManager.instance.PopUpActivation( go_PopUp );
     }
 
     public void OnClickOffButton()

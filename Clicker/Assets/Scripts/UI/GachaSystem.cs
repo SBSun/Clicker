@@ -31,7 +31,6 @@ public class GachaSystem : MonoBehaviour
         {
             if(!GoodsController.instance.SubGoldCheck(GoodsController.instance.goldList, costGoldList))
             {
-                UIManager.instance.PopUpActivation( UIManager.instance.popUpUI.go_PopUp );
                 UIManager.instance.popUpUI.GoldLackPopUp();
                 return;
             }
@@ -46,7 +45,6 @@ public class GachaSystem : MonoBehaviour
             {
                 if(!GoodsController.instance.SubGoldCheck(currentGoldList, costGoldList))
                 {
-                    UIManager.instance.PopUpActivation( UIManager.instance.popUpUI.go_PopUp );
                     UIManager.instance.popUpUI.GoldLackPopUp();
                     return;
                 }
@@ -62,7 +60,7 @@ public class GachaSystem : MonoBehaviour
             }
         }
 
-        UIManager.instance.UpdateGoldText( GoodsController.instance.goldList, UIManager.instance.topUI.gold_Text );
+        UIManager.instance.UpdateGoldText();
 
         UIManager.instance.topUI.TopUIDeactivate();
         UIManager.instance.bottomUI.BottomUIDeactivate();
@@ -206,7 +204,7 @@ public class GachaSystem : MonoBehaviour
     //뽑은 고양이의 정보를 가지고 있는 고양이 슬롯 찾기
     public void CatSlotFind(Cat cat)
     {
-        List<CatSlot> catSlotList = UIManager.instance.catInventoryUI.classCatSlots[(int)cat.catClass].catSlotList.ToList();
+        List<CatSlot> catSlotList = UIManager.instance.catInventoryUI.classCatSlots[(int)cat.catInformation.catClass].catSlotList.ToList();
 
         //인수로 받은 고양이의 등급 슬롯들에서 찾는다.
         for (int i = 0; i < catSlotList.Count; i++)
@@ -221,6 +219,8 @@ public class GachaSystem : MonoBehaviour
                 {
                     //아직 기획이 안나옴
                 }
+
+                UIManager.instance.recruitmentUI.PickCatInformation( cat.catInformation );
             }
         }
     }

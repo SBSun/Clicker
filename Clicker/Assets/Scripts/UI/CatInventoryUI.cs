@@ -11,6 +11,8 @@ public class ClassCatSlot
 
 public class CatInventoryUI : MonoBehaviour
 {
+    public GameObject go_CatInventoryUI;
+
     [Header( "등급별 컴포넌트" )]
     //등급 별 슬롯들의 부모 객체
     public GameObject[] go_Contents;
@@ -86,9 +88,9 @@ public class CatInventoryUI : MonoBehaviour
         }
 
         ContentSort();
+        ScrollHeightChange();
     }
-
-    
+   
     void Start()
     {
         //가로 비율이 기준 비율보다 클 경우
@@ -115,7 +117,7 @@ public class CatInventoryUI : MonoBehaviour
         //catName 기준으로 오름차순 정렬
         openCatSlotList.Sort( delegate ( CatSlot catSlot1, CatSlot catSlot2 )
          {
-             return catSlot1.cat.name.CompareTo( catSlot2.cat.name );
+             return catSlot1.cat.catInformation.catName.CompareTo( catSlot2.cat.catInformation.catName );
          } );
 
         //catLevel 기준으로 내림차순 정렬
@@ -349,14 +351,14 @@ public class CatInventoryUI : MonoBehaviour
         float yPos = 0f;
 
         //고양이의 등급 만큼 반복해서 더한다.
-        for (int i = 0; i < (int)_catSlot.cat.catClass; i++)
+        for (int i = 0; i < (int)_catSlot.cat.catInformation.catClass; i++)
         {
             if (!rt_Classes[i].gameObject.activeSelf)
             {
                 continue;
             }
 
-            if (i < (int)_catSlot.cat.catClass)
+            if (i < (int)_catSlot.cat.catInformation.catClass)
             {
                 yPos += rt_Classes[i].sizeDelta.y;
             }
@@ -365,8 +367,8 @@ public class CatInventoryUI : MonoBehaviour
         int share = 0;
         int remainder = 0;
 
-        share = (_catSlot.transform.GetSiblingIndex() + 1) / 3;
-        remainder = (_catSlot.transform.GetSiblingIndex() + 1) % 3;
+        share = _catSlot.transform.GetSiblingIndex() / 3;
+        remainder = _catSlot.transform.GetSiblingIndex() % 3;
 
         //화살표 이미지 x좌표 계산
         float arrowImagePosX = 0f;
@@ -390,8 +392,9 @@ public class CatInventoryUI : MonoBehaviour
         }
 
         //화살표 이미지 위치 조정
-        rt_ArrowImage.anchoredPosition = new Vector2( arrowImagePosX, rt_ArrowImage.anchoredPosition.y );
+        rt_ArrowImage.anchoredPosition = new Vector2( arrowImagePosX + 10f, rt_ArrowImage.anchoredPosition.y );
 
+        //윗 공백 추가
         yPos = yPos + 220f;
 
         //yPos가 스크롤 범위를 초과하면

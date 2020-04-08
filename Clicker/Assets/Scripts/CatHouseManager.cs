@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class CatHouseManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static CatHouseManager m_instance;
+
+    public static CatHouseManager instance
     {
-        
+        get
+        {
+            if (m_instance != null)
+                return m_instance;
+
+            m_instance = FindObjectOfType<CatHouseManager>();
+
+            if (m_instance == null)
+                m_instance = new GameObject( name: "CatHouseManager" ).AddComponent<CatHouseManager>();
+
+            return m_instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //CatHoust의 각 층 정보 리스트
+    public List<FloorInformation> floorInformationList = new List<FloorInformation>();
 }

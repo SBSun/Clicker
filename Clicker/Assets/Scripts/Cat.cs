@@ -4,21 +4,14 @@ using UnityEngine;
 
 public class Cat : MonoBehaviour
 {
-    public enum CatClass
-    {
-        Five,
-        Four,
-        Three,
-        Two       
-    }
-    public CatClass catClass;
-
     public enum CatStatus
     {
         Work,
         Consume
     }
     public CatStatus catStatus;
+
+    public CatInformation catInformation;
 
     public GoldHarvest goldHarvest;
 
@@ -42,19 +35,9 @@ public class Cat : MonoBehaviour
     //현재 가지고 있는 골드 양
     public List<int> currentKeepGoldList;
     #endregion
-
-    #region 고양이의 정보 변수
-    //고양이 이미지
-    public Sprite sprite;
-    //고양이의 이름
-    public string name;
-    //고양이 직업
-    public string job;
-    //고양이 소개
-    public string introduction;
+   
     //고양이의 레벨
     public int level;
-    #endregion
 
     //고양이가 레벨업 했을 때 변경되어야 할 것들
     public void CatLevelUp()

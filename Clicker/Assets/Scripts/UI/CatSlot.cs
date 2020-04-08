@@ -15,6 +15,7 @@ public class CatSlot : MonoBehaviour
 
     public Image slot_Image;
     public Image slotInside_Image;
+    public Image cat_Image;
 
     public Sprite openSlot_Sprite;
     public Sprite openSlotInside_Sprite;
@@ -31,6 +32,7 @@ public class CatSlot : MonoBehaviour
 
         slot_Image.sprite = openSlot_Sprite;
         slotInside_Image.sprite = openSlotInside_Sprite;
+        cat_Image.sprite = cat.catInformation.catSprite;    
 
         catLevel_Text.enabled = true;
         catConsumeGold_Text.enabled = true;
@@ -45,10 +47,10 @@ public class CatSlot : MonoBehaviour
             UIManager.instance.catInventoryUI.beforeScrollPosY = UIManager.instance.catInventoryUI.rt_Scroll.anchoredPosition.y;
             UIManager.instance.catInventoryUI.CatInformationPopUp( this );
             UIManager.instance.PopUpActivation( UIManager.instance.catInventoryUI.go_CatInformationUI );
-            UIManager.instance.catInventoryUI.name_Text.text = "이름 : " + cat.name;
-            UIManager.instance.catInventoryUI.job_Text.text = "직업 : " + cat.job;
-            UIManager.instance.catInventoryUI.introduction_Text.text = "소개 : " + cat.introduction;
-            UIManager.instance.catInventoryUI.level_Text.text = "LV : " + cat.level;
+            UIManager.instance.catInventoryUI.name_Text.text = cat.catInformation.catName;
+            UIManager.instance.catInventoryUI.job_Text.text = cat.catInformation.job;
+            UIManager.instance.catInventoryUI.introduction_Text.text = cat.catInformation.introduction;
+            UIManager.instance.catInventoryUI.level_Text.text = cat.level.ToString();
         }
     }
 }    

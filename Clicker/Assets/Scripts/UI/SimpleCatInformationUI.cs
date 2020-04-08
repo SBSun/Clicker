@@ -29,12 +29,12 @@ public class SimpleCatInformationUI : MonoBehaviour
     {
         currentFloorInformation = floorInformation;
 
-        if(currentFloorInformation.catConsume != null)
+        if(currentFloorInformation.catConsume.catSlot != null)
         {
             Cat cat = currentFloorInformation.catConsume.catSlot.cat;
 
-            name_Text.text = cat.name;
-            job_Text.text = cat.job;
+            name_Text.text = cat.catInformation.catName;
+            job_Text.text = cat.catInformation.job;
             level_Text.text = cat.level.ToString();
         }
         else
@@ -43,8 +43,7 @@ public class SimpleCatInformationUI : MonoBehaviour
             job_Text.text = "???";
             level_Text.text = "???";
         }
-        
-       
+              
         UIActivation();
 
         StartCoroutine( UpdateUIPosition() );

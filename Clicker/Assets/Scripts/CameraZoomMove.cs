@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraZoomMove : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class CameraZoomMove : MonoBehaviour
 
     float width;
     float height;
+    float mY = 0f;
+    float clampY = 0f;
 
     public Camera mainCamera;
 
@@ -36,6 +39,32 @@ public class CameraZoomMove : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetMouseButton(0) || Input.touchCount > 0)
+        {
+            Debug.Log("Ray 쏘는 중");
+
+            Vector2 rayPos = Camera.main.ScreenToWorldPoint( Input.mousePosition );
+
+            RaycastHit2D hitInfo = Physics2D.Raycast( rayPos, Vector2.zero, 0f );
+
+            if (hitInfo)
+            {
+                if (hitInfo.transform.tag != "EventObject")
+                {
+                    Debug.Log( "UI 터치 중" );
+                    return;
+                }
+                else
+                {
+                    if(EventSystem.current.IsPointerOverGameObject(-1))
+                    {
+                        Debug.Log( "UI 터치 중" );
+                        return;
+                    }
+                }
+            }
+        }       
+
         Zoom();
         Move();
     }
@@ -82,8 +111,8 @@ public class CameraZoomMove : MonoBehaviour
                 height = mainCamera.orthographicSize;
                 width = height * Screen.width / Screen.height;
 
-                float mY = size.y * 0.5f - height;
-                float clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
+                mY = size.y * 0.5f - height;
+                clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
 
                 transform.position = new Vector3( 0, clampY, -10 );
             }
@@ -105,45 +134,39 @@ public class CameraZoomMove : MonoBehaviour
 
                 transform.position += new Vector3( 0, posY ) * moveSpeed;
 
-                float mY = size.y * 0.5f - height;
-                float clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
+                mY = size.y * 0.5f - height;
+                clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
 
                 transform.position = new Vector3( 0, clampY, -10 );
             }
         }  
     }
 
-    //가구 배치 상태일 때 실행
-    public void SetCameraZoomMax(Transform floorPos)
+    //가구 배치일 때는 
+    public void SetFurnitureDispose()
     {
-        cameraZoomCoroutine = StartCoroutine( CameraSmoothZoom( floorPos ) );
+        mainCamera.orthographicSize = zoomMax;
+
+        height = mainCamera.orthographicSize;
+        width = height * Screen.width / Screen.height;
+
+        mY = size.y * 0.5f - height;
+        clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
+
+        transform.position = new Vector3( 0, clampY, -10 );
     }
 
-    public IEnumerator CameraSmoothZoom( Transform floorPos )
+    public void ResetFurnitureDispose()
     {
-        isZooming = true;
+        mainCamera.orthographicSize = zoomMin;
 
-        float time = 0f;
+        height = mainCamera.orthographicSize;
+        width = height * Screen.width / Screen.height;
 
-        Vector3 cameraPos = transform.position;
-        float orthographicSize = mainCamera.orthographicSize;
+        mY = size.y * 0.5f - height;
+        clampY = Mathf.Clamp( transform.position.y, -mY + center.y, mY + center.y );
 
-        while (time < 0.3f)
-        {
-            time += Time.deltaTime;
-            
-            transform.position = Vector3.Lerp( cameraPos, floorPos.position, time / 0.3f );
-            transform.position = new Vector3( transform.position.x, transform.position.y, -10 );
-            mainCamera.orthographicSize = Mathf.Lerp( orthographicSize, zoomMax, time / 0.3f );
-            Debug.Log( time + ", " + mainCamera.orthographicSize );
-
-
-            yield return null;
-        }
-
-        //UIManager.instance.simpleCatInformationUI.SetInformation( floorPos.GetComponent<FloorInformation>().catConsume  );
-
-        isZooming = false;
+        transform.position = new Vector3( 0, clampY, -10 );
     }
 
     private void OnDrawGizmos()

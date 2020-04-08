@@ -32,7 +32,7 @@ public class GoodsController : MonoBehaviour
 
     private void Start()
     {
-        UIManager.instance.UpdateGoldText( goldList, UIManager.instance.topUI.gold_Text );
+        UIManager.instance.UpdateGoldText();
     }
 
     //리스트를 받아서 
@@ -58,7 +58,7 @@ public class GoodsController : MonoBehaviour
             }
         }
 
-        UIManager.instance.UpdateGoldText( operandGoldList, UIManager.instance.topUI.gold_Text );
+        UIManager.instance.UpdateGoldText();
     }
 
     public void SubGold( List<int> operandGoldList, List<int> subGoldList )
@@ -120,7 +120,7 @@ public class GoodsController : MonoBehaviour
             break;
         }
 
-        UIManager.instance.UpdateGoldText( operandGoldList, UIManager.instance.topUI.gold_Text );
+        UIManager.instance.UpdateGoldText();
     }
 
     public bool SubGoldCheck( List<int> operandGoldList, List<int> subGoldCheckList )

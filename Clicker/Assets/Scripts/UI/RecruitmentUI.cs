@@ -29,10 +29,12 @@ public class RecruitmentUI : MonoBehaviour
     public Image black_Image;
     public Image effect1_Image;
     public Image effect2_Image;
+    public Image cat_Image;
     public Image nameBackground_Image;   
     public Image star_Image;
     public Button goResult_Button;
     public Button goRecruitmentUI_Button;
+    public Text name_Text;
 
     void Start()
     {
@@ -192,6 +194,7 @@ public class RecruitmentUI : MonoBehaviour
         effect2_Image.gameObject.SetActive( false );
 
         nameBackground_Image.enabled = true;
+        name_Text.enabled = true;
 
         goRecruitmentUI_Button.gameObject.SetActive( true );
     }
@@ -202,6 +205,7 @@ public class RecruitmentUI : MonoBehaviour
         black_Image.enabled = true;
 
         nameBackground_Image.enabled = false;
+        name_Text.enabled = false;
 
         effect1_Image.gameObject.SetActive( true );
         effect2_Image.gameObject.SetActive( true );
@@ -212,6 +216,14 @@ public class RecruitmentUI : MonoBehaviour
 
         UIManager.instance.topUI.TopUIActivation();
         UIManager.instance.bottomUI.BottomUIActivation();
+    }
+
+    //뽑은 고양이 정보 출력
+    public void PickCatInformation(CatInformation _catInformation)
+    {
+        cat_Image.sprite = _catInformation.catSprite;
+
+        name_Text.text = _catInformation.catName;
     }
 }
     

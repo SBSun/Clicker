@@ -112,7 +112,7 @@ public class UIManager : MonoBehaviour
                         break;
 
                     case ViewUI.CatInventory:
-                        catInventoryUI.go_CatInformationUI.SetActive( false );
+                        catInventoryUI.go_CatInventoryUI.SetActive( false );
                         currentViewUI = ViewUI.Main;
                         break;
 
@@ -144,31 +144,36 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateGoldText(List<int> newGoldList, Text newShowText)
+    public void UpdateGoldText()
     {
-        string str;
- 
+        topUI.gold_Text.text = GoldChangeString( GoodsController.instance.goldList );
+    }
+
+    public string GoldChangeString( List<int> newGoldList )
+    {
+        string str = "";
+
         for (int i = newGoldList.Count - 1; i >= 0; i--)
         {
             if (i == 0)
             {
-                newShowText.text = newGoldList[0].ToString() + units[0];
+                str = newGoldList[0].ToString() + units[0];
             }
             else
             {
-                if(newGoldList[i] != 0)
+                if (newGoldList[i] != 0)
                 {
                     if (newGoldList[i - 1] == 0)
                         str = string.Format( "{0}{1}", newGoldList[i], units[i] );
                     else
                         str = string.Format( "{0}.{1}{2}", newGoldList[i], newGoldList[i - 1], units[i] );
 
-                    newShowText.text = str;
-
                     break;
                 }
             }
         }
+
+        return str;
     }
 
     public void OnClickBottomUIButton( int nextViewUINum )
@@ -184,7 +189,7 @@ public class UIManager : MonoBehaviour
                 break;
 
             case (int)ViewUI.CatInventory:
-                go_CurrentViewUI = catInventoryUI.go_CatInformationUI;
+                go_CurrentViewUI = catInventoryUI.go_CatInventoryUI;
                 catInventoryUI.SetCatInventoryUI();
                 currentViewUI = ViewUI.CatInventory;
                 break;
@@ -197,7 +202,6 @@ public class UIManager : MonoBehaviour
                 go_CurrentViewUI = furnitureDisposeUI.go_FurnitureDisposeUI;
                 currentViewUI = ViewUI.FurnitureDispose;
                 furnitureDisposeUI.SetFurnitureDisposeUI();
-                //Camera.main.GetComponent<CameraZoomMove>().SetCameraZoomMax();
                 break;
 
             case (int)ViewUI.Ranking:
