@@ -21,7 +21,6 @@ public class FurnitureDisposeUI : MonoBehaviour
 {
     public RectTransform[] rt_Buttons;
 
-
     [Space(5), Header("Sprite 변수")]
     //가구 종류별 버튼들의 활성화 Sprite
     public Sprite[] activationButtons_Sprite;
@@ -35,6 +34,13 @@ public class FurnitureDisposeUI : MonoBehaviour
     public Sprite defaultFurnitureSlot_Sprite;
     //선택된 가구 슬롯 Sprite
     public Sprite selectFurnitureSlot_Sprite;
+    //구매한 가구 보여주는 버튼 비활성화
+    public Sprite toggleDeactivation_Sprite;
+    //활성화
+    public Sprite toggleActivate_Sprite;
+
+    //버튼 이미지
+    public Image toggle_Image;
 
     [Space( 5 ), Header( "가구 구매 팝업 관련 변수" )]
     public Text furniturePrice_Text;
@@ -62,7 +68,7 @@ public class FurnitureDisposeUI : MonoBehaviour
     private float activationButtonYHeight = 100;
     private float deactivationButtonYHeight = 70;
 
-    private int activationNumber = 0;
+    private int activationNumber = -1;
     [HideInInspector]
     public Vector2 maxSlotImageSize = new Vector2( 230, 170 );
 
@@ -92,6 +98,9 @@ public class FurnitureDisposeUI : MonoBehaviour
         {4, new List<FurnitureItemData>()}
     };
 
+    //구매한 가구만 보여주는 상태인지
+    private bool isShowBuy = false;
+
     void Awake()
     {
         //모든 아이템을 각 가구 타입에 맞는 리스트에 추가한다.
@@ -111,6 +120,11 @@ public class FurnitureDisposeUI : MonoBehaviour
     {
         go_FurnitureDisposeUI.SetActive( true );
 
+        isShowBuy = false;
+
+        activationNumber = 0;
+        toggle_Image.sprite = defaultFurnitureSlot_Sprite;
+
         //가구 배치 버튼을 누르면 기본으로 첫 번째 타입의 가구를 보여주게 설정
         OnClickSelectType( 0 );
 
@@ -125,13 +139,12 @@ public class FurnitureDisposeUI : MonoBehaviour
         UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( true );
 
         Camera.main.GetComponent<CameraZoomMove>().SetFurnitureDispose();
-
-        StoragePullFurnitureSlot();
     }
 
     public void ResetFurnitureDisposeUI()
     {
         go_FurnitureDisposeUI.SetActive( false );
+
         //BottomUI를 활성화
         UIManager.instance.bottomUI.BottomUIActivation();
 
@@ -148,7 +161,7 @@ public class FurnitureDisposeUI : MonoBehaviour
     //어떤 종류의 가구를 보여줄지
     public void OnClickSelectType(int typeNumber)
     {
-        if(activationNumber != typeNumber)
+        if(activationNumber != typeNumber || (typeNumber == 0 && activationNumber == 0))
         {
             rt_Buttons[activationNumber].GetComponent<Image>().sprite = deactivationButtons_Sprite[activationNumber];
             rt_Buttons[activationNumber].sizeDelta = new Vector2( rt_Buttons[activationNumber].sizeDelta.x, 70 );
@@ -164,7 +177,6 @@ public class FurnitureDisposeUI : MonoBehaviour
         }
     }
 
-    
     //DB에서 Load해온 아이템들을 가지고 있는 myFurnitureItemList에서 아이템들의 각 타입에 맞는 furnitureListDic 딕셔너리에 할당
     public void LoadFurnitureItem()
     {
@@ -191,11 +203,30 @@ public class FurnitureDisposeUI : MonoBehaviour
     //go_FurnitureSlotStorage의 자식으로 있는 FurnitureSlot들을 해당 타입의 아이템 개수 만큼 꺼내온다.
     public void StoragePullFurnitureSlot()
     {
-        for (int i = 0; i < itemDataDic[activationNumber].Count; i++)
+        if(isShowBuy)
         {
-            furnitureSlotList[i].furnitureItemData = itemDataDic[activationNumber][i];
-            furnitureSlotList[i].transform.SetParent( go_Content.transform );
-            furnitureSlotList[i].SetFurnitureSlot();
+            int index = 0;
+            for (int i = 0; i < itemDataDic[activationNumber].Count; i++)
+            {
+                if (itemDataDic[activationNumber][i].currentHaveNumber > 0)
+                {
+                    furnitureSlotList[index].furnitureItemData = itemDataDic[activationNumber][i];
+                    furnitureSlotList[index].transform.SetParent( go_Content.transform );
+                    furnitureSlotList[index].SetFurnitureSlot();
+
+                    index++;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < itemDataDic[activationNumber].Count; i++)
+            {
+                Debug.Log( "하이" );
+                furnitureSlotList[i].furnitureItemData = itemDataDic[activationNumber][i];
+                furnitureSlotList[i].transform.SetParent( go_Content.transform );
+                furnitureSlotList[i].SetFurnitureSlot();
+            }
         }
     }
 
@@ -256,5 +287,28 @@ public class FurnitureDisposeUI : MonoBehaviour
     {
         //팝업 비활성화
         UIManager.instance.PopUpDeactivate();
+    }
+
+    //구매한 가구들만 보여줌
+    public void OnClickShowBuy()
+    {
+        isShowBuy = !isShowBuy;
+
+        if(isShowBuy)
+        {
+            toggle_Image.sprite = toggleActivate_Sprite;
+
+            //일단 슬롯들을 창고에 넣어준다.
+            StoragePutFurnitureSlot();
+
+            StoragePullFurnitureSlot();         
+        }
+        else
+        {
+            toggle_Image.sprite = toggleDeactivation_Sprite;
+
+            StoragePutFurnitureSlot();
+            StoragePullFurnitureSlot();
+        }
     }
 }

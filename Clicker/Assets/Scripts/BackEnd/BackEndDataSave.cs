@@ -191,27 +191,25 @@ public class BackEndDataSave : MonoBehaviour
             {
                 if (data.Keys.Contains( "rows" ) && data["rows"].Count > 0)
                 {
-                    JsonData rowsData = data["rows"][0];
-
-                    //데이터를 읽어온 수
-                    int readDataCount = 0;
+                    JsonData rowsData = data["rows"];
 
                     //저장된 가구 개수 만큼 반복
-                    for (int i = 0; i < furnitureDisposeUI.allFurnitureItem.Count; i++)
-                    {
-                        FurnitureItem furnitureItem = furnitureDisposeUI.allFurnitureItem[i];
-                        if (rowsData.Keys.Contains( furnitureItem.itemName ))
+                    for (int i = 0; i < rowsData.Count; i++)
+                    {                   
+                        for (int j = 0; j < furnitureDisposeUI.allFurnitureItem.Count; j++)
                         {
-                            furnitureDisposeUI.myFurnitureItemDic[(int)furnitureItem.furnitureType].Add(
-                                new FurnitureItemData( furnitureItem, int.Parse( rowsData[furnitureItem.itemName][0][0][0].ToString() ), int.Parse( rowsData[furnitureItem.itemName][0][1][0].ToString() ) ) );
+                            FurnitureItem furnitureItem = furnitureDisposeUI.allFurnitureItem[j];
 
-                            readDataCount++;
+                            if (rowsData[i].Keys.Contains( furnitureItem.itemName ))
+                            {
+                                furnitureDisposeUI.myFurnitureItemDic[(int)furnitureItem.furnitureType].Add(
+                                    new FurnitureItemData( furnitureItem, int.Parse( rowsData[i][furnitureItem.itemName][0][0][0].ToString() ), int.Parse( rowsData[i][furnitureItem.itemName][0][1][0].ToString() ) ) );
 
-                            if (readDataCount == rowsData.Count)
-                                break;                          
+                                break;
+                            }
                         }
                     }
-
+                    
                     furnitureDisposeUI.LoadFurnitureItem();
                 }
                 else
