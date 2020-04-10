@@ -47,6 +47,7 @@ public class BackEndCustom : MonoBehaviour
         {
             Debug.Log( "로그인 완료" );
             BackEndManager.instance.backEndDataSave.GetGachaSystemData();
+            BackEndManager.instance.backEndDataSave.GetFurnitureItemData();
             go_LoginUI.SetActive( false );
         }
         else

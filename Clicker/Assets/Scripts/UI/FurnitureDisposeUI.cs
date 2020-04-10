@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class FurnitureSaveData
 {
     public string itemName;
-    public int furnitureType;
     public int currentHaveNumber;
+    public int currentDisposeNumber;
 
-    public FurnitureSaveData( string _itemName, int _furnitureType, int _currentHaveNumber = 0)
+    public FurnitureSaveData( string _itemName,int _currentHaveNumber = 0, int _currentDisposeNumber = 0)
     {
         itemName = _itemName;
-        furnitureType = _furnitureType;
         currentHaveNumber = _currentHaveNumber;
+        currentDisposeNumber = _currentDisposeNumber;
     }
 }
 
@@ -69,9 +69,19 @@ public class FurnitureDisposeUI : MonoBehaviour
     [Space( 5 ), Header( "가구 아이템 리스트" )]
     //모든 가구 아이템 리스트
     public List<FurnitureItem> allFurnitureItem = new List<FurnitureItem>();
-    //보유 하고 있는 가구 아이템 정보 리스트
-    public List<FurnitureItemData> myFurnitureItemData = new List<FurnitureItemData>();
 
+    [SerializeField]
+    //보유 하고 있는 가구 아이템 정보 리스트
+    public Dictionary<int, List<FurnitureItemData>> myFurnitureItemDic = new Dictionary<int, List<FurnitureItemData>>()
+    {
+        {0, new List<FurnitureItemData>()},
+        {1, new List<FurnitureItemData>()},
+        {2, new List<FurnitureItemData>()},
+        {3, new List<FurnitureItemData>()},
+        {4, new List<FurnitureItemData>()}
+    };
+
+    [SerializeField]
     //가구 타입 별로 분류한 딕셔너리
     public Dictionary<int, List<FurnitureItemData>> itemDataDic = new Dictionary<int, List<FurnitureItemData>>()
     {
@@ -92,23 +102,8 @@ public class FurnitureDisposeUI : MonoBehaviour
 
         for (int i = 0; i < itemDataDic.Count; i++)
         {
-            itemDataDic[i].Sort( delegate ( FurnitureItemData itemData1, FurnitureItemData itemData2 )
-             {
-                 return itemData1.furnitureItem.itemName.CompareTo( itemData2.furnitureItem.itemName );
-             } );
+            FurnitureItemListSort( itemDataDic[i] );
         }
-
-        /* //내가 소유하고 있는 가구 아이템의 데이터를 불러온 후 각 가구 타입에 대입
-        for (int i = 0; i < myFurnitureItemList.Count; i++)
-        {
-            for (int j = 0; j < furnitureListDic[(int)myFurnitureItemList[i].furnitureType].Count; j++)
-            {
-                if (myFurnitureItemList[i].itemName == furnitureListDic[(int)myFurnitureItemList[i].furnitureType][j].itemName)
-                {
-                    furnitureListDic[(int)myFurnitureItemList[i].furnitureType][j].currentHaveNumber = myFurnitureItemList[i].currentHaveNumber;
-                }
-            }
-        }*/
     }
 
     //가구 배치 버튼을 누르면 처리되어야 하는 것들
@@ -173,13 +168,21 @@ public class FurnitureDisposeUI : MonoBehaviour
     //DB에서 Load해온 아이템들을 가지고 있는 myFurnitureItemList에서 아이템들의 각 타입에 맞는 furnitureListDic 딕셔너리에 할당
     public void LoadFurnitureItem()
     {
-        for (int i = 0; i < myFurnitureItemData.Count; i++)
+        //가구 종류만큼 반복
+        for (int i = 0; i < myFurnitureItemDic.Count; i++)
         {
-            for (int j = 0; j < itemDataDic[(int)myFurnitureItemData[i].furnitureItem.furnitureType].Count; j++)
+            //가구 종류마다 자신이 소유하고 있는 가구 개수 만큼 반복
+            for (int j = 0; j < myFurnitureItemDic[i].Count; j++)
             {
-                if(itemDataDic[(int)myFurnitureItemData[i].furnitureItem.furnitureType][j].furnitureItem.itemName == myFurnitureItemData[i].furnitureItem.itemName)
+                //해당 종류의 가구들과 비교하여 같으면 저장되었던 데이터 할당
+                for (int k = 0; k < itemDataDic[i].Count; k++)
                 {
-                    itemDataDic[(int)myFurnitureItemData[i].furnitureItem.furnitureType][j].currentHaveNumber = myFurnitureItemData[i].currentHaveNumber;
+                    if (itemDataDic[i][k].furnitureItem.itemName == myFurnitureItemDic[i][j].furnitureItem.itemName)
+                    {
+                        itemDataDic[i][k].currentHaveNumber = myFurnitureItemDic[i][j].currentHaveNumber;
+                        itemDataDic[i][k].currentDisposeNumber = myFurnitureItemDic[i][j].currentDisposeNumber;
+                        break;
+                    }
                 }
             }
         }
@@ -203,6 +206,15 @@ public class FurnitureDisposeUI : MonoBehaviour
         {
             furnitureSlotList[i].transform.SetParent( go_FurnitureSlotStorage.transform );
         }
+    }
+
+    //가구 아이템 리스트의 요소들을 이름 순서대로 정렬
+    public void FurnitureItemListSort(List<FurnitureItemData> _furnitureDataList)
+    {
+        _furnitureDataList.Sort( delegate ( FurnitureItemData itemData1, FurnitureItemData itemData2 )
+        {
+            return itemData1.furnitureItem.itemName.CompareTo( itemData2.furnitureItem.itemName );
+        } );
     }
 
     //가구 구매 팝업

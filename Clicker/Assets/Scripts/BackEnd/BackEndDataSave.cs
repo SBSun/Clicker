@@ -69,7 +69,7 @@ public class BackEndDataSave : MonoBehaviour
     }
     #endregion
 
-    #region 뽑기시스템 데이터 저장, 삽입, 수정
+    #region 뽑기시스템 데이터 읽기, 삽입, 수정
     //뽑기 시스템 데이터 가져오기
     public void GetGachaSystemData()
     {
@@ -177,7 +177,7 @@ public class BackEndDataSave : MonoBehaviour
     }
     #endregion
 
-    #region 가구 아이템 데이터 저장, 삽입, 수정
+    #region 가구 아이템 데이터 읽기, 삽입, 수정
 
     public void GetFurnitureItemData()
     {
@@ -186,50 +186,37 @@ public class BackEndDataSave : MonoBehaviour
         if (BRO.IsSuccess())
         {
             JsonData data = BRO.GetReturnValuetoJSON();
-            Debug.Log( data.ToJson() );
+
             if (data != null)
             {
-                if (data.Keys.Contains( "rows" ))
+                if (data.Keys.Contains( "rows" ) && data["rows"].Count > 0)
                 {
                     JsonData rowsData = data["rows"][0];
 
-                    if (rowsData.Keys.Contains( "furnitureItem" ))
+                    //데이터를 읽어온 수
+                    int readDataCount = 0;
+
+                    //저장된 가구 개수 만큼 반복
+                    for (int i = 0; i < furnitureDisposeUI.allFurnitureItem.Count; i++)
                     {
-                        Debug.Log( "FurnitureItem 데이터 가져오기 성공" );
-
-                        JsonData itemData = rowsData["furnitureItem"][0];
-
-                        
-                        for (int i = 0; i < itemData.Count; i++)
+                        FurnitureItem furnitureItem = furnitureDisposeUI.allFurnitureItem[i];
+                        if (rowsData.Keys.Contains( furnitureItem.itemName ))
                         {
-                            for (int j = 0; j < furnitureDisposeUI.allFurnitureItem.Count; j++)
-                            {
-                                if (furnitureDisposeUI.allFurnitureItem[i].itemName == itemData[i][0][1][0].ToString())
-                                {
-                                    furnitureDisposeUI.myFurnitureItemData.Add( new FurnitureItemData( furnitureDisposeUI.allFurnitureItem[i], int.Parse( itemData[i][0][2][0].ToString() ) ) );
-                                }
-                            }                
+                            furnitureDisposeUI.myFurnitureItemDic[(int)furnitureItem.furnitureType].Add(
+                                new FurnitureItemData( furnitureItem, int.Parse( rowsData[furnitureItem.itemName][0][0][0].ToString() ), int.Parse( rowsData[furnitureItem.itemName][0][1][0].ToString() ) ) );
+
+                            readDataCount++;
+
+                            if (readDataCount == rowsData.Count)
+                                break;                          
                         }
-
-                        furnitureDisposeUI.myFurnitureItemData.Sort( delegate ( FurnitureItemData itemData1, FurnitureItemData itemData2 )
-                         {
-                             if (itemData1.furnitureItem.furnitureType < itemData2.furnitureItem.furnitureType)
-                                 return -1;
-                             else if (itemData1.furnitureItem.furnitureType > itemData2.furnitureItem.furnitureType)
-                                 return 1;
-
-                             return 0;
-                         } );
                     }
-                    else
-                    {
-                        Debug.Log( "FurnitureItem 데이터 가져오기 실패" );
-                    }
+
+                    furnitureDisposeUI.LoadFurnitureItem();
                 }
                 else
                 {
                     Debug.Log( "저장된 FurnitureItem 데이터가 없습니다." );
-                    //InsertFurnitureItemData();
                 }
             }
         }
@@ -241,21 +228,14 @@ public class BackEndDataSave : MonoBehaviour
 
     
     //처음 가구 아이템을 구매했을 때 실행
-    public void InsertFurnitureItemData(FurnitureItemData _furnitureItemData)
+    public void InsertFurnitureItemData(FurnitureSaveData _furnitureSaveData)
     {
         Param param = new Param();
 
-        Dictionary<string, FurnitureSaveData> furnitureInsertData = new Dictionary<string, FurnitureSaveData>();
+        string[] furnitureData = { _furnitureSaveData.currentHaveNumber.ToString(),
+                                _furnitureSaveData.currentDisposeNumber.ToString()};
 
-        if (UIManager.instance.furnitureDisposeUI.myFurnitureItemData.Count == 1)
-        {
-            furnitureInsertData.Add( _furnitureItemData.furnitureItem.itemName,
-                new FurnitureSaveData( _furnitureItemData.furnitureItem.itemName, (int)_furnitureItemData.furnitureItem.furnitureType, _furnitureItemData.currentHaveNumber) );
-        }
-        else
-            return;
-
-        param.Add( "furnitureItem", furnitureInsertData );
+        param.Add( _furnitureSaveData.itemName, furnitureData );
 
         BackendReturnObject BRO = Backend.GameInfo.Insert( "FurnitureItem", param );
 
@@ -270,20 +250,14 @@ public class BackEndDataSave : MonoBehaviour
     }
 
     //가구 아이템을 구매할 때 마다 실행
-    public void UpdateFurnitureItemData()
+    public void UpdateFurnitureItemData( FurnitureSaveData _furnitureSaveData )
     {
         Param param = new Param();
 
-        Dictionary<string, FurnitureSaveData> furnitureItemDataUpdate = new Dictionary<string, FurnitureSaveData>();
+        string[] furnitureData = { _furnitureSaveData.currentHaveNumber.ToString(),
+                                _furnitureSaveData.currentDisposeNumber.ToString()};
 
-        for (int i = 0; i < furnitureDisposeUI.myFurnitureItemData.Count; i++)
-        {
-            furnitureItemDataUpdate.Add( furnitureDisposeUI.myFurnitureItemData[i].furnitureItem.itemName,
-                new FurnitureSaveData( furnitureDisposeUI.myFurnitureItemData[i].furnitureItem.itemName, (int)furnitureDisposeUI.myFurnitureItemData[i].furnitureItem.furnitureType
-                , furnitureDisposeUI.myFurnitureItemData[i].currentHaveNumber) );
-        }
-
-        param.Add( "furnitureItem", furnitureItemDataUpdate );
+        param.Add( _furnitureSaveData.itemName, furnitureData );
 
         BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FurnitureItem" );
 
@@ -321,6 +295,7 @@ public class BackEndDataSave : MonoBehaviour
             }
         }
     }
+    
     #endregion
 }
 

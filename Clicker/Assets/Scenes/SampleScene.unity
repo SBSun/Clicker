@@ -9529,7 +9529,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3609e0225d4047b42ba19dbf81d9fc03, type: 2}
   - {fileID: 11400000, guid: 92ce2c587cc89ce43b3e9aaf677e95ea, type: 2}
   - {fileID: 11400000, guid: ca271071924f38443b702a780e9c6a20, type: 2}
-  myFurnitureItemData: []
 --- !u!1001 &696081772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18548,7 +18547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1473762322
 RectTransform:
   m_ObjectHideFlags: 0

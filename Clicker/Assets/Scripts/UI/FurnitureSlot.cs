@@ -121,6 +121,19 @@ public class FurnitureSlot : MonoBehaviour
         if(furnitureItemData.currentHaveNumber < furnitureItemData.furnitureItem.maxHaveNumber)
         {
             furnitureItemData.currentHaveNumber++;
+
+            FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
+
+            //해당 가구를 처음 구매하는 거라면 데이터 삽입
+            if(furnitureItemData.currentHaveNumber == 1)
+            {
+                BackEndManager.instance.backEndDataSave.InsertFurnitureItemData( furnitureSaveData );
+                SetHaveNumberText();
+                return;
+            }
+
+            //이미 구매했던 가구라면 수량만 수정해준다.
+            BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
             SetHaveNumberText();
         }
     }
