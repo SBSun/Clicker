@@ -145,6 +145,8 @@ public class FurnitureDisposeUI : MonoBehaviour
     {
         go_FurnitureDisposeUI.SetActive( false );
 
+        CatHouseManager.instance.FurnitureDisposeModeOff( activationNumber );
+
         //BottomUI를 활성화
         UIManager.instance.bottomUI.BottomUIActivation();
 
@@ -159,22 +161,36 @@ public class FurnitureDisposeUI : MonoBehaviour
     }
 
     //어떤 종류의 가구를 보여줄지
-    public void OnClickSelectType(int typeNumber)
+    public void OnClickSelectType(int _typeNumber)
     {
-        if(activationNumber != typeNumber || (typeNumber == 0 && activationNumber == 0))
+        if(activationNumber != _typeNumber || (_typeNumber == 0 && activationNumber == 0))
         {
+            if (selectFurnitureSlot != null)
+            {
+                selectFurnitureSlot.DefaultSlotImage();
+                selectFurnitureSlot = null;
+            }
+
             rt_Buttons[activationNumber].GetComponent<Image>().sprite = deactivationButtons_Sprite[activationNumber];
             rt_Buttons[activationNumber].sizeDelta = new Vector2( rt_Buttons[activationNumber].sizeDelta.x, 70 );
 
-            rt_Buttons[typeNumber].GetComponent<Image>().sprite = activationButtons_Sprite[typeNumber];
-            rt_Buttons[typeNumber].sizeDelta = new Vector2( rt_Buttons[typeNumber].sizeDelta.x, 100 );
+            rt_Buttons[_typeNumber].GetComponent<Image>().sprite = activationButtons_Sprite[_typeNumber];
+            rt_Buttons[_typeNumber].sizeDelta = new Vector2( rt_Buttons[_typeNumber].sizeDelta.x, 100 );
+
+            CatHouseManager.instance.FurnitureDisposeModeOn(_typeNumber, activationNumber);
 
             StoragePutFurnitureSlot();
 
-            activationNumber = typeNumber;
+            activationNumber = _typeNumber;
 
             StoragePullFurnitureSlot();
         }
+    }
+
+    public void SelectSlotNull()
+    {
+        selectFurnitureSlot.DefaultSlotImage();
+        selectFurnitureSlot = null;
     }
 
     //DB에서 Load해온 아이템들을 가지고 있는 myFurnitureItemList에서 아이템들의 각 타입에 맞는 furnitureListDic 딕셔너리에 할당
@@ -280,6 +296,8 @@ public class FurnitureDisposeUI : MonoBehaviour
 
         //팝업 비활성화
         UIManager.instance.PopUpDeactivate();
+
+        Debug.Log( buyFurnitureSlot.furnitureItemData.furnitureItem.itemName + " 구매" );
     }
 
     //가구 구매 취소

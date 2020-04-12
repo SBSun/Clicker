@@ -26,12 +26,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191617797140016575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.07999997, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6335076425744175420}
+  m_LocalPosition: {x: 0, y: 0.17, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4848431954462301039
 SpriteRenderer:
@@ -76,7 +75,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.78, y: 1.57}
+  m_Size: {x: 1.94, y: 2.66}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -95,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 5974646187384830301}
 --- !u!1 &633683685191101491
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +163,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -201,12 +201,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085138010636604983}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.45, y: -0.48300004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7038314381103285861}
+  m_LocalPosition: {x: -2.45, y: -0.83, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 1
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8911825318961397189
 SpriteRenderer:
@@ -251,7 +250,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.78, y: 1.57}
+  m_Size: {x: 1.72, y: 2.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -270,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 4607475310310513592}
 --- !u!1 &1166842464825097693
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,8 +283,8 @@ GameObject:
   - component: {fileID: 4073820343148509558}
   - component: {fileID: 5318045236549316544}
   m_Layer: 0
-  m_Name: FurnitureButton_TopDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_TopDecoration_Left
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -297,12 +297,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1166842464825097693}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: -2.45, y: 1.4829998, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 3454407781214212919}
-  m_Father: {fileID: 1206793331547273239}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7295394111369017445
 SpriteRenderer:
@@ -341,7 +341,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -365,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 1278067500630451838}
+  buttonSprite: {fileID: 1542479757555071635}
 --- !u!61 &5318045236549316544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -404,8 +406,8 @@ GameObject:
   - component: {fileID: 5974646187384830301}
   - component: {fileID: 7633357217704503156}
   m_Layer: 0
-  m_Name: FurnitureButton_WallDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_WallDecoration_Center
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -418,12 +420,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313924850895414587}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.32999992, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 0, y: 0.69, z: 0}
+  m_LocalScale: {x: 0.63, y: 0.63, z: 0}
   m_Children:
   - {fileID: 1425809412938548381}
-  m_Father: {fileID: 7905098938628153007}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &28553624689920084
 SpriteRenderer:
@@ -462,7 +464,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c410a4cc16c64974399ebfca8ee0dbf8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -486,6 +488,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 7093534195842051011}
+  buttonSprite: {fileID: 1756687110351493195}
 --- !u!61 &7633357217704503156
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -580,7 +584,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -623,17 +627,26 @@ Transform:
   m_LocalScale: {x: 0.260304, y: 0.260304, z: 0.260304}
   m_Children:
   - {fileID: 7072954000422908891}
-  - {fileID: 8799677799711267358}
-  - {fileID: 3544683458688114193}
-  - {fileID: 3270594384260624502}
+  - {fileID: 491597318289002080}
   - {fileID: 705699551539458794}
   - {fileID: 7905098938628153007}
   - {fileID: 7836391272357571345}
+  - {fileID: 607271213631173222}
+  - {fileID: 8799677799711267358}
+  - {fileID: 3544683458688114193}
+  - {fileID: 3270594384260624502}
   - {fileID: 1206793331547273239}
   - {fileID: 1283233791748804253}
   - {fileID: 939242372259962093}
-  - {fileID: 607271213631173222}
-  - {fileID: 491597318289002080}
+  - {fileID: 7835179003169473127}
+  - {fileID: 6335076425744175420}
+  - {fileID: 2672360966556187955}
+  - {fileID: 7038314381103285861}
+  - {fileID: 5687952795085149221}
+  - {fileID: 2928748338879340323}
+  - {fileID: 6172379277229347234}
+  - {fileID: 76793356710638010}
+  - {fileID: 7818865097889396736}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -672,8 +685,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 2055995467
-  m_SortingLayer: 0
+  m_SortingLayerID: 1885527843
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6c48e461dd569f147ac55a2b30b025aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -848,8 +861,8 @@ GameObject:
   - component: {fileID: 2519346979488444210}
   - component: {fileID: 3340233123481840045}
   m_Layer: 0
-  m_Name: FurnitureButton_WallDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_WallDecoration_Right
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -862,12 +875,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2813957139863742407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.32999992, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 2.45, y: 0.69000006, z: 0}
+  m_LocalScale: {x: 0.63, y: 0.63, z: 0}
   m_Children:
   - {fileID: 2513873300975341691}
-  m_Father: {fileID: 7836391272357571345}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2704651846209093487
 SpriteRenderer:
@@ -906,7 +919,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c410a4cc16c64974399ebfca8ee0dbf8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -930,6 +943,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 1114520367703760898}
+  buttonSprite: {fileID: 1768036417602093049}
 --- !u!61 &3340233123481840045
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1024,7 +1039,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1049,8 +1064,8 @@ GameObject:
   - component: {fileID: 7143191157996572284}
   - component: {fileID: 5403310328823200734}
   m_Layer: 0
-  m_Name: FurnitureButton_TopDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_TopDecoration_Center
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1063,12 +1078,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3910301817164269022}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 0, y: 1.4829997, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 144318837817197481}
-  m_Father: {fileID: 1283233791748804253}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4358842770713985219
 SpriteRenderer:
@@ -1107,7 +1122,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1131,6 +1146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 1112042111242711294}
+  buttonSprite: {fileID: 3877960564248711969}
 --- !u!61 &5403310328823200734
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1184,11 +1201,10 @@ Transform:
   m_GameObject: {fileID: 4080556319879996941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.45, y: 0.08, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2672360966556187955}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7902461838803742938
 SpriteRenderer:
@@ -1252,6 +1268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 2519346979488444210}
 --- !u!1 &4200271546513793244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,12 +1295,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4200271546513793244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.45, y: 1.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7818865097889396736}
+  m_LocalPosition: {x: 2.45, y: 2.2778, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8992445111602834986
 SpriteRenderer:
@@ -1347,6 +1363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 3454947814219999485}
 --- !u!1 &4294810009708937712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1415,7 +1432,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1495,7 +1512,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1520,8 +1537,8 @@ GameObject:
   - component: {fileID: 6428712332908220876}
   - component: {fileID: 5782519119860306686}
   m_Layer: 0
-  m_Name: FurnitureButton_FloorDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_FloorDecoration_Right
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1534,12 +1551,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4726239490729385922}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 2.45, y: -0.066, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 125532425367356970}
-  m_Father: {fileID: 3270594384260624502}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2397485936945014820
 SpriteRenderer:
@@ -1578,7 +1595,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1602,6 +1619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 913038171099576071}
+  buttonSprite: {fileID: 1150508935906253831}
 --- !u!61 &5782519119860306686
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1641,8 +1660,8 @@ GameObject:
   - component: {fileID: 3454947814219999485}
   - component: {fileID: 1888217683741123475}
   m_Layer: 0
-  m_Name: FurnitureButton_TopDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_TopDecoration_Right
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1655,12 +1674,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4760031057232435411}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 2.45, y: 1.4829998, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 5518300307508817964}
-  m_Father: {fileID: 939242372259962093}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6406568920283497395
 SpriteRenderer:
@@ -1699,7 +1718,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1723,6 +1742,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 1212693011344753821}
+  buttonSprite: {fileID: 3357500529027450656}
 --- !u!61 &1888217683741123475
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1775,12 +1796,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5641121097165580033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.45, y: 1.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6172379277229347234}
+  m_LocalPosition: {x: -2.45, y: 2.2778, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2355322804050153127
 SpriteRenderer:
@@ -1844,6 +1864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 4073820343148509558}
 --- !u!1 &5733725378841504969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,12 +1889,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5733725378841504969}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8661638, y: 0.7420497, z: -20.553}
-  m_LocalScale: {x: 3.841662, y: 3.841662, z: 3.841662}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0309, y: -1.43, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 10
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6289047619667364472
 SpriteRenderer:
@@ -1910,15 +1931,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1885527843
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10, y: 0.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -1937,8 +1958,8 @@ GameObject:
   - component: {fileID: 4607475310310513592}
   - component: {fileID: 8231885856977508005}
   m_Layer: 0
-  m_Name: FurnitureButton_FloorDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_FloorDecoration_Left
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1951,12 +1972,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6240046868680625928}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: -2.45, y: -0.06599986, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 2416066071957104099}
-  m_Father: {fileID: 8799677799711267358}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &712862355993956786
 SpriteRenderer:
@@ -1995,7 +2016,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2019,6 +2040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 189513578885283692}
+  buttonSprite: {fileID: 5352470638287052901}
 --- !u!61 &8231885856977508005
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2069,12 +2092,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6490579182533992465}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8661638, y: 0.7420497, z: -20.553}
-  m_LocalScale: {x: 3.841662, y: 3.841662, z: 3.841662}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.029, y: 0.733, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 11
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5381216682516211235
 SpriteRenderer:
@@ -2111,15 +2134,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1885527843
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10, y: 4.18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -2193,7 +2216,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2231,12 +2254,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7071312385172113787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.48300004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5687952795085149221}
+  m_LocalPosition: {x: 0, y: -0.83, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 2
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5536432297416968679
 SpriteRenderer:
@@ -2300,6 +2322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 292595657198645803}
 --- !u!1 &7083797142294415459
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,8 +2336,8 @@ GameObject:
   - component: {fileID: 6362951522598848742}
   - component: {fileID: 8312567953001014502}
   m_Layer: 0
-  m_Name: FurnitureButton_WallDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_WallDecoration_Left
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2327,12 +2350,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7083797142294415459}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.33, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: -2.45, y: 0.69000006, z: 0}
+  m_LocalScale: {x: 0.63, y: 0.63, z: 0}
   m_Children:
   - {fileID: 4794970517055503004}
-  m_Father: {fileID: 705699551539458794}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7224528738725286823
 SpriteRenderer:
@@ -2371,7 +2394,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c410a4cc16c64974399ebfca8ee0dbf8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2395,6 +2418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 7941170201654900023}
+  buttonSprite: {fileID: 2005822232270441676}
 --- !u!61 &8312567953001014502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2489,7 +2514,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2514,8 +2539,8 @@ GameObject:
   - component: {fileID: 292595657198645803}
   - component: {fileID: 876921579886998044}
   m_Layer: 0
-  m_Name: FurnitureButton_FloorDecoration
-  m_TagString: Untagged
+  m_Name: DisposeButton_FloorDecoration_Center
+  m_TagString: EventObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2528,12 +2553,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7131067120720435162}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75487983, y: 0.75487983, z: 0.75487983}
+  m_LocalPosition: {x: 0, y: -0.06599986, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0}
   m_Children:
   - {fileID: 6695403556957896108}
-  m_Father: {fileID: 3544683458688114193}
-  m_RootOrder: 0
+  m_Father: {fileID: 2140835231892902132}
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &973564884585608951
 SpriteRenderer:
@@ -2572,7 +2597,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c2343bdc28fd62747ab7c955982ebe9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2596,6 +2621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4e98589e4947d24fb9e50ea400d4056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placedFurniture: {fileID: 507787302665107433}
+  buttonSprite: {fileID: 7111662817260512378}
 --- !u!61 &876921579886998044
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2649,11 +2676,10 @@ Transform:
   m_GameObject: {fileID: 7261585385611597007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.45, y: 0.07999997, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 7835179003169473127}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1842582879178030796
 SpriteRenderer:
@@ -2717,6 +2743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 6362951522598848742}
 --- !u!1 &7570809510984411322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2785,7 +2812,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2823,12 +2850,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7870924170352837295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 76793356710638010}
+  m_LocalPosition: {x: 0, y: 2.2778, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &317150645435300685
 SpriteRenderer:
@@ -2892,6 +2918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 7143191157996572284}
 --- !u!1 &7880035376840289656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2960,7 +2987,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1885527843
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 4c416f7360661de419b3c8c5e4d6f9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2998,12 +3025,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9060953405790269351}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.45, y: -0.48300004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2928748338879340323}
+  m_LocalPosition: {x: 2.45, y: -0.83, z: 0}
+  m_LocalScale: {x: 0.7424056, y: 0.75, z: 1}
+  m_Children: []
   m_Father: {fileID: 2140835231892902132}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1459593705674572293
 SpriteRenderer:
@@ -3067,3 +3093,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureItem: {fileID: 0}
+  disposeButton: {fileID: 6428712332908220876}

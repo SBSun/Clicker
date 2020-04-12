@@ -17,5 +17,5 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: d7f2b326f7f47b64fb9e94956a76316c, type: 3}
   itemIconSprite: {fileID: 0}
   itemImageSize: {x: 305, y: 152}
-  maxHaveNumber: 0
+  maxHaveNumber: 999
   itemPriceGoldList: 04000000000000000000000000000000000000000000000000000000000000000000000000000000

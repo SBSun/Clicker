@@ -195,7 +195,8 @@ public class BackEndDataSave : MonoBehaviour
 
                     //저장된 가구 개수 만큼 반복
                     for (int i = 0; i < rowsData.Count; i++)
-                    {                   
+                    {
+                        Debug.Log( rowsData[i].ToJson() );
                         for (int j = 0; j < furnitureDisposeUI.allFurnitureItem.Count; j++)
                         {
                             FurnitureItem furnitureItem = furnitureDisposeUI.allFurnitureItem[j];
@@ -265,7 +266,18 @@ public class BackEndDataSave : MonoBehaviour
 
             if (data != null)
             {
-                string inDate = data["rows"][0]["inDate"]["S"].ToString();
+                JsonData rowsData = data["rows"];
+
+                string inDate = "";
+
+                for (int i = 0; i < rowsData.Count; i++)
+                {
+                    if(rowsData[i].Keys.Contains(_furnitureSaveData.itemName))
+                    {
+                        inDate = data["rows"][i]["inDate"]["S"].ToString();
+                        break;
+                    }
+                }
 
                 BackendReturnObject BRO_Update = Backend.GameInfo.Update( "FurnitureItem", inDate, param );
 

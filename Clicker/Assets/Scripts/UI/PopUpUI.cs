@@ -19,6 +19,12 @@ public class PopUpUI : MonoBehaviour
         UIManager.instance.PopUpActivation( go_PopUp );
     }
 
+    public void AfterBuyFurniturePopUp()
+    {
+        explain_Text.text = "가구를 구매 후 다시 시도해 주세요.";
+        UIManager.instance.PopUpActivation( go_PopUp );
+    }
+
     public void OnClickOffButton()
     {
         UIManager.instance.PopUpDeactivate();

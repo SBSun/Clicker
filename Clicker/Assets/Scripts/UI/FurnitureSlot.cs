@@ -22,13 +22,20 @@ public class FurnitureSlot : MonoBehaviour
 
     public void OnClickFurnitureSlot()
     {
+        if (furnitureItemData.currentHaveNumber == 0)
+        {
+            UIManager.instance.popUpUI.AfterBuyFurniturePopUp();
+            return;
+        }
+
         //전에 선택된 가구 슬롯이 있다면
         if(UIManager.instance.furnitureDisposeUI.selectFurnitureSlot != null)
         {
+            //전에 선택된 가구 슬롯이 자신이라면 선택 해제한다.
             if(UIManager.instance.furnitureDisposeUI.selectFurnitureSlot == this)
             {
                 UIManager.instance.furnitureDisposeUI.selectFurnitureSlot = null;
-                slot_Image.sprite = UIManager.instance.furnitureDisposeUI.defaultFurnitureSlot_Sprite;
+                DefaultSlotImage();
                 return;
             }
 
@@ -37,7 +44,7 @@ public class FurnitureSlot : MonoBehaviour
         }
 
         //슬롯 Sprite를 선택된 슬롯 Sprite로 변경
-        slot_Image.sprite = UIManager.instance.furnitureDisposeUI.selectFurnitureSlot_Sprite;
+        SelectSlotImage();
         //해당 슬롯을 선택함
         UIManager.instance.furnitureDisposeUI.selectFurnitureSlot = this;
     }
@@ -114,6 +121,16 @@ public class FurnitureSlot : MonoBehaviour
             haveNumber_Text.text = furnitureItemData.currentHaveNumber - furnitureItemData.currentDisposeNumber + " / " + furnitureItemData.currentHaveNumber;
     }
 
+    public void DefaultSlotImage()
+    {
+        slot_Image.sprite = UIManager.instance.furnitureDisposeUI.defaultFurnitureSlot_Sprite;
+    }
+
+    public void SelectSlotImage()
+    {
+        slot_Image.sprite = UIManager.instance.furnitureDisposeUI.selectFurnitureSlot_Sprite;
+    }
+
     //가구를 구매했을 때 실행
     public void FurnitureBuyUpdate()
     {
@@ -136,6 +153,34 @@ public class FurnitureSlot : MonoBehaviour
             BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
             SetHaveNumberText();
         }
+    }
+
+    //가구 배치
+    public void FurnitureDisposeAdd()
+    {
+        //가고 소유 개수 - 현재 배치 되어 있는 개수 
+        if(furnitureItemData.currentHaveNumber - furnitureItemData.currentDisposeNumber > 0)
+        {
+            furnitureItemData.currentDisposeNumber++;
+
+            FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
+
+            BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
+
+            SetHaveNumberText();
+        }
+    }
+
+    //배치 했던 가구를 뺀다.
+    public void FurnitureDisposeSub()
+    {
+        furnitureItemData.currentDisposeNumber--;
+
+        FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
+
+        BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
+
+        SetHaveNumberText();
     }
 
     //가구 구매 버튼을 눌렀을 때 실행

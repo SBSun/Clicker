@@ -20,11 +20,6 @@ public class SimpleCatInformationUI : MonoBehaviour
 
     Vector3 catScreenPos = Vector3.zero;
 
-    public void UIActivation()
-    {
-        go_SimpleCatInformationUI.SetActive( true );
-    }
-
     public void SetInformation(FloorInformation floorInformation)
     {
         currentFloorInformation = floorInformation;
@@ -43,19 +38,17 @@ public class SimpleCatInformationUI : MonoBehaviour
             job_Text.text = "???";
             level_Text.text = "???";
         }
-              
-        UIActivation();
+
+        UIManager.instance.PopUpActivation( go_SimpleCatInformationUI );
 
         StartCoroutine( UpdateUIPosition() );
     }
 
     public IEnumerator UpdateUIPosition()
     {
-        bool isFollow = true;
-
         float ratio = 0f;
 
-        while (isFollow)
+        while (UIManager.instance.currentViewUI == UIManager.ViewUI.PopUp)
         {
             //고양이의 포지션은 항상 같지만 카메라가 줌인, 줌아웃 됨으로써 스크린 좌표가 바뀜
             catScreenPos = Camera.main.WorldToScreenPoint( currentFloorInformation.catConsume.transform.position );
@@ -68,14 +61,16 @@ public class SimpleCatInformationUI : MonoBehaviour
             Vector3 viewFloorInformationPos = Camera.main.WorldToViewportPoint( currentFloorInformation.transform.position );
 
             Debug.Log( viewFloorInformationPos.y );
+
             if(viewFloorInformationPos.y < 0 || viewFloorInformationPos.y > 1)
             {
-                isFollow = false;
                 go_SimpleCatInformationUI.SetActive( false );
                 break;
             }
 
             yield return null;
         }
+
+        Debug.Log( "코루틴 스탑" );
     }
 }

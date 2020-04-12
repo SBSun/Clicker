@@ -20,7 +20,7 @@ public class FloorInformation : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick( PointerEventData eventData )
     {
-        if(!Camera.main.GetComponent<CameraZoomMove>().isZooming)
+        if(!Camera.main.GetComponent<CameraZoomMove>().isZooming && UIManager.instance.currentViewUI == UIManager.ViewUI.Main)
         {
             UIManager.instance.simpleCatInformationUI.SetInformation( this );     
         }

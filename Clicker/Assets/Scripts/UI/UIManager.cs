@@ -180,6 +180,10 @@ public class UIManager : MonoBehaviour
     {
         go_CurrentViewUI = null;
 
+        //Bottom UI의 버튼들을 누를 때 팝업이 출력되어 있는 상태이면 팝업을 꺼준다
+        if (currentViewUI == ViewUI.PopUp)
+            PopUpDeactivate();
+
         switch (nextViewUINum)
         {
             case (int)ViewUI.Recruitment:
@@ -202,6 +206,7 @@ public class UIManager : MonoBehaviour
                 go_CurrentViewUI = furnitureDisposeUI.go_FurnitureDisposeUI;
                 currentViewUI = ViewUI.FurnitureDispose;
                 furnitureDisposeUI.SetFurnitureDisposeUI();
+                Debug.Log( "가구" );
                 break;
 
             case (int)ViewUI.Ranking:
