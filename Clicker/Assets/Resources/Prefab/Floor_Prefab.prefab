@@ -755,7 +755,18 @@ MonoBehaviour:
   - {fileID: 1212693011344753821}
   - {fileID: 875775594415773481}
   - {fileID: 2498946201155893002}
-  saveFloorInfo: []
+  saveFloorInfo:
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
   isInvisible: 0
 --- !u!1 &2301413412537762684
 GameObject:

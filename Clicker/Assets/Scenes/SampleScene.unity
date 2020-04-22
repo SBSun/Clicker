@@ -21709,7 +21709,7 @@ PrefabInstance:
     - target: {fileID: 7480693528381053778, guid: f2f22bb443c48e6489e62cc256039875,
         type: 3}
       propertyPath: saveFloorInfo.Array.size
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7480693528381053778, guid: f2f22bb443c48e6489e62cc256039875,
         type: 3}

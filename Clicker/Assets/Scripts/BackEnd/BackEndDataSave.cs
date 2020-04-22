@@ -327,6 +327,7 @@ public class BackEndDataSave : MonoBehaviour
                     //저장된 가구 개수 만큼 반복
                     for (int i = 0; i < rowsData.Count; i++)
                     {
+                        CatHouseManager.instance.floorInformationList[i].saveFloorInfo.Clear();
                         for (int j = 0; j < rowsData.Count; j++)
                         {
                             if (rowsData[i].Keys.Contains( "F" + i.ToString() ))

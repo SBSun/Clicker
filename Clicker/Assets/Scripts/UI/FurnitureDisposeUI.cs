@@ -150,6 +150,10 @@ public class FurnitureDisposeUI : MonoBehaviour
         UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( false );
 
         Camera.main.GetComponent<CameraZoomMove>().ResetFurnitureDispose();
+
+        //버튼 비활성화 이미지로 변경
+        rt_Buttons[activationNumber].GetComponent<Image>().sprite = deactivationButtons_Sprite[activationNumber];
+        rt_Buttons[activationNumber].sizeDelta = new Vector2( rt_Buttons[activationNumber].sizeDelta.x, 70 );
     }
 
     //어떤 종류의 가구를 보여줄지
