@@ -17,14 +17,7 @@ public class DisposeButton : MonoBehaviour, IPointerClickHandler
         //선택된 슬롯이 있다면
         if (UIManager.instance.furnitureDisposeUI.selectFurnitureSlot != null)
         {
-            if (UIManager.instance.furnitureDisposeUI.selectFurnitureSlot == placedFurniture.disposeSlot)
-            {
-                Debug.Log( "배치된 가구를 뺀다" );
-                placedFurniture.SubFurniture();
-                return;
-            }
-
-            placedFurniture.ArrangeFurniture( UIManager.instance.furnitureDisposeUI.selectFurnitureSlot );
+            placedFurniture.ArrangeFurniture( UIManager.instance.furnitureDisposeUI.selectFurnitureSlot);
         }
     }
 

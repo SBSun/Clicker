@@ -3,20 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FurnitureSaveData
-{
-    public string itemName;
-    public int currentHaveNumber;
-    public int currentDisposeNumber;
-
-    public FurnitureSaveData( string _itemName,int _currentHaveNumber = 0, int _currentDisposeNumber = 0)
-    {
-        itemName = _itemName;
-        currentHaveNumber = _currentHaveNumber;
-        currentDisposeNumber = _currentDisposeNumber;
-    }
-}
-
 public class FurnitureDisposeUI : MonoBehaviour
 {
     public RectTransform[] rt_Buttons;
@@ -55,14 +41,14 @@ public class FurnitureDisposeUI : MonoBehaviour
     public GameObject go_FurnitureSlotStorage;
     //가구 구매 팝업 오브젝트
     public GameObject go_FurnitureBuyPopUp;
+    //가구 아이템 정보 부모 오브젝트
+    public GameObject go_FurnitureItemData;
 
-    public List<FurnitureSlot> furnitureSlotList = new List<FurnitureSlot>();
+    public List<FurnitureSlot> furnitureSlotList = new List< FurnitureSlot>();
 
     //선택된 가구 슬롯
-    [HideInInspector]
     public FurnitureSlot selectFurnitureSlot;
     //구매하려는 가구 슬롯
-    [HideInInspector]
     public FurnitureSlot buyFurnitureSlot;
 
     private float activationButtonYHeight = 100;
@@ -75,6 +61,7 @@ public class FurnitureDisposeUI : MonoBehaviour
     [Space( 5 ), Header( "가구 아이템 리스트" )]
     //모든 가구 아이템 리스트
     public List<FurnitureItem> allFurnitureItem = new List<FurnitureItem>();
+    public List<FurnitureItemData> allFurnitureItemData = new List<FurnitureItemData>();
 
     [SerializeField]
     //보유 하고 있는 가구 아이템 정보 리스트
@@ -87,7 +74,6 @@ public class FurnitureDisposeUI : MonoBehaviour
         {4, new List<FurnitureItemData>()}
     };
 
-    [SerializeField]
     //가구 타입 별로 분류한 딕셔너리
     public Dictionary<int, List<FurnitureItemData>> itemDataDic = new Dictionary<int, List<FurnitureItemData>>()
     {
@@ -99,14 +85,18 @@ public class FurnitureDisposeUI : MonoBehaviour
     };
 
     //구매한 가구만 보여주는 상태인지
-    private bool isShowBuy = false;
+    public bool isShowBuy = false;
 
     void Awake()
     {
+        allFurnitureItem.AddRange(Resources.LoadAll<FurnitureItem>( "Furniture Item/" ));
+        allFurnitureItemData.AddRange( go_FurnitureItemData.GetComponentsInChildren<FurnitureItemData>() );
+
         //모든 아이템을 각 가구 타입에 맞는 리스트에 추가한다.
         for (int i = 0; i < allFurnitureItem.Count; i++)
         {
-            itemDataDic[(int)allFurnitureItem[i].furnitureType].Add( new FurnitureItemData(allFurnitureItem[i]));
+            allFurnitureItemData[i].furnitureItem = allFurnitureItem[i];
+            itemDataDic[(int)allFurnitureItem[i].furnitureType].Add(allFurnitureItemData[i]);
         }
 
         for (int i = 0; i < itemDataDic.Count; i++)
@@ -118,6 +108,8 @@ public class FurnitureDisposeUI : MonoBehaviour
     //가구 배치 버튼을 누르면 처리되어야 하는 것들
     public void SetFurnitureDisposeUI()
     {
+        CatHouseManager.instance.SaveBeforeCatHouse();
+
         go_FurnitureDisposeUI.SetActive( true );
 
         isShowBuy = false;
@@ -138,7 +130,7 @@ public class FurnitureDisposeUI : MonoBehaviour
 
         UIManager.instance.topUI.rt_SaveButton.gameObject.SetActive( true );
 
-        Camera.main.GetComponent<CameraZoomMove>().SetFurnitureDispose();
+        Camera.main.GetComponent<CameraZoomMove>().SetFurnitureDispose();     
     }
 
     public void ResetFurnitureDisposeUI()
@@ -238,7 +230,6 @@ public class FurnitureDisposeUI : MonoBehaviour
         {
             for (int i = 0; i < itemDataDic[activationNumber].Count; i++)
             {
-                Debug.Log( "하이" );
                 furnitureSlotList[i].furnitureItemData = itemDataDic[activationNumber][i];
                 furnitureSlotList[i].transform.SetParent( go_Content.transform );
                 furnitureSlotList[i].SetFurnitureSlot();
@@ -292,12 +283,10 @@ public class FurnitureDisposeUI : MonoBehaviour
         //가구 가격만큼 골드를 뺌
         GoodsController.instance.SubGold( GoodsController.instance.goldList, buyFurnitureSlot.furnitureItemData.furnitureItem.itemPriceGoldList );
 
-        buyFurnitureSlot.FurnitureBuyUpdate();
+        buyFurnitureSlot.furnitureItemData.FurnitureBuy();
 
         //팝업 비활성화
         UIManager.instance.PopUpDeactivate();
-
-        Debug.Log( buyFurnitureSlot.furnitureItemData.furnitureItem.itemName + " 구매" );
     }
 
     //가구 구매 취소
@@ -328,5 +317,11 @@ public class FurnitureDisposeUI : MonoBehaviour
             StoragePutFurnitureSlot();
             StoragePullFurnitureSlot();
         }
+    }
+
+    //Save 버튼을 눌렀을 때 실행
+    public void OnClickSave()
+    {
+        CatHouseManager.instance.SaveCatHouse();
     }
 }

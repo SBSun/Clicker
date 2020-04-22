@@ -56,20 +56,21 @@ public class FurnitureSlot : MonoBehaviour
 
         SetPriceText();
         SetHaveNumberText();
+        furnitureItemData.SetFurnitureSlot( this );
     }
 
     //가구 이미지 사이즈를 조정한다.
     public void SetFurnitureImageSize()
     {
-        if(furnitureItemData.furnitureItem.itemImageSize.x > UIManager.instance.furnitureDisposeUI.maxSlotImageSize.x ||
-            furnitureItemData.furnitureItem.itemImageSize.y > UIManager.instance.furnitureDisposeUI.maxSlotImageSize.y)
+        if(furnitureItemData.furnitureItem.itemSpriteSize.x > UIManager.instance.furnitureDisposeUI.maxSlotImageSize.x ||
+            furnitureItemData.furnitureItem.itemSpriteSize.y > UIManager.instance.furnitureDisposeUI.maxSlotImageSize.y)
         {
             //최대 공약수를 구함
-            float gcd = UIManager.instance.GetGCD( furnitureItemData.furnitureItem.itemImageSize.x, furnitureItemData.furnitureItem.itemImageSize.y );
+            float gcd = UIManager.instance.GetGCD( furnitureItemData.furnitureItem.itemSpriteSize.x, furnitureItemData.furnitureItem.itemSpriteSize.y );
 
             //가로, 세로 비율 구함
-            float widthRatio = furnitureItemData.furnitureItem.itemImageSize.x / gcd;
-            float heightRatio = furnitureItemData.furnitureItem.itemImageSize.y / gcd;
+            float widthRatio = furnitureItemData.furnitureItem.itemSpriteSize.x / gcd;
+            float heightRatio = furnitureItemData.furnitureItem.itemSpriteSize.y / gcd;
 
             Vector2 imageSize = Vector2.zero;
 
@@ -88,7 +89,7 @@ public class FurnitureSlot : MonoBehaviour
         }
         else
         {
-            furniture_Image.GetComponent<RectTransform>().sizeDelta = furnitureItemData.furnitureItem.itemImageSize;
+            furniture_Image.GetComponent<RectTransform>().sizeDelta = furnitureItemData.furnitureItem.itemSpriteSize;
         }
 
         if(furnitureItemData.furnitureItem.itemIconSprite != null)
@@ -129,58 +130,6 @@ public class FurnitureSlot : MonoBehaviour
     public void SelectSlotImage()
     {
         slot_Image.sprite = UIManager.instance.furnitureDisposeUI.selectFurnitureSlot_Sprite;
-    }
-
-    //가구를 구매했을 때 실행
-    public void FurnitureBuyUpdate()
-    {
-        //가구 소유 개수가 최대 소유 개수보다 적으면 추가
-        if(furnitureItemData.currentHaveNumber < furnitureItemData.furnitureItem.maxHaveNumber)
-        {
-            furnitureItemData.currentHaveNumber++;
-
-            FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
-
-            //해당 가구를 처음 구매하는 거라면 데이터 삽입
-            if(furnitureItemData.currentHaveNumber == 1)
-            {
-                BackEndManager.instance.backEndDataSave.InsertFurnitureItemData( furnitureSaveData );
-                SetHaveNumberText();
-                return;
-            }
-
-            //이미 구매했던 가구라면 수량만 수정해준다.
-            BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
-            SetHaveNumberText();
-        }
-    }
-
-    //가구 배치
-    public void FurnitureDisposeAdd()
-    {
-        //가고 소유 개수 - 현재 배치 되어 있는 개수 
-        if(furnitureItemData.currentHaveNumber - furnitureItemData.currentDisposeNumber > 0)
-        {
-            furnitureItemData.currentDisposeNumber++;
-
-            FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
-
-            BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
-
-            SetHaveNumberText();
-        }
-    }
-
-    //배치 했던 가구를 뺀다.
-    public void FurnitureDisposeSub()
-    {
-        furnitureItemData.currentDisposeNumber--;
-
-        FurnitureSaveData furnitureSaveData = new FurnitureSaveData( furnitureItemData.furnitureItem.itemName, furnitureItemData.currentHaveNumber, furnitureItemData.currentDisposeNumber );
-
-        BackEndManager.instance.backEndDataSave.UpdateFurnitureItemData( furnitureSaveData );
-
-        SetHaveNumberText();
     }
 
     //가구 구매 버튼을 눌렀을 때 실행

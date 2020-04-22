@@ -206,7 +206,6 @@ public class UIManager : MonoBehaviour
                 go_CurrentViewUI = furnitureDisposeUI.go_FurnitureDisposeUI;
                 currentViewUI = ViewUI.FurnitureDispose;
                 furnitureDisposeUI.SetFurnitureDisposeUI();
-                Debug.Log( "가구" );
                 break;
 
             case (int)ViewUI.Ranking:

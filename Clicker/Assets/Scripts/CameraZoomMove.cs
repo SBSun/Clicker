@@ -55,7 +55,6 @@ public class CameraZoomMove : MonoBehaviour
 
             if(resultList.Count > 0)
             {
-                Debug.Log( "UI 터치 중" );
                 return;
             }
         }       

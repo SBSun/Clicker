@@ -81,7 +81,7 @@ public class BackEndDataSave : MonoBehaviour
             Debug.Log( data.ToJson() );
             if (data != null)
             {
-                if (data.Keys.Contains( "rows" ))
+                if (data.Keys.Contains( "rows" ) && data["rows"].Count > 0)
                 {
                     JsonData rowsData = data["rows"][0];
 
@@ -98,6 +98,10 @@ public class BackEndDataSave : MonoBehaviour
                     {
                         Debug.Log( "GachaSystem 데이터 가져오기 실패" );
                     }
+                }
+                else
+                {
+                    InsertGachaSystemData();
                 }
             }
         }
@@ -196,7 +200,6 @@ public class BackEndDataSave : MonoBehaviour
                     //저장된 가구 개수 만큼 반복
                     for (int i = 0; i < rowsData.Count; i++)
                     {
-                        Debug.Log( rowsData[i].ToJson() );
                         for (int j = 0; j < furnitureDisposeUI.allFurnitureItem.Count; j++)
                         {
                             FurnitureItem furnitureItem = furnitureDisposeUI.allFurnitureItem[j];
@@ -225,16 +228,15 @@ public class BackEndDataSave : MonoBehaviour
         }
     }
 
-    
     //처음 가구 아이템을 구매했을 때 실행
-    public void InsertFurnitureItemData(FurnitureSaveData _furnitureSaveData)
+    public void InsertFurnitureItemData( FurnitureItemData _furnitureItemData )
     {
         Param param = new Param();
 
-        string[] furnitureData = { _furnitureSaveData.currentHaveNumber.ToString(),
-                                _furnitureSaveData.currentDisposeNumber.ToString()};
+        string[] furnitureData = { _furnitureItemData.currentHaveNumber.ToString(),
+                                _furnitureItemData.currentDisposeNumber.ToString()};
 
-        param.Add( _furnitureSaveData.itemName, furnitureData );
+        param.Add( _furnitureItemData.furnitureItem.itemName, furnitureData );
 
         BackendReturnObject BRO = Backend.GameInfo.Insert( "FurnitureItem", param );
 
@@ -249,14 +251,14 @@ public class BackEndDataSave : MonoBehaviour
     }
 
     //가구 아이템을 구매할 때 마다 실행
-    public void UpdateFurnitureItemData( FurnitureSaveData _furnitureSaveData )
+    public void UpdateFurnitureItemData( FurnitureItemData _furnitureItemData )
     {
         Param param = new Param();
 
-        string[] furnitureData = { _furnitureSaveData.currentHaveNumber.ToString(),
-                                _furnitureSaveData.currentDisposeNumber.ToString()};
+        string[] furnitureData = { _furnitureItemData.currentHaveNumber.ToString(),
+                                _furnitureItemData.currentDisposeNumber.ToString()};
 
-        param.Add( _furnitureSaveData.itemName, furnitureData );
+        param.Add( _furnitureItemData.furnitureItem.itemName, furnitureData );
 
         BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FurnitureItem" );
 
@@ -272,7 +274,7 @@ public class BackEndDataSave : MonoBehaviour
 
                 for (int i = 0; i < rowsData.Count; i++)
                 {
-                    if(rowsData[i].Keys.Contains(_furnitureSaveData.itemName))
+                    if(rowsData[i].Keys.Contains( _furnitureItemData.furnitureItem.itemName))
                     {
                         inDate = data["rows"][i]["inDate"]["S"].ToString();
                         break;
@@ -307,5 +309,131 @@ public class BackEndDataSave : MonoBehaviour
     }
     
     #endregion
+
+    public void GetFloorInformation()
+    {
+        BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FloorInformation" );
+
+        if (BRO.IsSuccess())
+        {
+            JsonData data = BRO.GetReturnValuetoJSON();
+
+            if (data != null)
+            {
+                if (data.Keys.Contains( "rows" ) && data["rows"].Count > 0)
+                {
+                    JsonData rowsData = data["rows"];
+
+                    //저장된 가구 개수 만큼 반복
+                    for (int i = 0; i < rowsData.Count; i++)
+                    {
+                        for (int j = 0; j < rowsData.Count; j++)
+                        {
+                            if (rowsData[i].Keys.Contains( "F" + i.ToString() ))
+                            {
+                                JsonData floorInfo = rowsData[i]["F" + i.ToString()][0];
+
+                                for (int k = 0; k < floorInfo.Count; k++)
+                                {
+                                    CatHouseManager.instance.floorInformationList[i].saveFloorInfo.Add( floorInfo[k][0].ToString() );
+                                }
+
+                                break;
+                            }
+                        }
+
+                        CatHouseManager.instance.floorInformationList[i].LoadFloorInformation();
+                    }
+                }
+                else
+                {
+                    Debug.Log( "저장된 FloorInformation 데이터가 없습니다." );
+                }
+            }
+        }
+        else
+        {
+            GetDataError( BRO.GetStatusCode() );
+        }
+    }
+
+    //처음 가구 아이템을 구매했을 때 실행
+    public void InsertFloorInformation( FloorInformation _floorInformation)
+    {
+        Param param = new Param();
+
+        string[] floorInformationData = _floorInformation.saveFloorInfo.ToArray();
+
+        param.Add( "F" + _floorInformation.transform.GetSiblingIndex(), floorInformationData );
+
+        BackendReturnObject BRO = Backend.GameInfo.Insert( "FloorInformation", param );
+
+        if (BRO.IsSuccess())
+        {
+            Debug.Log( "FloorInformation Data Insert 성공" );
+        }
+        else
+        {
+            InsertDataError( BRO.GetStatusCode() );
+        }
+    }
+
+    //Save 버튼을 누르면 실행
+    public void UpdateFloorInformation( FloorInformation _floorInformation )
+    {
+        Param param = new Param();
+
+        string[] floorInformationData = _floorInformation.saveFloorInfo.ToArray();
+
+        param.Add( "F" + _floorInformation.transform.GetSiblingIndex().ToString(), floorInformationData );
+
+        BackendReturnObject BRO = Backend.GameInfo.GetPrivateContents( "FloorInformation" );
+
+        if (BRO.IsSuccess())
+        {
+            JsonData data = BRO.GetReturnValuetoJSON();
+
+            if (data != null)
+            {
+                JsonData rowsData = data["rows"];
+
+                string inDate = "";
+
+                for (int i = 0; i < rowsData.Count; i++)
+                {
+                    if (rowsData[i].Keys.Contains( "F" + _floorInformation.transform.GetSiblingIndex().ToString() ))
+                    {
+                        inDate = rowsData[i]["inDate"]["S"].ToString();
+                        Debug.Log( "업데이트" );
+                        break;
+                    }
+                }
+
+                BackendReturnObject BRO_Update = Backend.GameInfo.Update( "FloorInformation", inDate, param );
+
+                if (BRO_Update.IsSuccess())
+                {
+                    Debug.Log( "FloorInformation 데이터 수정 완료" );
+                }
+                else
+                {
+                    UpdateDataError( BRO_Update.GetStatusCode() );
+                }
+            }
+        }
+        else
+        {
+            switch (BRO.GetStatusCode())
+            {
+                case "400":
+                    Debug.Log( "private table 아닌 tableName을 입력하였습니다." );
+                    break;
+
+                case "412":
+                    Debug.Log( "비활성화 된 tableName입니다." );
+                    break;
+            }
+        }
+    }
 }
 

@@ -95,6 +95,8 @@ public class BackEndManager : MonoBehaviour
         if(BRO.IsSuccess())
         {
             Debug.Log( "구글 토큰으로 뒤끝서버 로그인 성공" );
+            backEndDataSave.GetGachaSystemData();
+            backEndDataSave.GetFurnitureItemData();
         }
         else
         {
@@ -113,7 +115,6 @@ public class BackEndManager : MonoBehaviour
                     break;
             }
         }
-    }
-    */
+    }*/
 }
 

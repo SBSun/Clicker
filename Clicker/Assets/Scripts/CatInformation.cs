@@ -14,7 +14,7 @@ public class CatInformation : ScriptableObject
     }
     public CatClass catClass;
 
-
+    [ContextMenuItem("SetSprite", "SetSprite")]
     //고양이 이미지
     public Sprite catSprite;
     //고양이의 이름
@@ -23,4 +23,14 @@ public class CatInformation : ScriptableObject
     public string job;
     //고양이 소개
     public string introduction;
+
+    public void SetSprite()
+    {
+        Sprite sprite = Resources.Load<Sprite>( "Sprite/CatSprite/" + catClass.ToString() + "/" + catName );
+
+        if(sprite != null)
+        {
+            catSprite = sprite;
+        }
+    }
 }

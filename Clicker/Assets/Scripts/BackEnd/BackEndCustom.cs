@@ -19,8 +19,7 @@ public class BackEndCustom : MonoBehaviour
         if(BRO.IsSuccess())
         {
             Debug.Log( "회원가입 완료" );
-
-            BackEndManager.instance.backEndDataSave.InsertGachaSystemData();
+            BackEndManager.instance.backEndDataSave.InsertFloorInformation( CatHouseManager.instance.floorInformationList[0] );
         }
         else
         {
@@ -48,6 +47,7 @@ public class BackEndCustom : MonoBehaviour
             Debug.Log( "로그인 완료" );
             BackEndManager.instance.backEndDataSave.GetGachaSystemData();
             BackEndManager.instance.backEndDataSave.GetFurnitureItemData();
+            BackEndManager.instance.backEndDataSave.GetFloorInformation();
             go_LoginUI.SetActive( false );
         }
         else

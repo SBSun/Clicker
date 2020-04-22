@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5414d5712d35ea43adbdd145976e174, type: 3}
+  m_Name: "\uBC14\uB2E5\uC7A5\uC2DD3-5"
+  m_EditorClassIdentifier: 
+  furnitureType: 0
+  itemName: "\uBC14\uB2E5\uC7A5\uC2DD3-5"
+  itemSprite: {fileID: 21300000, guid: e28142d7519062644b6e9a3cb63fc99e, type: 3}
+  itemIconSprite: {fileID: 0}
+  itemSpriteSize: {x: 174, y: 310}
+  maxHaveNumber: 999
+  itemPriceGoldList: 00000000000000007b00000000000000000000000000000000000000000000000000000000000000
