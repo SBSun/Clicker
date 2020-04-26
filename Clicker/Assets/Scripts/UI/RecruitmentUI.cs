@@ -26,15 +26,19 @@ public class RecruitmentUI : MonoBehaviour
 
     [Header( "모집 결과 관련 변수" ), Space(10)]
     public GameObject go_RecruitmentResultUI;
-    public Image black_Image;
-    public Image effect1_Image;
-    public Image effect2_Image;
+    public GameObject go_Minislots;
+    public GameObject go_Effect;
+    public GameObject go_Result;
     public Image cat_Image;
-    public Image nameBackground_Image;   
     public Image star_Image;
-    public Button goResult_Button;
-    public Button goRecruitmentUI_Button;
+    public Image new_Image;
     public Text name_Text;
+    public Sprite slotInside_Sprite;
+    public Sprite slotInside5_Sprite;
+    public MiniCatSlot[] miniCatSlots;
+
+    //제일 등급이 높고 우선순위가 높은 고양이가 몇번째 있는지
+    private int highestCatNum = 0;
 
     void Start()
     {
@@ -53,6 +57,7 @@ public class RecruitmentUI : MonoBehaviour
 
     public IEnumerator RecruitmentAnimation()
     {
+        SetPickHighestCatSprite();
         go_RecruitmentAnimationUI.SetActive( true );
 
         float time = 0f;
@@ -145,6 +150,8 @@ public class RecruitmentUI : MonoBehaviour
 
         go_RecruitmentAnimationUI.SetActive( false );
         go_RecruitmentResultUI.SetActive( true );
+
+        ResetAnimation();
     }
 
     public void StartAnimation()
@@ -187,43 +194,82 @@ public class RecruitmentUI : MonoBehaviour
     //뽑기 결과로 가는 버튼
     public void OnClickGoResult()
     {
-        black_Image.enabled = false;
+        go_Effect.SetActive( false );
 
-        //애니메이션은 오브젝트를 비활성화해야지 멈춤
-        effect1_Image.gameObject.SetActive( false );
-        effect2_Image.gameObject.SetActive( false );
+        go_Result.SetActive( true );
 
-        nameBackground_Image.enabled = true;
-        name_Text.enabled = true;
-
-        goRecruitmentUI_Button.gameObject.SetActive( true );
+        if (gachaSystem.gachaType == GachaType.One)
+        {
+            SetPickCatInfo( gachaSystem.pickCatList[0] );
+        }
+        else
+        {
+            SetPickCatInfo( gachaSystem.pickCatList[highestCatNum] );
+            go_Minislots.gameObject.SetActive( true );
+        }
     }
 
     //다시 모집 UI로
     public void OnClickRecruitmentUI()
     {
-        black_Image.enabled = true;
+        go_Effect.SetActive( true );
 
-        nameBackground_Image.enabled = false;
-        name_Text.enabled = false;
-
-        effect1_Image.gameObject.SetActive( true );
-        effect2_Image.gameObject.SetActive( true );
-
-        goRecruitmentUI_Button.gameObject.SetActive(false);
+        go_Result.SetActive( false );
 
         go_RecruitmentResultUI.gameObject.SetActive( false );
+
+        if(gachaSystem.gachaType == GachaType.Ten)
+            go_Minislots.gameObject.SetActive( false );
 
         UIManager.instance.topUI.TopUIActivation();
         UIManager.instance.bottomUI.BottomUIActivation();
     }
 
-    //뽑은 고양이 정보 출력
-    public void PickCatInformation(CatInformation _catInformation)
+    //연속뽑기를 했을 때 호출
+    public void SetPickHighestCatSprite()
     {
-        cat_Image.sprite = _catInformation.catSprite;
+        if(gachaSystem.gachaType == GachaType.One)
+        {
+            cat_Image.sprite = gachaSystem.pickCatList[0].catInformation.catSprite;
+        }
+        else
+        {
+            int highestClass = 4;
 
-        name_Text.text = _catInformation.catName;
+            for (int i = 0; i < miniCatSlots.Length; i++)
+            {
+                if ((int)miniCatSlots[i].cat.catInformation.catClass < highestClass)
+                {
+                    highestClass = (int)miniCatSlots[i].cat.catInformation.catClass;
+                    highestCatNum = i;
+                }
+                else if ((int)miniCatSlots[i].cat.catInformation.catClass == highestClass)
+                {
+                    if (miniCatSlots[i].cat.catInformation.catName.CompareTo( miniCatSlots[highestCatNum].cat.catInformation.catName ) < 0)
+                    {
+                        highestCatNum = i;
+                    }
+                }
+            }
+
+            cat_Image.sprite = miniCatSlots[highestCatNum].cat.catInformation.catSprite;
+        }  
+    }
+
+    //뽑은 고양이 정보 출력
+    public void SetPickCatInfo(Cat _cat)
+    {
+        cat_Image.sprite = _cat.catInformation.catSprite;
+
+        name_Text.text = _cat.catInformation.catName;
+
+        if (_cat.count == 1)
+            new_Image.enabled = true;
+        else
+            new_Image.enabled = false;
+
+        star_Image.sprite = UIManager.instance.star_Sprites[(int)_cat.catInformation.catClass];
+        star_Image.rectTransform.sizeDelta = new Vector2( 120 * (5 - (int)_cat.catInformation.catClass), star_Image.rectTransform.sizeDelta.y );
     }
 }
     

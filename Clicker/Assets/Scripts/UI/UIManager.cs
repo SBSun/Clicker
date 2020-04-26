@@ -67,6 +67,9 @@ public class UIManager : MonoBehaviour
     public float heightMaxUI;
     public float multiple;
 
+    [Header("다양한 UI에서 사용되는 리소스들")]
+    public Sprite[] star_Sprites;
+
     void Awake()
     {
         scale = ((float)Screen.width / Screen.height) / ((float)9 / 16);

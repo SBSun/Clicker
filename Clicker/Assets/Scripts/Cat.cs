@@ -37,7 +37,8 @@ public class Cat : MonoBehaviour
     #endregion
    
     //고양이의 레벨
-    public int level;
+    public int level = 1;
+    public int count = 0;
 
     //고양이가 레벨업 했을 때 변경되어야 할 것들
     public void CatLevelUp()
@@ -46,6 +47,11 @@ public class Cat : MonoBehaviour
 
         if (level == 3)
             isAutoConsume = true;
+    }
+
+    public void CatCountAdd()
+    {
+        count++;
     }
 
     /*public IEnumerator WorkConsumeCoroutine()

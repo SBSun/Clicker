@@ -5,6 +5,12 @@ using BackEnd;
 using LitJson;
 using System.Linq;
 
+public enum GachaType
+{
+    One,
+    Ten
+}
+
 public class GachaSystem : MonoBehaviour
 {
     public int bTierDenominator; //분모
@@ -22,42 +28,61 @@ public class GachaSystem : MonoBehaviour
     public int bTierCountMax;
     public int sTierCountMax;
 
+    //뽑기 비용
     public List<int> costGoldList = new List<int>();
+    //뽑은 고양이 리스트
+    public List<Cat> pickCatList = new List<Cat>();
+
+    public GachaType gachaType;
 
     //일반 뽑기 2 ~ 4성, 인수로 1 또는 10번 뽑기
-    public void NormalGacha(int gachaCount)
+    public void NormalGacha1()
     {
-        if(gachaCount == 1)
+        pickCatList.Clear();
+
+        gachaType = GachaType.One;
+
+        if (!GoodsController.instance.SubGoldCheck( GoodsController.instance.goldList, costGoldList ))
         {
-            if(!GoodsController.instance.SubGoldCheck(GoodsController.instance.goldList, costGoldList))
+            UIManager.instance.popUpUI.GoldLackPopUp();
+            return;
+        }
+
+        GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
+        NormalBTierGacha();
+
+        UIManager.instance.UpdateGoldText();
+
+        UIManager.instance.topUI.TopUIDeactivate();
+        UIManager.instance.bottomUI.BottomUIDeactivate();
+
+        UIManager.instance.recruitmentUI.StartAnimation();
+    }
+
+    public void NormalGacha10()
+    {
+        pickCatList.Clear();
+
+        gachaType = GachaType.Ten;
+
+        List<int> currentGoldList = GoodsController.instance.goldList.ToList();
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (!GoodsController.instance.SubGoldCheck( currentGoldList, costGoldList ))
             {
                 UIManager.instance.popUpUI.GoldLackPopUp();
                 return;
             }
 
-            GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
+            GoodsController.instance.SubGold( currentGoldList, costGoldList );
         }
-        else
+
+        for (int i = 0; i < 10; i++)
         {
-            List<int> currentGoldList = GoodsController.instance.goldList.ToList();
-
-            for (int i = 0; i < gachaCount; i++)
-            {
-                if(!GoodsController.instance.SubGoldCheck(currentGoldList, costGoldList))
-                {
-                    UIManager.instance.popUpUI.GoldLackPopUp();
-                    return;
-                }
-
-                GoodsController.instance.SubGold( currentGoldList, costGoldList );
-            }
-
-            for (int i = 0; i < gachaCount; i++)
-            {
-                GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
-                Debug.Log( GoodsController.instance.goldList[3] + ", " + GoodsController.instance.goldList[2] + ", "  + GoodsController.instance.goldList[1] + ", " 
-                    + GoodsController.instance.goldList[0] + ", " );
-            }
+            GoodsController.instance.SubGold( GoodsController.instance.goldList, costGoldList );
+            NormalBTierGacha();
+            UIManager.instance.recruitmentUI.miniCatSlots[i].SetMiniCatSlot( pickCatList[i] );
         }
 
         UIManager.instance.UpdateGoldText();
@@ -67,20 +92,12 @@ public class GachaSystem : MonoBehaviour
 
         UIManager.instance.recruitmentUI.StartAnimation();
 
-        for (int i = 0; i < gachaCount; i++)
-        {
-            NormalBTierGacha();
-        }
-
     }
 
     //고급 뽑기 3 ~ 5성
-    public void HighGacha(int gachaCount)
+    public void HighGacha1()
     {
-        for (int i = 0; i < gachaCount; i++)
-        {
-            HighBTierGacha();
-        }
+        
     }
 
     //성공하면 NormalSTierGacha 실패하면 2성
@@ -197,19 +214,18 @@ public class GachaSystem : MonoBehaviour
         //해당 등급의 고양이 종류 
         int randNum = Random.Range( 0, UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList.Count);
 
-        Debug.Log( UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList[randNum].cat.name );
         return UIManager.instance.catInventoryUI.classCatSlots[catClass].catSlotList[randNum].cat;
     }
 
     //뽑은 고양이의 정보를 가지고 있는 고양이 슬롯 찾기
-    public void CatSlotFind(Cat cat)
+    public void CatSlotFind(Cat _cat)
     {
-        List<CatSlot> catSlotList = UIManager.instance.catInventoryUI.classCatSlots[(int)cat.catInformation.catClass].catSlotList.ToList();
+        List<CatSlot> catSlotList = UIManager.instance.catInventoryUI.classCatSlots[(int)_cat.catInformation.catClass].catSlotList.ToList();
 
         //인수로 받은 고양이의 등급 슬롯들에서 찾는다.
         for (int i = 0; i < catSlotList.Count; i++)
         {
-            if(cat.name == catSlotList[i].cat.name)
+            if(_cat.name == catSlotList[i].cat.name)
             {
                 if(catSlotList[i].slotStatus == CatSlot.SlotStatus.Rock)
                 {
@@ -220,8 +236,12 @@ public class GachaSystem : MonoBehaviour
                     //아직 기획이 안나옴
                 }
 
-                UIManager.instance.recruitmentUI.PickCatInformation( cat.catInformation );
+                _cat.CatCountAdd();       
+                break;      
             }
         }
+
+        //뽑은 고양이 추가
+        pickCatList.Add( _cat );
     }
 }
